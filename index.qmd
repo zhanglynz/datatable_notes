@@ -1,3 +1,56 @@
 # Preface {.unnumbered}
 
 My notes on learning `data.table`.
+
+# Introduction to data.table
+
+>
+if you are interested in reducing **programming** and **compute** time tremendously, then this package is for you
+>
+
+NB: Two type of **efficiency**: coder's efficiency and code's efficiency --- reference: 
+Colin Gillespie, C.; Lovelace, R. (2021). Efficient R programming. URL: https://csgillespie.github.io/efficientR/
+
+
+File reader `fread`
+
+- data.table's fast-and-friendly file reader `fread` 
+- `fread` accepts http and https URLs directly
+
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+library(data.table)
+link <- "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv"
+flights <- fread(link)
+```
+
+## Basics
+
+- `data.table()`
+
+```{r}
+library(data.table)
+small_dtb <- data.table(x = letters[1:5],
+                        y = rnorm(5),
+                        z = 1:5)
+small_dtb
+```
+
+>
+You can also convert existing objects to a data.table using `setDT()` (for data.frame and list structures) or `as.data.table()` (for other structures).
+>
+
+- general form `DT[i, j, by]` --- **Take DT, subset/reorder rows using i, then calculate j, grouped by by.**
+
+- subset rows in i
+
+**Example:**
+```{r}
+(small_dtb[x %in% c('a', 'b', 'c', 'e') & z >= 3])
+```
+
+**Example:**
+```{r}
+(small_dtb[c(2, 5)])
+```
+
+up to – Sort flights first by column origin in ascending order, and then by dest in descending order:

@@ -8,5 +8,15 @@
     "crumbs": [
       "Preface"
     ]
+  },
+  {
+    "objectID": "index.html#basics",
+    "href": "index.html#basics",
+    "title": "Learning data.table Notes",
+    "section": "Basics",
+    "text": "Basics\n\ndata.table()\n\n\nlibrary(data.table)\nsmall_dtb &lt;- data.table(x = letters[1:5],\n                        y = rnorm(5),\n                        z = 1:5)\nsmall_dtb\n\n        x          y     z\n   &lt;char&gt;      &lt;num&gt; &lt;int&gt;\n1:      a  0.7483929     1\n2:      b  0.4520126     2\n3:      c  1.2175161     3\n4:      d  1.4380206     4\n5:      e -0.3924529     5\n\n\n\nYou can also convert existing objects to a data.table using setDT() (for data.frame and list structures) or as.data.table() (for other structures).\n\n\ngeneral form DT[i, j, by] — Take DT, subset/reorder rows using i, then calculate j, grouped by by.\nsubset rows in i\n\nExample:\n\n(small_dtb[x %in% c('a', 'b', 'c', 'e') & z &gt;= 3])\n\n        x          y     z\n   &lt;char&gt;      &lt;num&gt; &lt;int&gt;\n1:      c  1.2175161     3\n2:      e -0.3924529     5\n\n\nExample:\n\n(small_dtb[c(2, 5)])\n\n        x          y     z\n   &lt;char&gt;      &lt;num&gt; &lt;int&gt;\n1:      b  0.4520126     2\n2:      e -0.3924529     5\n\n\nup to – Sort flights first by column origin in ascending order, and then by dest in descending order:",
+    "crumbs": [
+      "Preface"
+    ]
   }
 ]
