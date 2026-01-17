@@ -64,6 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./reference_semantics.html" rel="next">
 <link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -149,6 +150,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="./intro.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to data.table</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reference_semantics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reference semantics</span></span></a>
   </div>
 </li>
     </ul>
@@ -607,7 +614,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
          y     ID      x          w           z</code></pre>
 </div>
 </div>
-<p>up to g) Why keep j so flexible?</p>
+<ul>
+<li>Make ‘longer’ table — <code>melt</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>fk_data <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">week =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">player_1 =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>),</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">player_2 =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>))</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>long_tb <span class="ot">&lt;-</span> <span class="fu">melt</span>(fk_data,</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">measure.vars =</span> <span class="fu">c</span>(<span class="st">"player_1"</span>, <span class="st">"player_2"</span>),</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">variable.name =</span> <span class="st">"player"</span>,</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">value.name =</span> <span class="st">"value"</span>)</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>(long_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     week   player      value
+    &lt;int&gt;   &lt;fctr&gt;      &lt;num&gt;
+ 1:     1 player_1  0.9842654
+ 2:     2 player_1  0.1542017
+ 3:     3 player_1 -0.7450324
+ 4:     4 player_1 -0.2477755
+ 5:     5 player_1  0.4545554
+ 6:     1 player_2 -0.3609907
+ 7:     2 player_2  0.4675788
+ 8:     3 player_2  1.4384395
+ 9:     4 player_2 -0.1420841
+10:     5 player_2 -1.4523287</code></pre>
+</div>
+</div>
+<ul>
+<li>Make ‘wider’ table — <code>dcast</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add row id</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="co"># long_tb[, id := sample(1:5), by = player][, id := paste0('wk_', id)]</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>wide_tb <span class="ot">&lt;-</span> <span class="fu">dcast</span>(</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  long_tb,</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  week <span class="sc">~</span> player,</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">value.var =</span> <span class="st">"value"</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>(wide_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Key: &lt;week&gt;
+    week   player_1   player_2
+   &lt;int&gt;      &lt;num&gt;      &lt;num&gt;
+1:     1  0.9842654 -0.3609907
+2:     2  0.1542017  0.4675788
+3:     3 -0.7450324  1.4384395
+4:     4 -0.2477755 -0.1420841
+5:     5  0.4545554 -1.4523287</code></pre>
+</div>
+</div>
 
 
 </section>
@@ -1040,6 +1097,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./reference_semantics.html" class="pagination-link" aria-label="Reference semantics">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reference semantics</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

@@ -9,6 +9,7 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
+    - reference_semantics.qmd
 
 format:
   html:

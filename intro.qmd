@@ -193,4 +193,30 @@ dt[, `:=`(x = sample(letters[1:3],   length(ID), replace = TRUE),
 )
 ```
 
-up to g) Why keep j so flexible?
+- Make 'longer' table --- `melt`
+
+```{r}
+fk_data <- data.table(week = 1:5,
+                      player_1 = rnorm(5),
+                      player_2 = rnorm(5))
+long_tb <- melt(fk_data,
+                measure.vars = c("player_1", "player_2"),
+                variable.name = "player",
+                value.name = "value")
+(long_tb)
+```
+
+- Make 'wider' table --- `dcast`
+
+```{r}
+# add row id
+# long_tb[, id := sample(1:5), by = player][, id := paste0('wk_', id)]
+
+wide_tb <- dcast(
+  long_tb,
+  week ~ player,
+  value.var = "value"
+)
+(wide_tb)
+```
+
