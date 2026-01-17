@@ -1,0 +1,196 @@
+# Introduction to data.table
+
+>
+if you are interested in reducing **programming** and **compute** time tremendously, then this package is for you
+>
+
+NB: Two type of **efficiency**: coder's efficiency and code's efficiency --- reference: 
+Colin Gillespie, C.; Lovelace, R. (2021). Efficient R programming. URL: https://csgillespie.github.io/efficientR/
+
+
+File reader `fread`
+
+- data.table's fast-and-friendly file reader `fread` 
+- `fread` accepts http and https URLs directly
+
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+library(data.table)
+link <- "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv"
+flights <- fread(link)
+```
+
+## Basics
+
+- `data.table()`
+
+```{r}
+library(data.table)
+
+set.seed(12345)
+
+small_dtb <- data.table(x = letters[1:5],
+                        y = rnorm(5),
+                        z = 1:5)
+small_dtb
+```
+
+>
+You can also convert existing objects to a data.table using `setDT()` (for data.frame and list structures) or `as.data.table()` (for other structures).
+>
+
+- General form `DT[i, j, by]` --- **Take DT, subset/reorder rows using i, then calculate j, grouped by by.**
+
+- Subset rows in i
+
+**Example:**
+```{r}
+(small_dtb[x %in% c('a', 'b', 'c', 'e') & z >= 3])
+```
+
+**Example:**
+```{r}
+(small_dtb[c(2, 5)])
+```
+
+- Order rows
+
+**Example:**
+```{r}
+# x in in descending order; and then y in ascending order
+(small_dtb[order(-x, y)])
+```
+
+- Select column(s) in j
+
+**Example:**
+```{r}
+(small_dtb[, .(x, z)])
+```
+
+>
+Tip:
+As long as j-expression returns a list, each element of the list will be converted to a column in the resulting data.table. 
+>
+
+**Example:**
+```{r}
+# select and rename
+(small_dtb[, .(x_1 = x, z)])
+```
+
+**Example:**
+```{r}
+# return a vector
+(small_dtb[, z])
+```
+
+- Compute or do in j
+
+**Example:**
+```{r}
+(small_dtb)
+(chk <- small_dtb[, sum(y + z > 3)])
+```
+
+- Subset in i and do in j
+
+**Example:**
+```{r}
+(small_dtb[x %in% letters[2:4], sum(y + z > 3)])
+```
+
+**Example:**
+```{r}
+(small_dtb[x %in% letters[2:4], .(mean_1 = mean(y), mean_2 = mean(z))])
+```
+
+- Special symbol `.N`
+
+>
+`.N` is a special built-in variable that holds the number of observations in the **current group**.
+
+**Example:**
+```{r}
+(small_dtb[x %in% c('a', 'c', 'f') & y > 0, .N])
+```
+
+- Select columns named in a variable using `with = FALSE`
+
+**Example:**
+```{r}
+sel_vars <- c('x', 'z')
+(small_dtb[, sel_vars, with = FALSE])
+```
+
+- Deselect columns using `-` or `!`
+
+**Example:**
+```{r}
+(small_dtb[, -c('x', 'z')])
+(small_dtb[, !c('x', 'z')])
+```
+
+- Select by specifying start and end column names (From version 1.9.5+)
+
+**Example:**
+```{r}
+(small_dtb[, y:z])
+```
+
+## Aggregations
+
+```{r}
+# create a data.table 
+set.seed(98765)
+
+dt <- data.table(ID = sprintf("%03d", 1L:100L))
+dt[, `:=`(x = sample(letters[1:3],   length(ID), replace = TRUE),
+          y = sample(month.abb, length(ID), replace = TRUE),
+          w = runif(length(ID)),
+          z = rnorm(length(ID))
+         )]
+```
+
+**Example:**
+```{r}
+(dt[, .(.N), by = y][order(match(y, month.abb))]) # nice!
+# or (useful for coding programmatically)
+(dt[, .(.N), by = "y"][order(match(y, month.abb))]) 
+```
+
+**Example:**
+```{r}
+(dt[, .(.N), by = .(y, x)][order(match(y, month.abb), x)])
+```
+
+- Multiple columns in j --- `.SD` (Subset of Data)
+
+>
+`.SD` contains all the columns except the grouping columns by default.
+>
+
+**Example:**
+```{r}
+(dt[, lapply(.SD, dplyr::n_distinct), by = y][
+  order(match(y, month.abb))
+])
+```
+
+- Specify just the columns --- `.SDcols`
+
+**Example:**
+```{r}
+(dt[, lapply(.SD, mean), by = y, .SDcols = c("w", "z")][
+  order(match(y, month.abb))])
+```
+
+- Subset `.SD` for each group
+
+**Example:**
+```{r}
+(dt[, head(.SD, 2), by = y][
+  order(match(y, month.abb))]
+)
+```
+
+up to g) Why keep j so flexible?
