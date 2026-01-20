@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,6 +64,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./keys_and_search.html" rel="next">
 <link href="./intro.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -123,13 +158,28 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Reference semantics</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./keys_and_search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Keys and fast binary search based subset</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#syntax" id="toc-syntax" class="nav-link active" data-scroll-target="#syntax"><span class="header-section-number">2.1</span> Syntax</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">2.2</span> Examples</a></li>
+  <li><a href="#and-copy" id="toc-and-copy" class="nav-link" data-scroll-target="#and-copy"><span class="header-section-number">2.3</span> <code>:=</code> and <code>copy()</code></a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">2.4</span> Summary</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -153,8 +203,358 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>https://cran.r-project.org/web/packages/data.table/vignettes/datatable-reference-semantics.html</p>
+<blockquote class="blockquote">
+<p><code>:=</code> operator updates data.table columns in-place (by reference)</p>
+</blockquote>
+<section id="syntax" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="syntax"><span class="header-section-number">2.1</span> Syntax</h2>
+<p>The LHS := RHS form</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>DT[, <span class="fu">c</span>(<span class="st">"colA"</span>, <span class="st">"colB"</span>, ...) <span class="sc">:</span><span class="er">=</span> <span class="fu">list</span>(valA, valB, ...)]</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># when you have only one column to assign to you</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># can drop the quotes and list(), for convenience</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>DT[, colA <span class="sc">:</span><span class="er">=</span> valA]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>In “LHS := RHS form”, LHS takes a character vector of column names and RHS a list of values. RHS just needs to be a list, irrespective of how its generated (e.g., using <code>lapply()</code>, <code>list()</code>, <code>mget()</code>, <code>mapply()</code> etc.). This form is usually easy to program with and is particularly useful when you don’t know the columns to assign values to in advance.</p>
+</blockquote>
+<p>The functional form</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>DT[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(<span class="at">colA =</span> valA, <span class="co"># valA is assigned to colA</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">colB =</span> valB, <span class="co"># valB is assigned to colB</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>In the two forms of <code>:=</code> shown above, note that we don’t assign the result back to a variable. Because we don’t need to. <strong>The input data.table is modified by reference</strong>.</p>
+</blockquote>
+</section>
+<section id="examples" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="examples"><span class="header-section-number">2.2</span> Examples</h2>
+<ul>
+<li>Add columns by reference</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dt_0 <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">ID =</span> <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">u =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>],</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">v =</span> month.name,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">w =</span> <span class="fu">runif</span>(<span class="dv">15</span>),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">x =</span> <span class="fu">rnorm</span>(<span class="dv">15</span>))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>(dt_0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        ID      u         v          w            x
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;      &lt;num&gt;        &lt;num&gt;
+ 1:     01      a   January 0.64367142 -0.422827306
+ 2:     02      b  February 0.38118787 -2.160689919
+ 3:     03      c     March 0.15343236 -0.350000915
+ 4:     04      d     April 0.60357175 -0.857870503
+ 5:     05      e       May 0.24245114 -0.045487349
+ 6:     06      f      June 0.15376619 -0.916804282
+ 7:     07      g      July 0.95334494 -0.364791045
+ 8:     08      h    August 0.20345150  0.190161111
+ 9:     09      i September 0.05059934 -0.005576393
+10:     10      j   October 0.28211980 -0.151163262
+11:     11      k  November 0.78676139  1.266540033
+12:     12      l  December 0.75357142 -1.338475490
+13:     13      m   January 0.50718585  1.157909403
+14:     14      n  February 0.20883600  0.290874294
+15:     15      o     March 0.39658656 -0.447705168</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dt_0[, x_1 <span class="sc">:</span><span class="er">=</span> (x <span class="sc">-</span> <span class="fu">mean</span>(x)) <span class="sc">/</span> <span class="fu">sd</span>(x)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        ID      u         v          w            x         x_1
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;      &lt;num&gt;        &lt;num&gt;       &lt;num&gt;
+ 1:     01      a   January 0.64367142 -0.422827306 -0.16743812
+ 2:     02      b  February 0.38118787 -2.160689919 -2.16367012
+ 3:     03      c     March 0.15343236 -0.350000915 -0.08378458
+ 4:     04      d     April 0.60357175 -0.857870503 -0.66715953
+ 5:     05      e       May 0.24245114 -0.045487349  0.26600126
+ 6:     06      f      June 0.15376619 -0.916804282 -0.73485504
+ 7:     07      g      July 0.95334494 -0.364791045 -0.10077357
+ 8:     08      h    August 0.20345150  0.190161111  0.53668376
+ 9:     09      i September 0.05059934 -0.005576393  0.31184580
+10:     10      j   October 0.28211980 -0.151163262  0.14461442
+11:     11      k  November 0.78676139  1.266540033  1.77308876
+12:     12      l  December 0.75357142 -1.338475490 -1.21921643
+13:     13      m   January 0.50718585  1.157909403  1.64830793
+14:     14      n  February 0.20883600  0.290874294  0.65237004
+15:     15      o     March 0.39658656 -0.447705168 -0.19601460</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dt_0[, w_1 <span class="sc">:</span><span class="er">=</span> <span class="fu">ifelse</span>(w <span class="sc">&gt;</span> <span class="fl">0.5</span>, w <span class="sc">+</span> <span class="dv">1</span>, w)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        ID      u         v          w            x         x_1        w_1
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;      &lt;num&gt;        &lt;num&gt;       &lt;num&gt;      &lt;num&gt;
+ 1:     01      a   January 0.64367142 -0.422827306 -0.16743812 1.64367142
+ 2:     02      b  February 0.38118787 -2.160689919 -2.16367012 0.38118787
+ 3:     03      c     March 0.15343236 -0.350000915 -0.08378458 0.15343236
+ 4:     04      d     April 0.60357175 -0.857870503 -0.66715953 1.60357175
+ 5:     05      e       May 0.24245114 -0.045487349  0.26600126 0.24245114
+ 6:     06      f      June 0.15376619 -0.916804282 -0.73485504 0.15376619
+ 7:     07      g      July 0.95334494 -0.364791045 -0.10077357 1.95334494
+ 8:     08      h    August 0.20345150  0.190161111  0.53668376 0.20345150
+ 9:     09      i September 0.05059934 -0.005576393  0.31184580 0.05059934
+10:     10      j   October 0.28211980 -0.151163262  0.14461442 0.28211980
+11:     11      k  November 0.78676139  1.266540033  1.77308876 1.78676139
+12:     12      l  December 0.75357142 -1.338475490 -1.21921643 1.75357142
+13:     13      m   January 0.50718585  1.157909403  1.64830793 1.50718585
+14:     14      n  February 0.20883600  0.290874294  0.65237004 0.20883600
+15:     15      o     March 0.39658656 -0.447705168 -0.19601460 0.39658656</code></pre>
+</div>
+</div>
+<ul>
+<li>Delete column by reference</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dt_0[, w <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        ID      u         v            x         x_1        w_1
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;        &lt;num&gt;       &lt;num&gt;      &lt;num&gt;
+ 1:     01      a   January -0.422827306 -0.16743812 1.64367142
+ 2:     02      b  February -2.160689919 -2.16367012 0.38118787
+ 3:     03      c     March -0.350000915 -0.08378458 0.15343236
+ 4:     04      d     April -0.857870503 -0.66715953 1.60357175
+ 5:     05      e       May -0.045487349  0.26600126 0.24245114
+ 6:     06      f      June -0.916804282 -0.73485504 0.15376619
+ 7:     07      g      July -0.364791045 -0.10077357 1.95334494
+ 8:     08      h    August  0.190161111  0.53668376 0.20345150
+ 9:     09      i September -0.005576393  0.31184580 0.05059934
+10:     10      j   October -0.151163262  0.14461442 0.28211980
+11:     11      k  November  1.266540033  1.77308876 1.78676139
+12:     12      l  December -1.338475490 -1.21921643 1.75357142
+13:     13      m   January  1.157909403  1.64830793 1.50718585
+14:     14      n  February  0.290874294  0.65237004 0.20883600
+15:     15      o     March -0.447705168 -0.19601460 0.39658656</code></pre>
+</div>
+</div>
+<ul>
+<li><code>:=</code> along with grouping using by</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dt_1 <span class="ot">&lt;-</span> <span class="fu">copy</span>(dt_0)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dt_2 <span class="ot">&lt;-</span> <span class="fu">copy</span>(dt_0)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>dt_1[, count <span class="sc">:</span><span class="er">=</span> .N, by <span class="ot">=</span> v][] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        ID      u         v            x         x_1        w_1 count
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;        &lt;num&gt;       &lt;num&gt;      &lt;num&gt; &lt;int&gt;
+ 1:     01      a   January -0.422827306 -0.16743812 1.64367142     2
+ 2:     02      b  February -2.160689919 -2.16367012 0.38118787     2
+ 3:     03      c     March -0.350000915 -0.08378458 0.15343236     2
+ 4:     04      d     April -0.857870503 -0.66715953 1.60357175     1
+ 5:     05      e       May -0.045487349  0.26600126 0.24245114     1
+ 6:     06      f      June -0.916804282 -0.73485504 0.15376619     1
+ 7:     07      g      July -0.364791045 -0.10077357 1.95334494     1
+ 8:     08      h    August  0.190161111  0.53668376 0.20345150     1
+ 9:     09      i September -0.005576393  0.31184580 0.05059934     1
+10:     10      j   October -0.151163262  0.14461442 0.28211980     1
+11:     11      k  November  1.266540033  1.77308876 1.78676139     1
+12:     12      l  December -1.338475490 -1.21921643 1.75357142     1
+13:     13      m   January  1.157909403  1.64830793 1.50718585     2
+14:     14      n  February  0.290874294  0.65237004 0.20883600     2
+15:     15      o     March -0.447705168 -0.19601460 0.39658656     2</code></pre>
+</div>
+</div>
+<ul>
+<li>Multiple columns and <code>:=</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>in_cols  <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"w_1"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>out_cols <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"max_x"</span>, <span class="st">"max_w_1"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>dt_1[, new_grp <span class="sc">:</span><span class="er">=</span> <span class="fu">rep</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">each =</span> <span class="dv">5</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    ][, .(x, w_1, new_grp)][</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      , <span class="fu">c</span>(out_cols) <span class="sc">:</span><span class="er">=</span> <span class="fu">lapply</span>(.SD, max), by <span class="ot">=</span> new_grp, .SDcols <span class="ot">=</span> in_cols</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>      ][] <span class="co"># notice "c(out_cols)" instead of "out_cols"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               x        w_1 new_grp       max_x  max_w_1
+           &lt;num&gt;      &lt;num&gt;  &lt;char&gt;       &lt;num&gt;    &lt;num&gt;
+ 1: -0.422827306 1.64367142       A -0.04548735 1.643671
+ 2: -2.160689919 0.38118787       A -0.04548735 1.643671
+ 3: -0.350000915 0.15343236       A -0.04548735 1.643671
+ 4: -0.857870503 1.60357175       A -0.04548735 1.643671
+ 5: -0.045487349 0.24245114       A -0.04548735 1.643671
+ 6: -0.916804282 0.15376619       B  0.19016111 1.953345
+ 7: -0.364791045 1.95334494       B  0.19016111 1.953345
+ 8:  0.190161111 0.20345150       B  0.19016111 1.953345
+ 9: -0.005576393 0.05059934       B  0.19016111 1.953345
+10: -0.151163262 0.28211980       B  0.19016111 1.953345
+11:  1.266540033 1.78676139       C  1.26654003 1.786761
+12: -1.338475490 1.75357142       C  1.26654003 1.786761
+13:  1.157909403 1.50718585       C  1.26654003 1.786761
+14:  0.290874294 0.20883600       C  1.26654003 1.786761
+15: -0.447705168 0.39658656       C  1.26654003 1.786761</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare with dt_3</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>dt_3 <span class="ot">&lt;-</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  dt_2[, new_grp <span class="sc">:</span><span class="er">=</span> <span class="fu">rep</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">each =</span> <span class="dv">5</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>      ][, <span class="fu">lapply</span>(.SD, max), by <span class="ot">=</span> new_grp, .SDcols <span class="ot">=</span> in_cols]</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>(<span class="fu">setnames</span>(dt_3, in_cols, out_cols))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   new_grp       max_x  max_w_1
+    &lt;char&gt;       &lt;num&gt;    &lt;num&gt;
+1:       A -0.04548735 1.643671
+2:       B  0.19016111 1.953345
+3:       C  1.26654003 1.786761</code></pre>
+</div>
+</div>
+<ul>
+<li>How can we update multiple existing columns in place using <code>.SD</code>?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>dt_3[, <span class="fu">names</span>(.SD) <span class="sc">:</span><span class="er">=</span> <span class="fu">lapply</span>(.SD, as.character), .SDcols <span class="ot">=</span> is.numeric][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   new_grp               max_x          max_w_1
+    &lt;char&gt;              &lt;char&gt;           &lt;char&gt;
+1:       A -0.0454873490559889 1.64367142389528
+2:       B   0.190161111335384 1.95334493694827
+3:       C    1.26654003293267 1.78676139330491</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(dt_3[, <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"_2026"</span>)), </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">.SDcols =</span> is.character])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   new_grp                    max_x               max_w_1
+    &lt;char&gt;                   &lt;char&gt;                &lt;char&gt;
+1:  A_2026 -0.0454873490559889_2026 1.64367142389528_2026
+2:  B_2026   0.190161111335384_2026 1.95334493694827_2026
+3:  C_2026    1.26654003293267_2026 1.78676139330491_2026</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>(dt_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   new_grp               max_x          max_w_1
+    &lt;char&gt;              &lt;char&gt;           &lt;char&gt;
+1:       A -0.0454873490559889 1.64367142389528
+2:       B   0.190161111335384 1.95334493694827
+3:       C    1.26654003293267 1.78676139330491</code></pre>
+</div>
+</div>
+</section>
+<section id="and-copy" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="and-copy"><span class="header-section-number">2.3</span> <code>:=</code> and <code>copy()</code></h2>
+<blockquote class="blockquote">
+<p><code>:=</code> modifies the input object by reference. Apart from the features we have discussed already, sometimes we might want to use the update by reference feature for its side effect. And at other times it may not be desirable to modify the original object, in which case we can use <code>copy()</code> function, as we will see in a moment.</p>
+</blockquote>
+<p><strong>Example:</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(dt_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        ID      u         v            x         x_1        w_1 count new_grp
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;        &lt;num&gt;       &lt;num&gt;      &lt;num&gt; &lt;int&gt;  &lt;char&gt;
+ 1:     01      a   January -0.422827306 -0.16743812 1.64367142     2       A
+ 2:     02      b  February -2.160689919 -2.16367012 0.38118787     2       A
+ 3:     03      c     March -0.350000915 -0.08378458 0.15343236     2       A
+ 4:     04      d     April -0.857870503 -0.66715953 1.60357175     1       A
+ 5:     05      e       May -0.045487349  0.26600126 0.24245114     1       A
+ 6:     06      f      June -0.916804282 -0.73485504 0.15376619     1       B
+ 7:     07      g      July -0.364791045 -0.10077357 1.95334494     1       B
+ 8:     08      h    August  0.190161111  0.53668376 0.20345150     1       B
+ 9:     09      i September -0.005576393  0.31184580 0.05059934     1       B
+10:     10      j   October -0.151163262  0.14461442 0.28211980     1       B
+11:     11      k  November  1.266540033  1.77308876 1.78676139     1       C
+12:     12      l  December -1.338475490 -1.21921643 1.75357142     1       C
+13:     13      m   January  1.157909403  1.64830793 1.50718585     2       C
+14:     14      n  February  0.290874294  0.65237004 0.20883600     2       C
+15:     15      o     March -0.447705168 -0.19601460 0.39658656     2       C</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>my_fun_1 <span class="ot">&lt;-</span> <span class="cf">function</span>(a_dt)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>{a_dt[, the_sum <span class="sc">:</span><span class="er">=</span> x_1 <span class="sc">+</span> w_1][</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>      , .(<span class="at">the_max =</span> <span class="fu">max</span>(the_sum)), by <span class="ot">=</span> new_grp]</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>(<span class="fu">my_fun_1</span>(dt_1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   new_grp  the_max
+    &lt;char&gt;    &lt;num&gt;
+1:       A 1.476233
+2:       B 1.852571
+3:       C 3.559850</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">names</span>(dt_1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ID"      "u"       "v"       "x"       "x_1"     "w_1"     "count"  
+[8] "new_grp" "the_sum"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove `the_sum` from dt_1</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>dt_1[, the_sum <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>(<span class="fu">names</span>(dt_1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ID"      "u"       "v"       "x"       "x_1"     "w_1"     "count"  
+[8] "new_grp"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use copy()</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>my_fun_2 <span class="ot">&lt;-</span> <span class="cf">function</span>(a_dt)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>{a_dt <span class="ot">&lt;-</span> <span class="fu">copy</span>(a_dt)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a> a_dt[, the_sum <span class="sc">:</span><span class="er">=</span> x_1 <span class="sc">+</span> w_1][</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>      , .(<span class="at">the_max =</span> <span class="fu">max</span>(the_sum)), by <span class="ot">=</span> new_grp]</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>(<span class="fu">my_fun_2</span>(dt_1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   new_grp  the_max
+    &lt;char&gt;    &lt;num&gt;
+1:       A 1.476233
+2:       B 1.852571
+3:       C 3.559850</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">names</span>(dt_1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ID"      "u"       "v"       "x"       "x_1"     "w_1"     "count"  
+[8] "new_grp"</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>When we store the column names on to a variable, e.g., DT_n = names(DT), and then add/update/delete column(s) by reference. It would also modify DT_n, unless we do copy(names(DT)).</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>DT <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">x =</span> <span class="dv">1</span>L, <span class="at">y =</span> <span class="dv">2</span>L)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>(DT_n  <span class="ot">&lt;-</span>  <span class="fu">names</span>(DT))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "x" "y"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="do">## add a new column by reference</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>DT[, z <span class="sc">:</span><span class="er">=</span> <span class="dv">3</span>L][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       x     y     z
+   &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1:     1     2     3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="do">## DT_n also gets updated</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>(DT_n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "x" "y" "z"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="do">## use `copy()`</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>DT_n <span class="ot">=</span> <span class="fu">copy</span>(<span class="fu">names</span>(DT))</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>DT[, w <span class="sc">:</span><span class="er">=</span> <span class="dv">4</span>L]</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="do">## DT_n doesn't get updated</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>(DT_n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "x" "y" "z"</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>When you extract a single column as a vector, there is a subtle but important difference between standard R methods ($ and [[…]]) and data.table’s j expression. DT$col and DT[[‘col’]] may return a reference to the column, while <strong>DT[, col] always returns a copy</strong>.</p>
+</blockquote>
+<p>To select a single column as a vector, remember:</p>
+<ul>
+<li><code>DT[, mycol]</code> is safer as it always returns a new, independent copy.</li>
+<li><code>DT$mycol</code> is fast but may return a reference. Use <code>copy(DT$mycol)</code> to guarantee independence.</li>
+</ul>
+</section>
+<section id="summary" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="summary"><span class="header-section-number">2.4</span> Summary</h2>
+<p>The <code>:=</code> operator</p>
+<ul>
+<li>It is used to add/update/delete columns by reference.</li>
+<li>We can use <code>:=</code> for its side effect or use <code>copy()</code> to not modify the original object while updating by reference.</li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -584,6 +984,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./keys_and_search.html" class="pagination-link" aria-label="Keys and fast binary search based subset">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Keys and fast binary search based subset</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

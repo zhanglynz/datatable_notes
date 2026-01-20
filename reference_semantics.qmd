@@ -1,1 +1,173 @@
 # Reference semantics
+
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-reference-semantics.html
+
+>
+`:=` operator updates data.table columns in-place (by reference)
+>
+
+## Syntax
+
+The LHS := RHS form
+```{r, eval=FALSE}
+DT[, c("colA", "colB", ...) := list(valA, valB, ...)]
+# when you have only one column to assign to you
+# can drop the quotes and list(), for convenience
+DT[, colA := valA]
+```
+
+>
+In "LHS := RHS form", LHS takes a character vector of column names and RHS a list of values. RHS just needs to be a list, irrespective of how its generated (e.g., using `lapply()`, `list()`, `mget()`, `mapply()` etc.). This form is usually easy to program with and is particularly useful when you don’t know the columns to assign values to in advance.
+>
+
+The functional form
+```{r, eval=FALSE}
+DT[, `:=`(colA = valA, # valA is assigned to colA
+          colB = valB, # valB is assigned to colB
+         )
+  ]
+```
+
+>
+In the two forms of `:=` shown above, note that we don't assign the result back to a variable. Because we don't need to. **The input data.table is modified by reference**.
+>
+
+## Examples
+
+- Add columns by reference
+
+```{r, warning=FALSE, message=FALSE}
+library(data.table)
+
+dt_0 <- data.table(ID = sprintf("%02d", 1:15),
+                   u = letters[1:15],
+                   v = month.name,
+                   w = runif(15),
+                   x = rnorm(15))
+(dt_0)
+
+dt_0[, x_1 := (x - mean(x)) / sd(x)][]
+```
+
+
+```{r}
+dt_0[, w_1 := ifelse(w > 0.5, w + 1, w)][]
+```
+
+- Delete column by reference
+
+```{r}
+dt_0[, w := NULL][]
+```
+
+- `:=` along with grouping using by
+
+```{r}
+dt_1 <- copy(dt_0)
+dt_2 <- copy(dt_0)
+
+dt_1[, count := .N, by = v][] 
+```
+
+- Multiple columns and `:=`
+
+```{r}
+in_cols  = c("x", "w_1")
+out_cols = c("max_x", "max_w_1")
+dt_1[, new_grp := rep(LETTERS[1:3], each = 5)
+    ][, .(x, w_1, new_grp)][
+      , c(out_cols) := lapply(.SD, max), by = new_grp, .SDcols = in_cols
+      ][] # notice "c(out_cols)" instead of "out_cols"
+
+# compare with dt_3
+dt_3 <- 
+  dt_2[, new_grp := rep(LETTERS[1:3], each = 5)
+      ][, lapply(.SD, max), by = new_grp, .SDcols = in_cols]
+(setnames(dt_3, in_cols, out_cols))
+```
+
+- How can we update multiple existing columns in place using `.SD`?
+
+```{r}
+dt_3[, names(.SD) := lapply(.SD, as.character), .SDcols = is.numeric][]
+
+(dt_3[, lapply(.SD, function(x) paste0(x, "_2026")), 
+      .SDcols = is.character])
+
+(dt_3)
+```
+
+## `:=` and `copy()`
+
+>
+`:=` modifies the input object by reference. Apart from the features we have discussed already, sometimes we might want to use the update by reference feature for its side effect. And at other times it may not be desirable to modify the original object, in which case we can use `copy()` function, as we will see in a moment.
+>
+
+**Example:**
+
+```{r}
+(dt_1)
+
+my_fun_1 <- function(a_dt)
+{a_dt[, the_sum := x_1 + w_1][
+      , .(the_max = max(the_sum)), by = new_grp]
+}
+
+(my_fun_1(dt_1))
+
+(names(dt_1))
+
+# remove `the_sum` from dt_1
+dt_1[, the_sum := NULL]
+(names(dt_1))
+
+# use copy()
+my_fun_2 <- function(a_dt)
+{a_dt <- copy(a_dt)
+ a_dt[, the_sum := x_1 + w_1][
+      , .(the_max = max(the_sum)), by = new_grp]
+}
+
+(my_fun_2(dt_1))
+
+(names(dt_1))
+
+```
+
+>
+When we store the column names on to a variable, e.g., DT_n = names(DT), and then add/update/delete column(s) by reference. It would also modify DT_n, unless we do copy(names(DT)).
+>
+
+```{r}
+DT <- data.table(x = 1L, y = 2L)
+(DT_n  <-  names(DT))
+
+## add a new column by reference
+DT[, z := 3L][]
+
+## DT_n also gets updated
+(DT_n)
+
+## use `copy()`
+DT_n = copy(names(DT))
+DT[, w := 4L]
+
+## DT_n doesn't get updated
+(DT_n)
+```
+
+>
+When you extract a single column as a vector, there is a subtle but important difference between standard R methods ($ and [[…]]) and data.table's j expression. DT$col and DT[['col']] may return a reference to the column, while **DT[, col] always returns a copy**.
+
+
+To select a single column as a vector, remember:
+
+- `DT[, mycol]` is safer as it always returns a new, independent copy.
+- `DT$mycol` is fast but may return a reference. Use `copy(DT$mycol)` to guarantee independence.
+
+## Summary
+
+The `:=` operator
+
+- It is used to add/update/delete columns by reference.
+- We can use `:=` for its side effect or use `copy()` to not modify the original object while updating by reference.

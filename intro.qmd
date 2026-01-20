@@ -1,5 +1,7 @@
 # Introduction to data.table
 
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
+
 >
 if you are interested in reducing **programming** and **compute** time tremendously, then this package is for you
 >

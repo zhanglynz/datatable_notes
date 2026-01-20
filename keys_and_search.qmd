@@ -1,0 +1,3 @@
+# Keys and fast binary search based subset
+
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-keys-fast-subset.html

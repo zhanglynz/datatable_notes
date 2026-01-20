@@ -10,6 +10,7 @@ book:
     - index.qmd
     - intro.qmd
     - reference_semantics.qmd
+    - keys_and_search.qmd
 
 format:
   html:
