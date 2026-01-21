@@ -114,7 +114,27 @@
     "href": "keys_and_search.html",
     "title": "3  Keys and fast binary search based subset",
     "section": "",
-    "text": "https://cran.r-project.org/web/packages/data.table/vignettes/datatable-keys-fast-subset.html",
+    "text": "3.1 Keys\nKeys and their properties",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Keys and fast binary search based subset</span>"
+    ]
+  },
+  {
+    "objectID": "keys_and_search.html#keys",
+    "href": "keys_and_search.html#keys",
+    "title": "3  Keys and fast binary search based subset",
+    "section": "",
+    "text": "data.tables never uses row names. Since data.tables inherit from data.frames, it still has the row names attribute. But it never uses them.\n\n\nIf you would like to preserve the row names, use keep.rownames = TRUE in as.data.table(a_df) - this will create a new column called rn and assign row names to this column.\n\n\nInstead, in data.tables we set and use keys. Think of a key as supercharged rownames.\n\n\n\nWe can set keys on multiple columns.\nUniqueness is not enforced, i.e., duplicate key values are allowed. Since rows are sorted by key, any duplicates in the key columns will appear consecutively.\nSetting a key does two things\n\nphysically reorders the rows of the data.table by the column(s) provided by reference, always in increasing order. (Since the rows are reordered, a data.table can have at most one key because it can not be sorted in more than one way.)\nmarks those columns as key columns by setting an attribute called sorted to the data.table.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Keys and fast binary search based subset</span>"
+    ]
+  },
+  {
+    "objectID": "keys_and_search.html#examples",
+    "href": "keys_and_search.html#examples",
+    "title": "3  Keys and fast binary search based subset",
+    "section": "3.2 Examples",
+    "text": "3.2 Examples\n\nlibrary(data.table)\n\nset.seed(12345)\nN &lt;- 1e6\ndt &lt;- data.table(x = sample(1:100, N, replace = TRUE),\n                 y = sample(letters, N, replace = TRUE),\n                 z = rnorm(N))\n\n(key(dt))\n\nNULL\n\n(t1 &lt;- system.time(ans1 &lt;- dt[x == 99 & y == 'a']))\n\n   user  system elapsed \n  0.035   0.007   0.028 \n\n(head(ans1))\n\n       x      y          z\n   &lt;int&gt; &lt;char&gt;      &lt;num&gt;\n1:    99      a  0.2081657\n2:    99      a  1.7643860\n3:    99      a -0.3033784\n4:    99      a -0.3410771\n5:    99      a -1.1956415\n6:    99      a  0.2045236\n\nsetkey(dt, x, y)\n(key(dt))\n\n[1] \"x\" \"y\"\n\n(t2 &lt;- system.time(ans2 &lt;- dt[.(99, 'a')]))\n\n   user  system elapsed \n  0.002   0.000   0.002 \n\n(head(ans2))\n\nKey: &lt;x, y&gt;\n       x      y          z\n   &lt;int&gt; &lt;char&gt;      &lt;num&gt;\n1:    99      a  0.2081657\n2:    99      a  1.7643860\n3:    99      a -0.3033784\n4:    99      a -0.3410771\n5:    99      a -1.1956415\n6:    99      a  0.2045236\n\n# try `mult`\n(dt[.(99, 'a'), mult = 'first'])\n\nKey: &lt;x, y&gt;\n       x      y         z\n   &lt;int&gt; &lt;char&gt;     &lt;num&gt;\n1:    99      a 0.2081657\n\n(dt[.(99, 'a'), mult = 'last'])\n\nKey: &lt;x, y&gt;\n       x      y        z\n   &lt;int&gt; &lt;char&gt;    &lt;num&gt;\n1:    99      a 1.523553\n\n# try `nomatch`\n(dt[.(101, 'a')])\n\nKey: &lt;x, y&gt;\n       x      y     z\n   &lt;int&gt; &lt;char&gt; &lt;num&gt;\n1:   101      a    NA\n\n## Default value for nomatch is NA. Setting nomatch = NULL skips queries with no matches.\n(dt[.(101, 'a'), nomatch = NULL])\n\nKey: &lt;x, y&gt;\nEmpty data.table (0 rows and 3 cols): x,y,z\n\n# remove the key\nsetkey(dt, NULL)\n\n\nKey based subsets are incredibly fast and are particularly useful when the task involves repeated subsetting. But it may not be always desirable to set key and physically reorder the data.table.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Keys and fast binary search based subset</span>"
     ]

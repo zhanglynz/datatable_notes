@@ -1,3 +1,62 @@
 # Keys and fast binary search based subset
 
 https://cran.r-project.org/web/packages/data.table/vignettes/datatable-keys-fast-subset.html
+
+## Keys
+
+>
+**data.tables never uses row names.** Since data.tables inherit from data.frames, it still has the row names attribute. But it never uses them. 
+
+>
+If you would like to preserve the row names, use `keep.rownames = TRUE` in `as.data.table(a_df)` - this will create a new column called `rn` and assign row names to this column.
+
+>
+Instead, in data.tables we set and use keys. Think of a key as supercharged rownames.
+
+**Keys and their properties**
+
+- We can set keys on **multiple columns**.
+
+- Uniqueness is not enforced, i.e., duplicate key values are allowed. Since rows are sorted by key, any duplicates in the key columns will appear consecutively.
+
+- Setting a key does two things
+    - physically reorders the rows of the data.table by the column(s) provided by reference, always in increasing order. (Since the rows are reordered, a data.table can have at most one key because it can not be sorted in more than one way.)
+    - marks those columns as key columns by setting an attribute called sorted to the data.table.
+
+
+## Examples
+
+```{r, warning=FALSE, message=FALSE}
+library(data.table)
+
+set.seed(12345)
+N <- 1e6
+dt <- data.table(x = sample(1:100, N, replace = TRUE),
+                 y = sample(letters, N, replace = TRUE),
+                 z = rnorm(N))
+
+(key(dt))
+(t1 <- system.time(ans1 <- dt[x == 99 & y == 'a']))
+(head(ans1))
+
+setkey(dt, x, y)
+(key(dt))
+
+(t2 <- system.time(ans2 <- dt[.(99, 'a')]))
+(head(ans2))
+
+# try `mult`
+(dt[.(99, 'a'), mult = 'first'])
+(dt[.(99, 'a'), mult = 'last'])
+
+# try `nomatch`
+(dt[.(101, 'a')])
+## Default value for nomatch is NA. Setting nomatch = NULL skips queries with no matches.
+(dt[.(101, 'a'), nomatch = NULL])
+
+# remove the key
+setkey(dt, NULL)
+```
+
+>
+Key based subsets are incredibly fast and are particularly useful when the task involves **repeated subsetting**. But it may not be always desirable to set key and physically reorder the data.table.
