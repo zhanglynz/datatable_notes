@@ -1,0 +1,31 @@
+# Some Examples
+
+## Converting multiple columns to proportions
+
+```{r, warning=FALSE, message=FALSE}
+library(data.table)
+
+dt <- data.table(
+  ID = 1:3,
+  var1 = c(2, 4, 1),
+  var2 = c(3, 1, 2),
+  var3 = c(5, 0, 3),
+  var4 = c(0, 2, 1),
+  var5 = c(0, 1, 3)
+)
+
+dt[, total := rowSums(.SD), .SDcols = var1:var5]
+
+vars <- paste0("var", 1:5)
+dt[, (vars) := lapply(.SD, function(x) x / total),
+    .SDcols = var1:var5][]
+
+# the following does not work
+# dt[, (var1:var5) := lapply(.SD, function(x) x / total),
+#    .SDcols = var1:var5]
+
+# this works
+# (new_dt <- dt[, lapply(.SD, function(x) x / total),
+#   .SDcols = var1:var5, by = ID])
+```
+

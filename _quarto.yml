@@ -12,6 +12,7 @@ book:
     - reference_semantics.qmd
     - keys_and_search.qmd
     - secondary_indices.qmd
+    - examples.qmd
 
 format:
   html:

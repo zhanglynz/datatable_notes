@@ -138,5 +138,25 @@
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Keys and fast binary search based subset</span>"
     ]
+  },
+  {
+    "objectID": "examples.html",
+    "href": "examples.html",
+    "title": "5  Some Examples",
+    "section": "",
+    "text": "5.1 Converting multiple columns to proportions\nlibrary(data.table)\n\ndt &lt;- data.table(\n  ID = 1:3,\n  var1 = c(2, 4, 1),\n  var2 = c(3, 1, 2),\n  var3 = c(5, 0, 3),\n  var4 = c(0, 2, 1),\n  var5 = c(0, 1, 3)\n)\n\ndt[, total := rowSums(.SD), .SDcols = var1:var5]\n\nvars &lt;- paste0(\"var\", 1:5)\ndt[, (vars) := lapply(.SD, function(x) x / total),\n    .SDcols = var1:var5][]\n\n      ID  var1  var2  var3  var4  var5 total\n   &lt;int&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;\n1:     1   0.2 0.300   0.5  0.00 0.000    10\n2:     2   0.5 0.125   0.0  0.25 0.125     8\n3:     3   0.1 0.200   0.3  0.10 0.300    10\n\n# the following does not work\n# dt[, (var1:var5) := lapply(.SD, function(x) x / total),\n#    .SDcols = var1:var5]\n\n# this works\n# (new_dt &lt;- dt[, lapply(.SD, function(x) x / total),\n#   .SDcols = var1:var5, by = ID])",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Some Examples</span>"
+    ]
+  },
+  {
+    "objectID": "secondary_indices.html",
+    "href": "secondary_indices.html",
+    "title": "4  Secondary indices and auto indexing",
+    "section": "",
+    "text": "https://cran.r-project.org/web/packages/data.table/vignettes/datatable-secondary-indices-and-auto-indexing.html",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Secondary indices and auto indexing</span>"
+    ]
   }
 ]

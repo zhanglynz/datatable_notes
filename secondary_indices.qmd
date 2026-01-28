@@ -1,1 +1,3 @@
 # Secondary indices and auto indexing
+
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-secondary-indices-and-auto-indexing.html
