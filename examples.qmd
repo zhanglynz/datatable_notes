@@ -16,6 +16,11 @@ dt <- data.table(
 
 dt[, total := rowSums(.SD), .SDcols = var1:var5]
 
+# this works
+(new_dt <- dt[, lapply(.SD, function(x) x / total),
+   .SDcols = var1:var5, by = c('ID', 'total')][, c(1, 3:7 ,2), with = FALSE])
+
+# this works
 vars <- paste0("var", 1:5)
 dt[, (vars) := lapply(.SD, function(x) x / total),
     .SDcols = var1:var5][]
@@ -24,8 +29,6 @@ dt[, (vars) := lapply(.SD, function(x) x / total),
 # dt[, (var1:var5) := lapply(.SD, function(x) x / total),
 #    .SDcols = var1:var5]
 
-# this works
-# (new_dt <- dt[, lapply(.SD, function(x) x / total),
-#   .SDcols = var1:var5, by = ID])
+
 ```
 

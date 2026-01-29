@@ -170,6 +170,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Secondary indices and auto indexing</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./examples.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Some Examples</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -248,7 +254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(t1 <span class="ot">&lt;-</span> <span class="fu">system.time</span>(ans1 <span class="ot">&lt;-</span> dt[x <span class="sc">==</span> <span class="dv">99</span> <span class="sc">&amp;</span> y <span class="sc">==</span> <span class="st">'a'</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-  0.035   0.007   0.028 </code></pre>
+  0.036   0.004   0.027 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">head</span>(ans1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -269,7 +275,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(t2 <span class="ot">&lt;-</span> <span class="fu">system.time</span>(ans2 <span class="ot">&lt;-</span> dt[.(<span class="dv">99</span>, <span class="st">'a'</span>)]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-  0.002   0.000   0.002 </code></pre>
+  0.001   0.000   0.001 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">head</span>(ans2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
