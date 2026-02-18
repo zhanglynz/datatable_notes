@@ -406,6 +406,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 5:      e     5</code></pre>
 </div>
 </div>
+<blockquote class="blockquote">
+<p><code>with = FALSE</code> tells data.table to treat <code>sel_vars</code> as column names (a character vector), not as an expression to evaluate.</p>
+</blockquote>
 <ul>
 <li>Deselect columns using <code>-</code> or <code>!</code></li>
 </ul>
@@ -543,6 +546,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
          y      x     N</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>(dt[, .(.N), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"y"</span>, <span class="st">"x"</span>)][<span class="fu">order</span>(<span class="fu">match</span>(y, month.abb), x)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         y      x     N
+    &lt;char&gt; &lt;char&gt; &lt;int&gt;
+ 1:    Jan      a     2
+ 2:    Jan      b     3
+ 3:    Jan      c     4
+ 4:    Feb      a     2
+ 5:    Feb      b     1
+ 6:    Feb      c     3
+ 7:    Mar      a     2
+ 8:    Mar      b     5
+ 9:    Mar      c     3
+10:    Apr      a     4
+11:    Apr      b     1
+12:    Apr      c     3
+13:    May      a     2
+14:    May      b     5
+15:    May      c     1
+16:    Jun      a     2
+17:    Jun      b     4
+18:    Jul      a     2
+19:    Jul      b     4
+20:    Jul      c     3
+21:    Aug      a     4
+22:    Aug      b     3
+23:    Aug      c     1
+24:    Sep      a     2
+25:    Sep      b     4
+26:    Sep      c     7
+27:    Oct      a     3
+28:    Oct      b     2
+29:    Nov      a     4
+30:    Nov      b     2
+31:    Nov      c     4
+32:    Dec      a     2
+33:    Dec      b     3
+34:    Dec      c     3
+         y      x     N</code></pre>
+</div>
+</div>
 <ul>
 <li>Multiple columns in j — <code>.SD</code> (Subset of Data)</li>
 </ul>
@@ -551,9 +596,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p><strong>Example:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">lapply</span>(.SD, dplyr<span class="sc">::</span>n_distinct), <span class="at">by =</span> y][</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">lapply</span>(.SD, dplyr<span class="sc">::</span>n_distinct), <span class="at">by =</span> y][</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         y    ID     x     w     z
     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
@@ -576,8 +621,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Example:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">lapply</span>(.SD, mean), <span class="at">by =</span> y, <span class="at">.SDcols =</span> <span class="fu">c</span>(<span class="st">"w"</span>, <span class="st">"z"</span>)][</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">lapply</span>(.SD, mean), <span class="at">by =</span> y, <span class="at">.SDcols =</span> <span class="fu">c</span>(<span class="st">"w"</span>, <span class="st">"z"</span>)][</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         y         w           z
     &lt;char&gt;     &lt;num&gt;       &lt;num&gt;
@@ -600,9 +645,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Example:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">head</span>(.SD, <span class="dv">2</span>), <span class="at">by =</span> y][</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))]</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">head</span>(.SD, <span class="dv">2</span>), <span class="at">by =</span> y][</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))]</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         y     ID      x          w           z
     &lt;char&gt; &lt;char&gt; &lt;char&gt;      &lt;num&gt;       &lt;num&gt;
@@ -637,14 +682,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Make ‘longer’ table — <code>melt</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>fk_data <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">week =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">player_1 =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>),</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">player_2 =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>))</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>long_tb <span class="ot">&lt;-</span> <span class="fu">melt</span>(fk_data,</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">measure.vars =</span> <span class="fu">c</span>(<span class="st">"player_1"</span>, <span class="st">"player_2"</span>),</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">variable.name =</span> <span class="st">"player"</span>,</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">value.name =</span> <span class="st">"value"</span>)</span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>(long_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>fk_data <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">week =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">player_1 =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>),</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">player_2 =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>))</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>long_tb <span class="ot">&lt;-</span> <span class="fu">melt</span>(fk_data,</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">measure.vars =</span> <span class="fu">c</span>(<span class="st">"player_1"</span>, <span class="st">"player_2"</span>),</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">variable.name =</span> <span class="st">"player"</span>,</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">value.name =</span> <span class="st">"value"</span>)</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>(long_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     week   player      value
     &lt;int&gt;   &lt;fctr&gt;      &lt;num&gt;
@@ -664,15 +709,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Make ‘wider’ table — <code>dcast</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add row id</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="co"># long_tb[, id := sample(1:5), by = player][, id := paste0('wk_', id)]</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>wide_tb <span class="ot">&lt;-</span> <span class="fu">dcast</span>(</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  long_tb,</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  week <span class="sc">~</span> player,</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">value.var =</span> <span class="st">"value"</span></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>(wide_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add row id</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># long_tb[, id := sample(1:5), by = player][, id := paste0('wk_', id)]</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>wide_tb <span class="ot">&lt;-</span> <span class="fu">dcast</span>(</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  long_tb,</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  week <span class="sc">~</span> player,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">value.var =</span> <span class="st">"value"</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>(wide_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Key: &lt;week&gt;
     week   player_1   player_2

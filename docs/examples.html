@@ -186,6 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#converting-multiple-columns-to-proportions" id="toc-converting-multiple-columns-to-proportions" class="nav-link active" data-scroll-target="#converting-multiple-columns-to-proportions"><span class="header-section-number">5.1</span> Converting multiple columns to proportions</a></li>
+  <li><a href="#find-number-of-unique-x-y-coordiates-in-each-group" id="toc-find-number-of-unique-x-y-coordiates-in-each-group" class="nav-link" data-scroll-target="#find-number-of-unique-x-y-coordiates-in-each-group"><span class="header-section-number">5.2</span> Find number of unique x-y coordiates in each group</a></li>
   </ul>
 </nav>
     </div>
@@ -251,6 +252,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the following does not work</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># dt[, (var1:var5) := lapply(.SD, function(x) x / total),</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#    .SDcols = var1:var5]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="find-number-of-unique-x-y-coordiates-in-each-group" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="find-number-of-unique-x-y-coordiates-in-each-group"><span class="header-section-number">5.2</span> Find number of unique x-y coordiates in each group</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">mb =</span> <span class="fu">sample</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">size =</span> <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>dt[, x_y <span class="sc">:</span><span class="er">=</span> <span class="fu">paste0</span>(x, <span class="st">'_'</span>, y)][, <span class="fu">uniqueN</span>(x_y), by <span class="ot">=</span> mb][<span class="fu">order</span>(mb)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       mb    V1
+   &lt;char&gt; &lt;int&gt;
+1:      a    23
+2:      b    31
+3:      c    23</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dt[, new_x_y <span class="sc">:</span><span class="er">=</span> <span class="fu">paste0</span>(<span class="st">'('</span>, x, <span class="st">', '</span>,  y, <span class="st">')'</span>)][, <span class="fu">uniqueN</span>(new_x_y), by <span class="ot">=</span> mb][<span class="fu">order</span>(mb)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       mb    V1
+   &lt;char&gt; &lt;int&gt;
+1:      a    23
+2:      b    31
+3:      c    23</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dt[, .(<span class="at">n =</span> <span class="fu">uniqueN</span>(<span class="fu">paste0</span>(x, <span class="st">'_'</span>, y))), by <span class="ot">=</span> mb][<span class="fu">order</span>(mb)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       mb     n
+   &lt;char&gt; &lt;int&gt;
+1:      a    23
+2:      b    31
+3:      c    23</code></pre>
+</div>
 </div>
 
 

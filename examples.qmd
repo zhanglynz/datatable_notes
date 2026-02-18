@@ -32,3 +32,15 @@ dt[, (vars) := lapply(.SD, function(x) x / total),
 
 ```
 
+## Find number of unique x-y coordiates in each group
+
+```{r}
+set.seed(1234)
+dt <- data.table(mb = sample(letters[1:3], size = 100, replace = TRUE),
+                 x = sample(1:9, size = 100, replace = TRUE),
+                 y = sample(1:9, size = 100, replace = TRUE))
+dt[, x_y := paste0(x, '_', y)][, uniqueN(x_y), by = mb][order(mb)][]
+dt[, new_x_y := paste0('(', x, ', ',  y, ')')][, uniqueN(new_x_y), by = mb][order(mb)][]
+dt[, .(n = uniqueN(paste0(x, '_', y))), by = mb][order(mb)][]
+```
+

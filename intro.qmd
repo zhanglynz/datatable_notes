@@ -124,6 +124,10 @@ sel_vars <- c('x', 'z')
 (small_dtb[, sel_vars, with = FALSE])
 ```
 
+>
+`with = FALSE` tells data.table to treat `sel_vars` as column names (a character vector), not as an expression to evaluate.
+>
+
 - Deselect columns using `-` or `!`
 
 **Example:**
@@ -163,6 +167,10 @@ dt[, `:=`(x = sample(letters[1:3],   length(ID), replace = TRUE),
 **Example:**
 ```{r}
 (dt[, .(.N), by = .(y, x)][order(match(y, month.abb), x)])
+```
+
+```{r}
+(dt[, .(.N), by = c("y", "x")][order(match(y, month.abb), x)])
 ```
 
 - Multiple columns in j --- `.SD` (Subset of Data)
