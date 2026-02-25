@@ -44,3 +44,18 @@ dt[, new_x_y := paste0('(', x, ', ',  y, ')')][, uniqueN(new_x_y), by = mb][orde
 dt[, .(n = uniqueN(paste0(x, '_', y))), by = mb][order(mb)][]
 ```
 
+## Stratified random sampling
+
+```{r}
+library(data.table)
+
+set.seed(123)
+f_dt <- data.table(ID = sample(letters[1:3], 100, replace = TRUE))
+
+sample_sizes <- c(a = 5, b = 10, c = 18)
+f_dt[, sample_indi := sampling::srswor(n = sample_sizes[[ID[1]]], N = .N), by = ID]
+
+# check
+f_dt[sample_indi == 1, .N, by = ID][order(ID)][]
+```
+

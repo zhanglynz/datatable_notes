@@ -187,6 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#converting-multiple-columns-to-proportions" id="toc-converting-multiple-columns-to-proportions" class="nav-link active" data-scroll-target="#converting-multiple-columns-to-proportions"><span class="header-section-number">5.1</span> Converting multiple columns to proportions</a></li>
   <li><a href="#find-number-of-unique-x-y-coordiates-in-each-group" id="toc-find-number-of-unique-x-y-coordiates-in-each-group" class="nav-link" data-scroll-target="#find-number-of-unique-x-y-coordiates-in-each-group"><span class="header-section-number">5.2</span> Find number of unique x-y coordiates in each group</a></li>
+  <li><a href="#stratified-random-sampling" id="toc-stratified-random-sampling" class="nav-link" data-scroll-target="#stratified-random-sampling"><span class="header-section-number">5.3</span> Stratified random sampling</a></li>
   </ul>
 </nav>
     </div>
@@ -284,6 +285,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 1:      a    23
 2:      b    31
 3:      c    23</code></pre>
+</div>
+</div>
+</section>
+<section id="stratified-random-sampling" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="stratified-random-sampling"><span class="header-section-number">5.3</span> Stratified random sampling</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>f_dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">ID =</span> <span class="fu">sample</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>sample_sizes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">a =</span> <span class="dv">5</span>, <span class="at">b =</span> <span class="dv">10</span>, <span class="at">c =</span> <span class="dv">18</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>f_dt[, sample_indi <span class="sc">:</span><span class="er">=</span> sampling<span class="sc">::</span><span class="fu">srswor</span>(<span class="at">n =</span> sample_sizes[[ID[<span class="dv">1</span>]]], <span class="at">N =</span> .N), by <span class="ot">=</span> ID]</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># check</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>f_dt[sample_indi <span class="sc">==</span> <span class="dv">1</span>, .N, by <span class="ot">=</span> ID][<span class="fu">order</span>(ID)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       ID     N
+   &lt;char&gt; &lt;int&gt;
+1:      a     5
+2:      b    10
+3:      c    18</code></pre>
 </div>
 </div>
 
