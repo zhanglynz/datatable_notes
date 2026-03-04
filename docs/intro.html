@@ -435,12 +435,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 5:  0.6058875</code></pre>
 </div>
 </div>
+<p><strong>Example:</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>the_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'x'</span>, <span class="st">'z'</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>(small_dtb[, <span class="sc">-</span>the_cols, <span class="at">with =</span> <span class="cn">FALSE</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            y
+        &lt;num&gt;
+1:  0.5855288
+2:  0.7094660
+3: -0.1093033
+4: -0.4534972
+5:  0.6058875</code></pre>
+</div>
+</div>
 <ul>
 <li>Select by specifying start and end column names (From version 1.9.5+)</li>
 </ul>
 <p><strong>Example:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>(small_dtb[, y<span class="sc">:</span>z])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>(small_dtb[, y<span class="sc">:</span>z])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            y     z
         &lt;num&gt; &lt;int&gt;
@@ -455,19 +469,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="aggregations" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="aggregations"><span class="header-section-number">1.2</span> Aggregations</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data.table </span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">98765</span>)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">ID =</span> <span class="fu">sprintf</span>(<span class="st">"%03d"</span>, <span class="dv">1</span>L<span class="sc">:</span><span class="dv">100</span>L))</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>dt[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(<span class="at">x =</span> <span class="fu">sample</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>],   <span class="fu">length</span>(ID), <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">y =</span> <span class="fu">sample</span>(month.abb, <span class="fu">length</span>(ID), <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">w =</span> <span class="fu">runif</span>(<span class="fu">length</span>(ID)),</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">z =</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(ID))</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>         )]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data.table </span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">98765</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">ID =</span> <span class="fu">sprintf</span>(<span class="st">"%03d"</span>, <span class="dv">1</span>L<span class="sc">:</span><span class="dv">100</span>L))</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>dt[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(<span class="at">x =</span> <span class="fu">sample</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>],   <span class="fu">length</span>(ID), <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">y =</span> <span class="fu">sample</span>(month.abb, <span class="fu">length</span>(ID), <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">w =</span> <span class="fu">runif</span>(<span class="fu">length</span>(ID)),</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">z =</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(ID))</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>         )]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Example:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>(dt[, .(.N), <span class="at">by =</span> y][<span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))]) <span class="co"># nice!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>(dt[, .(.N), <span class="at">by =</span> y][<span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))]) <span class="co"># nice!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         y     N
     &lt;char&gt; &lt;int&gt;
@@ -484,8 +498,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 11:    Nov    10
 12:    Dec     8</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or (useful for coding programmatically)</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>(dt[, .(.N), <span class="at">by =</span> <span class="st">"y"</span>][<span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))]) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or (useful for coding programmatically)</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>(dt[, .(.N), <span class="at">by =</span> <span class="st">"y"</span>][<span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))]) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         y     N
     &lt;char&gt; &lt;int&gt;
@@ -505,7 +519,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><strong>Example:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>(dt[, .(.N), <span class="at">by =</span> .(y, x)][<span class="fu">order</span>(<span class="fu">match</span>(y, month.abb), x)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>(dt[, .(.N), <span class="at">by =</span> .(y, x)][<span class="fu">order</span>(<span class="fu">match</span>(y, month.abb), x)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         y      x     N
     &lt;char&gt; &lt;char&gt; &lt;int&gt;
@@ -547,7 +561,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>(dt[, .(.N), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"y"</span>, <span class="st">"x"</span>)][<span class="fu">order</span>(<span class="fu">match</span>(y, month.abb), x)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>(dt[, .(.N), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"y"</span>, <span class="st">"x"</span>)][<span class="fu">order</span>(<span class="fu">match</span>(y, month.abb), x)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         y      x     N
     &lt;char&gt; &lt;char&gt; &lt;int&gt;
@@ -596,9 +610,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p><strong>Example:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">lapply</span>(.SD, dplyr<span class="sc">::</span>n_distinct), <span class="at">by =</span> y][</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">lapply</span>(.SD, dplyr<span class="sc">::</span>n_distinct), <span class="at">by =</span> y][</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         y    ID     x     w     z
     &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
@@ -621,8 +635,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Example:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">lapply</span>(.SD, mean), <span class="at">by =</span> y, <span class="at">.SDcols =</span> <span class="fu">c</span>(<span class="st">"w"</span>, <span class="st">"z"</span>)][</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">lapply</span>(.SD, mean), <span class="at">by =</span> y, <span class="at">.SDcols =</span> <span class="fu">c</span>(<span class="st">"w"</span>, <span class="st">"z"</span>)][</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         y         w           z
     &lt;char&gt;     &lt;num&gt;       &lt;num&gt;
@@ -645,9 +659,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p><strong>Example:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">head</span>(.SD, <span class="dv">2</span>), <span class="at">by =</span> y][</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))]</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>(dt[, <span class="fu">head</span>(.SD, <span class="dv">2</span>), <span class="at">by =</span> y][</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(y, month.abb))]</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         y     ID      x          w           z
     &lt;char&gt; &lt;char&gt; &lt;char&gt;      &lt;num&gt;       &lt;num&gt;
@@ -682,14 +696,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Make ‘longer’ table — <code>melt</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>fk_data <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">week =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">player_1 =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>),</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">player_2 =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>))</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>long_tb <span class="ot">&lt;-</span> <span class="fu">melt</span>(fk_data,</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">measure.vars =</span> <span class="fu">c</span>(<span class="st">"player_1"</span>, <span class="st">"player_2"</span>),</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">variable.name =</span> <span class="st">"player"</span>,</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">value.name =</span> <span class="st">"value"</span>)</span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>(long_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>fk_data <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">week =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">player_1 =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>),</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">player_2 =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>))</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>long_tb <span class="ot">&lt;-</span> <span class="fu">melt</span>(fk_data,</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">measure.vars =</span> <span class="fu">c</span>(<span class="st">"player_1"</span>, <span class="st">"player_2"</span>),</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">variable.name =</span> <span class="st">"player"</span>,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">value.name =</span> <span class="st">"value"</span>)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>(long_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     week   player      value
     &lt;int&gt;   &lt;fctr&gt;      &lt;num&gt;
@@ -709,15 +723,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Make ‘wider’ table — <code>dcast</code></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add row id</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># long_tb[, id := sample(1:5), by = player][, id := paste0('wk_', id)]</span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>wide_tb <span class="ot">&lt;-</span> <span class="fu">dcast</span>(</span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  long_tb,</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  week <span class="sc">~</span> player,</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">value.var =</span> <span class="st">"value"</span></span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>(wide_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add row id</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="co"># long_tb[, id := sample(1:5), by = player][, id := paste0('wk_', id)]</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>wide_tb <span class="ot">&lt;-</span> <span class="fu">dcast</span>(</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  long_tb,</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  week <span class="sc">~</span> player,</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">value.var =</span> <span class="st">"value"</span></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>(wide_tb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Key: &lt;week&gt;
     week   player_1   player_2

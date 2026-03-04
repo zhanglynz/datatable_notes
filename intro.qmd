@@ -136,6 +136,13 @@ sel_vars <- c('x', 'z')
 (small_dtb[, !c('x', 'z')])
 ```
 
+**Example:**
+```{r}
+the_cols <- c('x', 'z')
+(small_dtb[, -the_cols, with = FALSE])
+```
+
+
 - Select by specifying start and end column names (From version 1.9.5+)
 
 **Example:**
