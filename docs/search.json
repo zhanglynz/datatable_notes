@@ -173,8 +173,28 @@
     "objectID": "examples.html#stratified-random-sampling",
     "href": "examples.html#stratified-random-sampling",
     "title": "5  Some Examples",
-    "section": "5.3 Stratified random sampling",
-    "text": "5.3 Stratified random sampling\n\nlibrary(data.table)\n\nset.seed(123)\nf_dt &lt;- data.table(ID = sample(letters[1:3], 100, replace = TRUE))\n\nsample_sizes &lt;- c(a = 5, b = 10, c = 18)\nf_dt[, sample_indi := sampling::srswor(n = sample_sizes[[ID[1]]], N = .N), by = ID]\n\n# check\nf_dt[sample_indi == 1, .N, by = ID][order(ID)][]\n\n       ID     N\n   &lt;char&gt; &lt;int&gt;\n1:      a     5\n2:      b    10\n3:      c    18",
+    "section": "5.4 Stratified random sampling",
+    "text": "5.4 Stratified random sampling\n\nlibrary(data.table)\n\nset.seed(123)\nf_dt &lt;- data.table(ID = sample(letters[1:3], 100, replace = TRUE))\n\nsample_sizes &lt;- c(a = 5, b = 10, c = 18)\nf_dt[, sample_indi := sampling::srswor(n = sample_sizes[[ID[1]]], N = .N), by = ID]\n\n# check\nf_dt[sample_indi == 1, .N, by = ID][order(ID)][]\n\n       ID     N\n   &lt;char&gt; &lt;int&gt;\n1:      a     5\n2:      b    10\n3:      c    18",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Some Examples</span>"
+    ]
+  },
+  {
+    "objectID": "examples.html#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets",
+    "href": "examples.html#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets",
+    "title": "5  Some Examples",
+    "section": "5.5 Two pairs of square brackets vs. one pair of square brackets",
+    "text": "5.5 Two pairs of square brackets vs. one pair of square brackets\nNotice the difference between dt_1 and dt_2\n\nlibrary(data.table)\n\nset.seed(123456)\n(dt &lt;- data.table(x = sample(letters[1:3], 10, replace = TRUE)))\n\n         x\n    &lt;char&gt;\n 1:      b\n 2:      b\n 3:      a\n 4:      b\n 5:      c\n 6:      a\n 7:      b\n 8:      b\n 9:      b\n10:      c\n\nprint(dt_1 &lt;- dt[x == 'a'][, y := 1])\n\n        x     y\n   &lt;char&gt; &lt;num&gt;\n1:      a     1\n2:      a     1\n\nprint(dt_2 &lt;- copy(dt)[x == 'a', y := 1])\n\nIndex: &lt;x&gt;\n         x     y\n    &lt;char&gt; &lt;num&gt;\n 1:      b    NA\n 2:      b    NA\n 3:      a     1\n 4:      b    NA\n 5:      c    NA\n 6:      a     1\n 7:      b    NA\n 8:      b    NA\n 9:      b    NA\n10:      c    NA",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Some Examples</span>"
+    ]
+  },
+  {
+    "objectID": "examples.html#take-a-sample-of-rows",
+    "href": "examples.html#take-a-sample-of-rows",
+    "title": "5  Some Examples",
+    "section": "5.3 Take a sample of rows",
+    "text": "5.3 Take a sample of rows\n\nlibrary(data.table)\n\nn &lt;- 3\ndt &lt;- data.table(x = 1:10, y = rnorm(10))\ndt[sample(.N, size = n)][]\n\n       x          y\n   &lt;int&gt;      &lt;num&gt;\n1:     3  0.7170935\n2:     6 -1.3789504\n3:     7  0.2427773",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Some Examples</span>"
     ]
