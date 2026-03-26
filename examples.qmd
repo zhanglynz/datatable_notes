@@ -86,3 +86,68 @@ print(dt_1 <- dt[x == 'a'][, y := 1])
 print(dt_2 <- copy(dt)[x == 'a', y := 1])
 ```
 
+```{r, warning=FALSE, message=FALSE}
+dt <- data.table(x = c(5, 3, 8, 1, 2))
+(new_dt <- dt[order(x)][, p := (.I - 1) %% 2 + 1][])
+
+a_dt <- copy(dt)
+a_dt[order(x), p := (.I - 1) %% 2 + 1][]
+```
+
+
+
+## Multiple-column operation
+
+```{r, warning=FALSE, message=FALSE}
+library(data.table)
+
+fk_dt <- data.table(id = letters[1:5],
+                    total = 100:104,
+                    x = 100,
+                    y = 101,
+                    z = 102)
+
+fk_dt_a <- copy(fk_dt)
+cols_to_scale <- setdiff(names(fk_dt), c("id", "total"))
+fk_dt_a[, (cols_to_scale) := lapply(.SD, function(v) v / total),
+        .SDcols = cols_to_scale][]
+```
+
+
+## `data.table` programming
+
+Notice using `get` function and `setNames(list(.N), output_var_name)` in the following code.
+
+```{r, warning=FALSE, message=FALSE}
+library(data.table)
+
+my_aggregate <- function(a_dt, condi_var_nm = NULL, 
+                         condi = c('1', '2'), output_var_name = NULL)
+{if(is.null(condi_var_nm)) {
+  return(a_dt[, .(total = .N), by = partition_code][order(partition_code)]) }
+  a_dt[get(condi_var_nm) %in% condi, setNames(list(.N), output_var_name), 
+       by = partition_code][order(partition_code)]   
+}
+
+set.seed(123)
+fk_dt <- data.table(id = 1:60,
+                    maori = sample(c('0', '1', '2'), 60, replace = TRUE),
+                    asian = sample(c('0', '1', '2'), 60, replace = TRUE),
+                    pacific = sample(c('0', '1', '2'), 60, replace = TRUE),
+                    rand_nbr = runif(60))
+fk_dt[order(rand_nbr), partition_code := (.I - 1) %% 3 + 1]
+
+total_dt <- my_aggregate(fk_dt)
+maori_dt <- my_aggregate(fk_dt, condi_var_nm = "maori", output_var_name = "maori")
+asian <- my_aggregate(fk_dt, condi_var_nm = "asian", 
+                      condi = '1', output_var_name = "asian")
+pacific <- my_aggregate(fk_dt, condi_var_nm = "pacific", output_var_name = "pacific")
+
+j <- 
+  merge(total_dt, maori_dt, by = 'partition_code', all.x = TRUE) |>
+  merge(asian, by = 'partition_code', all.x = TRUE) |>
+  merge(pacific, by = 'partition_code', all.x = TRUE)
+
+j[]
+```
+
