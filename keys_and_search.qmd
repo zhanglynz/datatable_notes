@@ -21,7 +21,7 @@ Instead, in data.tables we set and use keys. Think of a key as supercharged rown
 
 - Setting a key does two things
     - physically reorders the rows of the data.table by the column(s) provided by reference, always in increasing order. (Since the rows are reordered, a data.table can have at most one key because it can not be sorted in more than one way.)
-    - marks those columns as key columns by setting an attribute called sorted to the data.table.
+    - marks those columns as key columns by setting an attribute called `sorted` to the *data.table*.
 
 
 ## Examples

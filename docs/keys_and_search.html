@@ -232,7 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Setting a key does two things</p>
 <ul>
 <li>physically reorders the rows of the data.table by the column(s) provided by reference, always in increasing order. (Since the rows are reordered, a data.table can have at most one key because it can not be sorted in more than one way.)</li>
-<li>marks those columns as key columns by setting an attribute called sorted to the data.table.</li>
+<li>marks those columns as key columns by setting an attribute called <code>sorted</code> to the <em>data.table</em>.</li>
 </ul></li>
 </ul>
 </section>
@@ -254,7 +254,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(t1 <span class="ot">&lt;-</span> <span class="fu">system.time</span>(ans1 <span class="ot">&lt;-</span> dt[x <span class="sc">==</span> <span class="dv">99</span> <span class="sc">&amp;</span> y <span class="sc">==</span> <span class="st">'a'</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-  0.036   0.004   0.027 </code></pre>
+  0.044   0.003   0.032 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">head</span>(ans1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -275,7 +275,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(t2 <span class="ot">&lt;-</span> <span class="fu">system.time</span>(ans2 <span class="ot">&lt;-</span> dt[.(<span class="dv">99</span>, <span class="st">'a'</span>)]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-  0.001   0.000   0.001 </code></pre>
+  0.002   0.000   0.002 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">head</span>(ans2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
