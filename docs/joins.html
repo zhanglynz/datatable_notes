@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; Secondary indices and auto indexing – Learning `data.table` Notes</title>
+<title>5&nbsp; Joins in data.table – Learning `data.table` Notes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./joins.html" rel="next">
-<link href="./keys_and_search.html" rel="prev">
+<link href="./examples.html" rel="next">
+<link href="./secondary_indices.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -115,7 +81,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./secondary_indices.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Secondary indices and auto indexing</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./joins.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joins in data.table</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -166,13 +132,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./secondary_indices.html" class="sidebar-item-text sidebar-link active">
+  <a href="./secondary_indices.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Secondary indices and auto indexing</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./joins.html" class="sidebar-item-text sidebar-link">
+  <a href="./joins.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joins in data.table</span></span></a>
   </div>
 </li>
@@ -187,23 +153,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#what" id="toc-what" class="nav-link active" data-scroll-target="#what"><span class="header-section-number">4.1</span> What</a></li>
-  <li><a href="#how" id="toc-how" class="nav-link" data-scroll-target="#how"><span class="header-section-number">4.2</span> How</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">4.3</span> Examples</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Secondary indices and auto indexing</span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joins in data.table</span></h1>
 </div>
 
 
@@ -220,215 +178,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>https://cran.r-project.org/web/packages/data.table/vignettes/datatable-secondary-indices-and-auto-indexing.html</p>
-<section id="what" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="what"><span class="header-section-number">4.1</span> What</h2>
-<blockquote class="blockquote">
-<p>Secondary indices are similar to keys in data.table, except for two major differences:</p>
-</blockquote>
-<blockquote class="blockquote">
-<ul>
-<li>It doesn’t physically reorder the entire data.table in RAM. Instead, it only computes the order for the set of columns provided and stores that order vector in an additional attribute called index.</li>
-</ul>
-</blockquote>
-<blockquote class="blockquote">
-<ul>
-<li>There can be more than one secondary index for a data.table (as we will see below).</li>
-</ul>
-</blockquote>
-</section>
-<section id="how" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="how"><span class="header-section-number">4.2</span> How</h2>
-<ul>
-<li><p><code>setindex()</code> and <code>setindexv()</code> allows adding a secondary index to the data.table.</p></li>
-<li><p>The function <code>indices()</code> returns all current secondary indices in the data.table. If none exists, <code>NULL</code> is returned.</p></li>
-<li><p><code>setindex(dt, NULL)</code> would remove all secondary indices</p></li>
-<li><p><strong>on argument</strong></p>
-<ul>
-<li>enables subsetting by computing secondary indices on the fly. This eliminates having to do <code>setindex()</code> every time.</li>
-<li>allows easy reuse of existing indices by just checking the attributes.</li>
-<li>allows for a cleaner syntax by having the columns on which the subset is performed as part of the syntax. This makes the code easier to follow when looking at it at a later point.</li>
-</ul></li>
-</ul>
-</section>
-<section id="examples" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="examples"><span class="header-section-number">4.3</span> Examples</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">ID =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">month =</span> <span class="fu">sample</span>(month.name, <span class="dv">1000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> <span class="fu">sample</span>(letters, <span class="dv">1000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="fu">runif</span>(<span class="dv">1000</span>))</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Indexed subsetting (explicit column specification)</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">setindex</span>(dt, x)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>dt[.(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]), on <span class="ot">=</span> <span class="st">'x'</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        ID    month      x          y
-     &lt;int&gt;   &lt;char&gt; &lt;char&gt;      &lt;num&gt;
-  1:    95   August      a 0.27297737
-  2:   117  October      a 0.93005456
-  3:   126     July      a 0.12176989
-  4:   142     July      a 0.81675725
-  5:   143    April      a 0.41710169
- ---                                 
-104:   845 November      c 0.56259203
-105:   879  October      c 0.08006179
-106:   915    March      c 0.62046377
-107:   971     July      c 0.18960553
-108:   986    March      c 0.70557478</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">names</span>(<span class="fu">attributes</span>(dt)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "names"             "row.names"         "class"            
-[4] ".internal.selfref" "index"            </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">indices</span>(dt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "x"</code></pre>
-</div>
-</div>
-<p><strong>Use <code>on</code> argument</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setindex</span>(dt, <span class="cn">NULL</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">indices</span>(dt))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>NULL</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dt[.(<span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>), month.name[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">12</span>)]), on <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'x'</span>, <span class="st">'month'</span>), </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>   nomatch <span class="ot">=</span> <span class="cn">NULL</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>      ID    month      x         y
-   &lt;int&gt;   &lt;char&gt; &lt;char&gt;     &lt;num&gt;
-1:   479  January      a 0.7195198
-2:   517  January      a 0.2408748
-3:   840  January      a 0.9691646
-4:   262 December      b 0.6207268
-5:   361 December      b 0.9446811
-6:   537 December      b 0.7125287</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or for clarity/readability</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dt[.(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>), <span class="at">month =</span> month.name[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">12</span>)]), on <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'x'</span>, <span class="st">'month'</span>), </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>   nomatch <span class="ot">=</span> <span class="cn">NULL</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>      ID    month      x         y
-   &lt;int&gt;   &lt;char&gt; &lt;char&gt;     &lt;num&gt;
-1:   479  January      a 0.7195198
-2:   517  January      a 0.2408748
-3:   840  January      a 0.9691646
-4:   262 December      b 0.6207268
-5:   361 December      b 0.9446811
-6:   537 December      b 0.7125287</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># comparing </span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>dt[x <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>) <span class="sc">&amp;</span> month <span class="sc">%in%</span> month.name[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">12</span>)]][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>       ID    month      x          y
-    &lt;int&gt;   &lt;char&gt; &lt;char&gt;      &lt;num&gt;
- 1:   225  January      b 0.46582100
- 2:   262 December      b 0.62072676
- 3:   341  January      b 0.39612519
- 4:   361 December      b 0.94468107
- 5:   384 December      a 0.04565357
- 6:   387  January      b 0.19586916
- 7:   393 December      a 0.08012189
- 8:   479  January      a 0.71951983
- 9:   517  January      a 0.24087479
-10:   537 December      b 0.71252866
-11:   597 December      a 0.22832069
-12:   745 December      a 0.77450213
-13:   840  January      a 0.96916462</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute or do in j</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>dt[.(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>), <span class="at">month =</span> month.name[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">12</span>)]), </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mean</span>(y),</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>   on <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'x'</span>, <span class="st">'month'</span>),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7012493</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sub-assign by reference using := in j</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>dt[.(<span class="at">month =</span> <span class="st">"December"</span>), month <span class="sc">:</span><span class="er">=</span> <span class="st">"Dec"</span>, on <span class="ot">=</span> <span class="st">'month'</span>]</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>dt[, (<span class="at">nbr_obs =</span> .N), by <span class="ot">=</span> month][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        month    V1
-       &lt;char&gt; &lt;int&gt;
- 1:     March    86
- 2:   October    97
- 3:  February    76
- 4:      June    78
- 5:  November    75
- 6:       May    73
- 7:     April    77
- 8: September    92
- 9:       Dec    77
-10:    August    92
-11:      July   103
-12:   January    74</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change back from 'Dec' to "December"</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>dt[.(<span class="at">month =</span> <span class="st">"Dec"</span>), month <span class="sc">:</span><span class="er">=</span> <span class="st">"December"</span>, on <span class="ot">=</span> <span class="st">'month'</span>]</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregation using by</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>dt[.(<span class="at">x =</span> <span class="st">'a'</span>), .(<span class="at">mean_of_y =</span> <span class="fu">mean</span>(y)), keyby <span class="ot">=</span> month, on <span class="ot">=</span> <span class="st">'x'</span>][</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">order</span>(<span class="fu">match</span>(month, month.name))][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        month mean_of_y
-       &lt;char&gt;     &lt;num&gt;
- 1:   January 0.6431864
- 2:  February 0.7341298
- 3:     March 0.7738705
- 4:     April 0.2489124
- 5:       May 0.7070132
- 6:      June 0.5367305
- 7:      July 0.2286370
- 8:    August 0.6830317
- 9: September 0.6046991
-10:   October 0.3822849
-11:  December 0.2821496</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The mult argument</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>dt[.(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'c'</span>)), on <span class="ot">=</span> <span class="st">'x'</span>, mult <span class="ot">=</span> <span class="st">'first'</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>      ID     month      x          y
-   &lt;int&gt;    &lt;char&gt; &lt;char&gt;      &lt;num&gt;
-1:    95    August      a 0.27297737
-2:    18 September      b 0.48466174
-3:     9      June      c 0.03109084</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dt[.(<span class="at">x =</span> <span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'c'</span>)), on <span class="ot">=</span> <span class="st">'x'</span>, mult <span class="ot">=</span> <span class="st">'last'</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>      ID   month      x         y
-   &lt;int&gt;  &lt;char&gt; &lt;char&gt;     &lt;num&gt;
-1:   933    July      a 0.0675399
-2:   972 October      b 0.4957216
-3:   986   March      c 0.7055748</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The nomatch argument</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>dt[.(<span class="at">x =</span> <span class="st">'a'</span>, <span class="at">month =</span> <span class="fu">c</span>(<span class="st">'Dec'</span>)), on <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"month"</span>)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>      ID  month      x     y
-   &lt;int&gt; &lt;char&gt; &lt;char&gt; &lt;num&gt;
-1:    NA    Dec      a    NA</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>dt[.(<span class="at">x =</span> <span class="st">'a'</span>, <span class="at">month =</span> <span class="fu">c</span>(<span class="st">'Dec'</span>)), on <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"month"</span>), nomatch <span class="ot">=</span> <span class="cn">NULL</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Empty data.table (0 rows and 4 cols): ID,month,x,y</code></pre>
-</div>
-</div>
+<p>https://cran.r-project.org/web/packages/data.table/vignettes/datatable-joins.html</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -853,13 +605,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./keys_and_search.html" class="pagination-link" aria-label="Keys and fast binary search based subset">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Keys and fast binary search based subset</span></span>
+      <a href="./secondary_indices.html" class="pagination-link" aria-label="Secondary indices and auto indexing">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Secondary indices and auto indexing</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./joins.html" class="pagination-link" aria-label="Joins in data.table">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joins in data.table</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./examples.html" class="pagination-link" aria-label="Some Examples">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Some Examples</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -228,5 +228,35 @@
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Secondary indices and auto indexing</span>"
     ]
+  },
+  {
+    "objectID": "secondary_indices.html#examples",
+    "href": "secondary_indices.html#examples",
+    "title": "4  Secondary indices and auto indexing",
+    "section": "4.3 Examples",
+    "text": "4.3 Examples\n\nlibrary(data.table)\n\nset.seed(123)\ndt &lt;- data.table(ID = 1:1000,\n                 month = sample(month.name, 1000, replace = TRUE),\n                 x = sample(letters, 1000, replace = TRUE),\n                 y = runif(1000))\n\n# Indexed subsetting (explicit column specification)\nsetindex(dt, x)\ndt[.(letters[1:3]), on = 'x'][]\n\n        ID    month      x          y\n     &lt;int&gt;   &lt;char&gt; &lt;char&gt;      &lt;num&gt;\n  1:    95   August      a 0.27297737\n  2:   117  October      a 0.93005456\n  3:   126     July      a 0.12176989\n  4:   142     July      a 0.81675725\n  5:   143    April      a 0.41710169\n ---                                 \n104:   845 November      c 0.56259203\n105:   879  October      c 0.08006179\n106:   915    March      c 0.62046377\n107:   971     July      c 0.18960553\n108:   986    March      c 0.70557478\n\n(names(attributes(dt)))\n\n[1] \"names\"             \"row.names\"         \"class\"            \n[4] \".internal.selfref\" \"index\"            \n\n(indices(dt))\n\n[1] \"x\"\n\n\nUse on argument\n\nsetindex(dt, NULL)\n(indices(dt))\n\nNULL\n\ndt[.(c('a', 'b'), month.name[c(1, 12)]), on = c('x', 'month'), \n   nomatch = NULL][]\n\n      ID    month      x         y\n   &lt;int&gt;   &lt;char&gt; &lt;char&gt;     &lt;num&gt;\n1:   479  January      a 0.7195198\n2:   517  January      a 0.2408748\n3:   840  January      a 0.9691646\n4:   262 December      b 0.6207268\n5:   361 December      b 0.9446811\n6:   537 December      b 0.7125287\n\n# or for clarity/readability\ndt[.(x = c('a', 'b'), month = month.name[c(1, 12)]), on = c('x', 'month'), \n   nomatch = NULL][]\n\n      ID    month      x         y\n   &lt;int&gt;   &lt;char&gt; &lt;char&gt;     &lt;num&gt;\n1:   479  January      a 0.7195198\n2:   517  January      a 0.2408748\n3:   840  January      a 0.9691646\n4:   262 December      b 0.6207268\n5:   361 December      b 0.9446811\n6:   537 December      b 0.7125287\n\n# comparing \ndt[x %in% c('a', 'b') & month %in% month.name[c(1, 12)]][]\n\n       ID    month      x          y\n    &lt;int&gt;   &lt;char&gt; &lt;char&gt;      &lt;num&gt;\n 1:   225  January      b 0.46582100\n 2:   262 December      b 0.62072676\n 3:   341  January      b 0.39612519\n 4:   361 December      b 0.94468107\n 5:   384 December      a 0.04565357\n 6:   387  January      b 0.19586916\n 7:   393 December      a 0.08012189\n 8:   479  January      a 0.71951983\n 9:   517  January      a 0.24087479\n10:   537 December      b 0.71252866\n11:   597 December      a 0.22832069\n12:   745 December      a 0.77450213\n13:   840  January      a 0.96916462\n\n\n\n# Compute or do in j\ndt[.(x = c('a', 'b'), month = month.name[c(1, 12)]), \n   mean(y),\n   on = c('x', 'month'),]\n\n[1] 0.7012493\n\n\n\n# sub-assign by reference using := in j\ndt[.(month = \"December\"), month := \"Dec\", on = 'month']\ndt[, (nbr_obs = .N), by = month][]\n\n        month    V1\n       &lt;char&gt; &lt;int&gt;\n 1:     March    86\n 2:   October    97\n 3:  February    76\n 4:      June    78\n 5:  November    75\n 6:       May    73\n 7:     April    77\n 8: September    92\n 9:       Dec    77\n10:    August    92\n11:      July   103\n12:   January    74\n\n\n\n# change back from 'Dec' to \"December\"\ndt[.(month = \"Dec\"), month := \"December\", on = 'month']\n# Aggregation using by\ndt[.(x = 'a'), .(mean_of_y = mean(y)), keyby = month, on = 'x'][\n  order(match(month, month.name))][]\n\n        month mean_of_y\n       &lt;char&gt;     &lt;num&gt;\n 1:   January 0.6431864\n 2:  February 0.7341298\n 3:     March 0.7738705\n 4:     April 0.2489124\n 5:       May 0.7070132\n 6:      June 0.5367305\n 7:      July 0.2286370\n 8:    August 0.6830317\n 9: September 0.6046991\n10:   October 0.3822849\n11:  December 0.2821496\n\n\n\n# The mult argument\ndt[.(x = c('a', 'b', 'c')), on = 'x', mult = 'first'][]\n\n      ID     month      x          y\n   &lt;int&gt;    &lt;char&gt; &lt;char&gt;      &lt;num&gt;\n1:    95    August      a 0.27297737\n2:    18 September      b 0.48466174\n3:     9      June      c 0.03109084\n\ndt[.(x = c('a', 'b', 'c')), on = 'x', mult = 'last'][]\n\n      ID   month      x         y\n   &lt;int&gt;  &lt;char&gt; &lt;char&gt;     &lt;num&gt;\n1:   933    July      a 0.0675399\n2:   972 October      b 0.4957216\n3:   986   March      c 0.7055748\n\n\n\n# The nomatch argument\ndt[.(x = 'a', month = c('Dec')), on = c(\"x\", \"month\")][]\n\n      ID  month      x     y\n   &lt;int&gt; &lt;char&gt; &lt;char&gt; &lt;num&gt;\n1:    NA    Dec      a    NA\n\ndt[.(x = 'a', month = c('Dec')), on = c(\"x\", \"month\"), nomatch = NULL][]\n\nEmpty data.table (0 rows and 4 cols): ID,month,x,y",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Secondary indices and auto indexing</span>"
+    ]
+  },
+  {
+    "objectID": "secondary_indices.html#how",
+    "href": "secondary_indices.html#how",
+    "title": "4  Secondary indices and auto indexing",
+    "section": "4.2 How",
+    "text": "4.2 How\n\nsetindex() and setindexv() allows adding a secondary index to the data.table.\nThe function indices() returns all current secondary indices in the data.table. If none exists, NULL is returned.\nsetindex(dt, NULL) would remove all secondary indices\non argument\n\nenables subsetting by computing secondary indices on the fly. This eliminates having to do setindex() every time.\nallows easy reuse of existing indices by just checking the attributes.\nallows for a cleaner syntax by having the columns on which the subset is performed as part of the syntax. This makes the code easier to follow when looking at it at a later point.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Secondary indices and auto indexing</span>"
+    ]
+  },
+  {
+    "objectID": "joins.html",
+    "href": "joins.html",
+    "title": "5  Joins in data.table",
+    "section": "",
+    "text": "https://cran.r-project.org/web/packages/data.table/vignettes/datatable-joins.html",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Joins in data.table</span>"
+    ]
   }
 ]

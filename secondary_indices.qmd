@@ -13,3 +13,92 @@ Secondary indices are similar to keys in data.table, except for two major differ
 >
 - There can be more than one secondary index for a data.table (as we will see below).
 >
+
+## How
+
+- `setindex()` and `setindexv()` allows adding a secondary index to the data.table.
+
+- The function `indices()` returns all current secondary indices in the data.table. If none exists, `NULL` is returned.
+
+- `setindex(dt, NULL)` would remove all secondary indices
+
+- **on argument**
+    - enables subsetting by computing secondary indices on the fly. This eliminates having to do `setindex()` every time.
+    - allows easy reuse of existing indices by just checking the attributes.
+    - allows for a cleaner syntax by having the columns on which the subset is performed as part of the syntax. This makes the code easier to follow when looking at it at a later point.
+
+## Examples
+
+```{r, warning=FALSE, message=FALSE}
+library(data.table)
+
+set.seed(123)
+dt <- data.table(ID = 1:1000,
+                 month = sample(month.name, 1000, replace = TRUE),
+                 x = sample(letters, 1000, replace = TRUE),
+                 y = runif(1000))
+
+# Indexed subsetting (explicit column specification)
+setindex(dt, x)
+dt[.(letters[1:3]), on = 'x'][]
+
+(names(attributes(dt)))
+
+(indices(dt))
+
+```
+
+**Use `on` argument**
+
+```{r}
+setindex(dt, NULL)
+(indices(dt))
+
+dt[.(c('a', 'b'), month.name[c(1, 12)]), on = c('x', 'month'), 
+   nomatch = NULL][]
+# or for clarity/readability
+dt[.(x = c('a', 'b'), month = month.name[c(1, 12)]), on = c('x', 'month'), 
+   nomatch = NULL][]
+
+# comparing 
+dt[x %in% c('a', 'b') & month %in% month.name[c(1, 12)]][]
+
+```
+
+```{r}
+# Compute or do in j
+dt[.(x = c('a', 'b'), month = month.name[c(1, 12)]), 
+   mean(y),
+   on = c('x', 'month'),]
+```
+
+```{r}
+# sub-assign by reference using := in j
+dt[.(month = "December"), month := "Dec", on = 'month']
+dt[, (nbr_obs = .N), by = month][]
+```
+
+
+```{r}
+# change back from 'Dec' to "December"
+dt[.(month = "Dec"), month := "December", on = 'month']
+# Aggregation using by
+dt[.(x = 'a'), .(mean_of_y = mean(y)), keyby = month, on = 'x'][
+  order(match(month, month.name))][]
+```
+
+```{r}
+# The mult argument
+dt[.(x = c('a', 'b', 'c')), on = 'x', mult = 'first'][]
+dt[.(x = c('a', 'b', 'c')), on = 'x', mult = 'last'][]
+
+```
+
+```{r}
+# The nomatch argument
+dt[.(x = 'a', month = c('Dec')), on = c("x", "month")][]
+
+dt[.(x = 'a', month = c('Dec')), on = c("x", "month"), nomatch = NULL][]
+
+```
+
