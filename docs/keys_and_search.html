@@ -187,7 +187,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#keys" id="toc-keys" class="nav-link active" data-scroll-target="#keys"><span class="header-section-number">3.1</span> Keys</a></li>
-  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">3.2</span> Examples</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples"><span class="header-section-number">3.2</span> Examples</a>
+  <ul class="collapse">
+  <li><a href="#subsetting" id="toc-subsetting" class="nav-link" data-scroll-target="#subsetting"><span class="header-section-number">3.2.1</span> Subsetting</a></li>
+  <li><a href="#using-keyby" id="toc-using-keyby" class="nav-link" data-scroll-target="#using-keyby"><span class="header-section-number">3.2.2</span> Using <code>keyby</code></a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -238,6 +242,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="examples" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="examples"><span class="header-section-number">3.2</span> Examples</h2>
+<section id="subsetting" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="subsetting"><span class="header-section-number">3.2.1</span> Subsetting</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -254,7 +260,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(t1 <span class="ot">&lt;-</span> <span class="fu">system.time</span>(ans1 <span class="ot">&lt;-</span> dt[x <span class="sc">==</span> <span class="dv">99</span> <span class="sc">&amp;</span> y <span class="sc">==</span> <span class="st">'a'</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed 
-  0.044   0.003   0.032 </code></pre>
+  0.048   0.010   0.039 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">head</span>(ans1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -304,8 +310,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    &lt;int&gt; &lt;char&gt;    &lt;num&gt;
 1:    99      a 1.523553</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># try `nomatch`</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>(dt[.(<span class="dv">101</span>, <span class="st">'a'</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################################################</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># NB: Possible values of `mult`: `all` (default), `first` and `last` </span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################################################</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># try `nomatch`</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>(dt[.(<span class="dv">101</span>, <span class="st">'a'</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Key: &lt;x, y&gt;
        x      y     z
@@ -321,11 +331,42 @@ Empty data.table (0 rows and 3 cols): x,y,z</code></pre>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove the key</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setkey</span>(dt, <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="using-keyby" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="using-keyby"><span class="header-section-number">3.2.2</span> Using <code>keyby</code></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">ID =</span> <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>),</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">month =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">100</span>, <span class="at">sd =</span> <span class="dv">5</span>))</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>(summ_dt <span class="ot">&lt;-</span> dt[, .(<span class="at">max_x =</span> <span class="fu">max</span>(x)), <span class="at">keyby =</span> month][])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Key: &lt;month&gt;
+    month    max_x
+    &lt;int&gt;    &lt;num&gt;
+ 1:     1 100.4257
+ 2:     2 112.3873
+ 3:     3 113.9090
+ 4:     4 107.6312
+ 5:     5 107.8917
+ 6:     6 103.7178
+ 7:     7 111.7866
+ 8:     8 108.3032
+ 9:     9 105.8227
+10:    10 103.9408
+11:    11 107.6976
+12:    12 103.8201</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">key</span>(summ_dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "month"</code></pre>
+</div>
+</div>
 <blockquote class="blockquote">
 <p>Key based subsets are incredibly fast and are particularly useful when the task involves <strong>repeated subsetting</strong>. But it may not be always desirable to set key and physically reorder the data.table.</p>
 </blockquote>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
