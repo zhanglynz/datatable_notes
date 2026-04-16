@@ -1,3 +1,15 @@
 # Secondary indices and auto indexing
 
 https://cran.r-project.org/web/packages/data.table/vignettes/datatable-secondary-indices-and-auto-indexing.html
+
+## What 
+
+>
+Secondary indices are similar to keys in data.table, except for two major differences:
+
+>
+- It doesn't physically reorder the entire data.table in RAM. Instead, it only computes the order for the set of columns provided and stores that order vector in an additional attribute called index.
+
+>
+- There can be more than one secondary index for a data.table (as we will see below).
+>

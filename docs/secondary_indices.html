@@ -147,8 +147,14 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#what" id="toc-what" class="nav-link active" data-scroll-target="#what"><span class="header-section-number">4.1</span> What</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -173,8 +179,24 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>https://cran.r-project.org/web/packages/data.table/vignettes/datatable-secondary-indices-and-auto-indexing.html</p>
+<section id="what" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="what"><span class="header-section-number">4.1</span> What</h2>
+<blockquote class="blockquote">
+<p>Secondary indices are similar to keys in data.table, except for two major differences:</p>
+</blockquote>
+<blockquote class="blockquote">
+<ul>
+<li>It doesn’t physically reorder the entire data.table in RAM. Instead, it only computes the order for the set of columns provided and stores that order vector in an additional attribute called index.</li>
+</ul>
+</blockquote>
+<blockquote class="blockquote">
+<ul>
+<li>There can be more than one secondary index for a data.table (as we will see below).</li>
+</ul>
+</blockquote>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
