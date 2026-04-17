@@ -1,0 +1,14 @@
+Fast Read and Fast Write
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-fread-and-fwrite.html
+
+Importing data.table
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-importing.html
+
+Programming on data.table
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-programming.html
+
+Using .SD for Data Analysis
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-sd-usage.html
+
+Efficient reshaping using data.tables
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-reshape.html

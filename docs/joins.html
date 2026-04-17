@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -153,8 +187,23 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#inner-join" id="toc-inner-join" class="nav-link active" data-scroll-target="#inner-join"><span class="header-section-number">5.1</span> Inner join</a>
+  <ul class="collapse">
+  <li><a href="#use-merge" id="toc-use-merge" class="nav-link" data-scroll-target="#use-merge"><span class="header-section-number">5.1.1</span> Use <code>merge()</code></a></li>
+  </ul></li>
+  <li><a href="#right-join" id="toc-right-join" class="nav-link" data-scroll-target="#right-join"><span class="header-section-number">5.2</span> Right join</a>
+  <ul class="collapse">
+  <li><a href="#use-merge-1" id="toc-use-merge-1" class="nav-link" data-scroll-target="#use-merge-1"><span class="header-section-number">5.2.1</span> Use <code>merge()</code></a></li>
+  </ul></li>
+  <li><a href="#anti-join" id="toc-anti-join" class="nav-link" data-scroll-target="#anti-join"><span class="header-section-number">5.3</span> Anti-join</a></li>
+  <li><a href="#a-table" id="toc-a-table" class="nav-link" data-scroll-target="#a-table"><span class="header-section-number">5.4</span> A table</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -179,8 +228,298 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>https://cran.r-project.org/web/packages/data.table/vignettes/datatable-joins.html</p>
+<section id="inner-join" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="inner-join"><span class="header-section-number">5.1</span> Inner join</h2>
+<blockquote class="blockquote">
+<p>Use this method if you need to combine columns from 2 tables based on one or more references but keeping only rows matched in both tables.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>dt_1 <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">ID_1 =</span> <span class="fu">paste0</span>(<span class="st">'A'</span>, <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">week =</span> <span class="fu">paste0</span>(<span class="st">'wk_'</span>, <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">x =</span> <span class="fu">rnorm</span>(<span class="dv">20</span>),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> <span class="fu">sample</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], <span class="dv">20</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">z =</span> <span class="fu">rnorm</span>(<span class="dv">20</span>))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>dt_2 <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">ID_2 =</span> <span class="fu">paste0</span>(<span class="st">'A'</span>, <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, <span class="dv">5</span><span class="sc">:</span><span class="dv">25</span>)),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">wave =</span> <span class="fu">paste0</span>(<span class="st">'wave_'</span>, <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">21</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">u =</span> <span class="fu">runif</span>(<span class="dv">21</span>))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>dt_1[dt_2, on <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'ID_1'</span> <span class="ot">=</span> <span class="st">'ID_2'</span>), nomatch <span class="ot">=</span> <span class="cn">NULL</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      ID_1   week            x      y            z   wave          u
+    &lt;char&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;      &lt;num&gt;
+ 1:    A05   wk_1  0.375635612      c -1.157808548 wave_2 0.58427152
+ 2:    A06   wk_1  0.310262167      a  0.656588464 wave_2 0.70883941
+ 3:    A07   wk_2  0.005006950      b  2.548991071 wave_1 0.42697577
+ 4:    A08   wk_2 -0.037630263      e -0.034760390 wave_3 0.34357270
+ 5:    A09   wk_3  0.723976061      a -0.669633580 wave_3 0.75911999
+ 6:    A10   wk_2 -0.496738863      c -0.007604756 wave_1 0.42403021
+ 7:    A11   wk_2  0.011395161      c  1.777084448 wave_2 0.56088725
+ 8:    A12   wk_2  0.009859946      b -1.138607737 wave_2 0.11613577
+ 9:    A13   wk_3  0.678271423      e  1.367827179 wave_4 0.30302180
+10:    A14   wk_2  1.029563029      b  1.329564791 wave_1 0.47880269
+11:    A15   wk_2 -1.729528504      d  0.336472797 wave_1 0.34483055
+12:    A16   wk_2 -2.204348095      d  0.006892838 wave_1 0.60071414
+13:    A17   wk_2  0.543172896      a -0.455468738 wave_1 0.07608332
+14:    A18   wk_1  0.021427194      e -0.366523933 wave_4 0.95599261
+15:    A19   wk_3  0.162565793      c  0.648286568 wave_2 0.02220682
+16:    A20   wk_3  1.241754254      e  2.070270861 wave_2 0.84171063</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OR</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dt_2[dt_1, on <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'ID_2'</span> <span class="ot">=</span> <span class="st">'ID_1'</span>), nomatch <span class="ot">=</span> <span class="cn">NULL</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      ID_2   wave          u   week            x      y            z
+    &lt;char&gt; &lt;char&gt;      &lt;num&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;        &lt;num&gt;
+ 1:    A05 wave_2 0.58427152   wk_1  0.375635612      c -1.157808548
+ 2:    A06 wave_2 0.70883941   wk_1  0.310262167      a  0.656588464
+ 3:    A07 wave_1 0.42697577   wk_2  0.005006950      b  2.548991071
+ 4:    A08 wave_3 0.34357270   wk_2 -0.037630263      e -0.034760390
+ 5:    A09 wave_3 0.75911999   wk_3  0.723976061      a -0.669633580
+ 6:    A10 wave_1 0.42403021   wk_2 -0.496738863      c -0.007604756
+ 7:    A11 wave_2 0.56088725   wk_2  0.011395161      c  1.777084448
+ 8:    A12 wave_2 0.11613577   wk_2  0.009859946      b -1.138607737
+ 9:    A13 wave_4 0.30302180   wk_3  0.678271423      e  1.367827179
+10:    A14 wave_1 0.47880269   wk_2  1.029563029      b  1.329564791
+11:    A15 wave_1 0.34483055   wk_2 -1.729528504      d  0.336472797
+12:    A16 wave_1 0.60071414   wk_2 -2.204348095      d  0.006892838
+13:    A17 wave_1 0.07608332   wk_2  0.543172896      a -0.455468738
+14:    A18 wave_4 0.95599261   wk_1  0.021427194      e -0.366523933
+15:    A19 wave_2 0.02220682   wk_3  0.162565793      c  0.648286568
+16:    A20 wave_2 0.84171063   wk_3  1.241754254      e  2.070270861</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the following also works</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dt_1[dt_2, on <span class="ot">=</span> .(<span class="at">ID_1 =</span> ID_2), nomatch <span class="ot">=</span> <span class="cn">NULL</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      ID_1   week            x      y            z   wave          u
+    &lt;char&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;      &lt;num&gt;
+ 1:    A05   wk_1  0.375635612      c -1.157808548 wave_2 0.58427152
+ 2:    A06   wk_1  0.310262167      a  0.656588464 wave_2 0.70883941
+ 3:    A07   wk_2  0.005006950      b  2.548991071 wave_1 0.42697577
+ 4:    A08   wk_2 -0.037630263      e -0.034760390 wave_3 0.34357270
+ 5:    A09   wk_3  0.723976061      a -0.669633580 wave_3 0.75911999
+ 6:    A10   wk_2 -0.496738863      c -0.007604756 wave_1 0.42403021
+ 7:    A11   wk_2  0.011395161      c  1.777084448 wave_2 0.56088725
+ 8:    A12   wk_2  0.009859946      b -1.138607737 wave_2 0.11613577
+ 9:    A13   wk_3  0.678271423      e  1.367827179 wave_4 0.30302180
+10:    A14   wk_2  1.029563029      b  1.329564791 wave_1 0.47880269
+11:    A15   wk_2 -1.729528504      d  0.336472797 wave_1 0.34483055
+12:    A16   wk_2 -2.204348095      d  0.006892838 wave_1 0.60071414
+13:    A17   wk_2  0.543172896      a -0.455468738 wave_1 0.07608332
+14:    A18   wk_1  0.021427194      e -0.366523933 wave_4 0.95599261
+15:    A19   wk_3  0.162565793      c  0.648286568 wave_2 0.02220682
+16:    A20   wk_3  1.241754254      e  2.070270861 wave_2 0.84171063</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OR</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dt_2[dt_1, on <span class="ot">=</span> .(<span class="at">ID_2 =</span> ID_1), nomatch <span class="ot">=</span> <span class="cn">NULL</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      ID_2   wave          u   week            x      y            z
+    &lt;char&gt; &lt;char&gt;      &lt;num&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;        &lt;num&gt;
+ 1:    A05 wave_2 0.58427152   wk_1  0.375635612      c -1.157808548
+ 2:    A06 wave_2 0.70883941   wk_1  0.310262167      a  0.656588464
+ 3:    A07 wave_1 0.42697577   wk_2  0.005006950      b  2.548991071
+ 4:    A08 wave_3 0.34357270   wk_2 -0.037630263      e -0.034760390
+ 5:    A09 wave_3 0.75911999   wk_3  0.723976061      a -0.669633580
+ 6:    A10 wave_1 0.42403021   wk_2 -0.496738863      c -0.007604756
+ 7:    A11 wave_2 0.56088725   wk_2  0.011395161      c  1.777084448
+ 8:    A12 wave_2 0.11613577   wk_2  0.009859946      b -1.138607737
+ 9:    A13 wave_4 0.30302180   wk_3  0.678271423      e  1.367827179
+10:    A14 wave_1 0.47880269   wk_2  1.029563029      b  1.329564791
+11:    A15 wave_1 0.34483055   wk_2 -1.729528504      d  0.336472797
+12:    A16 wave_1 0.60071414   wk_2 -2.204348095      d  0.006892838
+13:    A17 wave_1 0.07608332   wk_2  0.543172896      a -0.455468738
+14:    A18 wave_4 0.95599261   wk_1  0.021427194      e -0.366523933
+15:    A19 wave_2 0.02220682   wk_3  0.162565793      c  0.648286568
+16:    A20 wave_2 0.84171063   wk_3  1.241754254      e  2.070270861</code></pre>
+</div>
+</div>
+<section id="use-merge" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="use-merge"><span class="header-section-number">5.1.1</span> Use <code>merge()</code></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">merge</span>(dt_1, dt_2, <span class="at">by.x =</span> <span class="st">'ID_1'</span>, <span class="at">by.y =</span> <span class="st">'ID_2'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Key: &lt;ID_1&gt;
+      ID_1   week            x      y            z   wave          u
+    &lt;char&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;      &lt;num&gt;
+ 1:    A05   wk_1  0.375635612      c -1.157808548 wave_2 0.58427152
+ 2:    A06   wk_1  0.310262167      a  0.656588464 wave_2 0.70883941
+ 3:    A07   wk_2  0.005006950      b  2.548991071 wave_1 0.42697577
+ 4:    A08   wk_2 -0.037630263      e -0.034760390 wave_3 0.34357270
+ 5:    A09   wk_3  0.723976061      a -0.669633580 wave_3 0.75911999
+ 6:    A10   wk_2 -0.496738863      c -0.007604756 wave_1 0.42403021
+ 7:    A11   wk_2  0.011395161      c  1.777084448 wave_2 0.56088725
+ 8:    A12   wk_2  0.009859946      b -1.138607737 wave_2 0.11613577
+ 9:    A13   wk_3  0.678271423      e  1.367827179 wave_4 0.30302180
+10:    A14   wk_2  1.029563029      b  1.329564791 wave_1 0.47880269
+11:    A15   wk_2 -1.729528504      d  0.336472797 wave_1 0.34483055
+12:    A16   wk_2 -2.204348095      d  0.006892838 wave_1 0.60071414
+13:    A17   wk_2  0.543172896      a -0.455468738 wave_1 0.07608332
+14:    A18   wk_1  0.021427194      e -0.366523933 wave_4 0.95599261
+15:    A19   wk_3  0.162565793      c  0.648286568 wave_2 0.02220682
+16:    A20   wk_3  1.241754254      e  2.070270861 wave_2 0.84171063</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="right-join" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="right-join"><span class="header-section-number">5.2</span> Right join</h2>
+<blockquote class="blockquote">
+<p>Use this method if you need to combine columns from 2 tables based on one or more references but keeping all rows present in the table located on the right (in the the square brackets).</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(re_1 <span class="ot">&lt;-</span> dt_1[dt_2, <span class="at">on =</span> .(<span class="at">ID_1 =</span> ID_2)][])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      ID_1   week            x      y            z   wave          u
+    &lt;char&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;      &lt;num&gt;
+ 1:    A05   wk_1  0.375635612      c -1.157808548 wave_2 0.58427152
+ 2:    A06   wk_1  0.310262167      a  0.656588464 wave_2 0.70883941
+ 3:    A07   wk_2  0.005006950      b  2.548991071 wave_1 0.42697577
+ 4:    A08   wk_2 -0.037630263      e -0.034760390 wave_3 0.34357270
+ 5:    A09   wk_3  0.723976061      a -0.669633580 wave_3 0.75911999
+ 6:    A10   wk_2 -0.496738863      c -0.007604756 wave_1 0.42403021
+ 7:    A11   wk_2  0.011395161      c  1.777084448 wave_2 0.56088725
+ 8:    A12   wk_2  0.009859946      b -1.138607737 wave_2 0.11613577
+ 9:    A13   wk_3  0.678271423      e  1.367827179 wave_4 0.30302180
+10:    A14   wk_2  1.029563029      b  1.329564791 wave_1 0.47880269
+11:    A15   wk_2 -1.729528504      d  0.336472797 wave_1 0.34483055
+12:    A16   wk_2 -2.204348095      d  0.006892838 wave_1 0.60071414
+13:    A17   wk_2  0.543172896      a -0.455468738 wave_1 0.07608332
+14:    A18   wk_1  0.021427194      e -0.366523933 wave_4 0.95599261
+15:    A19   wk_3  0.162565793      c  0.648286568 wave_2 0.02220682
+16:    A20   wk_3  1.241754254      e  2.070270861 wave_2 0.84171063
+17:    A21   &lt;NA&gt;           NA   &lt;NA&gt;           NA wave_4 0.63244245
+18:    A22   &lt;NA&gt;           NA   &lt;NA&gt;           NA wave_2 0.31009417
+19:    A23   &lt;NA&gt;           NA   &lt;NA&gt;           NA wave_3 0.74256937
+20:    A24   &lt;NA&gt;           NA   &lt;NA&gt;           NA wave_2 0.63891131
+21:    A25   &lt;NA&gt;           NA   &lt;NA&gt;           NA wave_2 0.99251599
+      ID_1   week            x      y            z   wave          u</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setnames</span>(re_1, <span class="at">old =</span> <span class="st">'ID_1'</span>, <span class="at">new =</span> <span class="st">'ID_2'</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="do">## compare </span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>dt_2[dt_1, on <span class="ot">=</span> .(<span class="at">ID_2 =</span> ID_1)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      ID_2   wave          u   week            x      y            z
+    &lt;char&gt; &lt;char&gt;      &lt;num&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;        &lt;num&gt;
+ 1:    A01   &lt;NA&gt;         NA   wk_2  0.018316625      c  0.563055819
+ 2:    A02   &lt;NA&gt;         NA   wk_2  0.705243464      b  1.647817473
+ 3:    A03   &lt;NA&gt;         NA   wk_1 -0.647019011      c -0.773353424
+ 4:    A04   &lt;NA&gt;         NA   wk_3  0.868180873      a  1.605909629
+ 5:    A05 wave_2 0.58427152   wk_1  0.375635612      c -1.157808548
+ 6:    A06 wave_2 0.70883941   wk_1  0.310262167      a  0.656588464
+ 7:    A07 wave_1 0.42697577   wk_2  0.005006950      b  2.548991071
+ 8:    A08 wave_3 0.34357270   wk_2 -0.037630263      e -0.034760390
+ 9:    A09 wave_3 0.75911999   wk_3  0.723976061      a -0.669633580
+10:    A10 wave_1 0.42403021   wk_2 -0.496738863      c -0.007604756
+11:    A11 wave_2 0.56088725   wk_2  0.011395161      c  1.777084448
+12:    A12 wave_2 0.11613577   wk_2  0.009859946      b -1.138607737
+13:    A13 wave_4 0.30302180   wk_3  0.678271423      e  1.367827179
+14:    A14 wave_1 0.47880269   wk_2  1.029563029      b  1.329564791
+15:    A15 wave_1 0.34483055   wk_2 -1.729528504      d  0.336472797
+16:    A16 wave_1 0.60071414   wk_2 -2.204348095      d  0.006892838
+17:    A17 wave_1 0.07608332   wk_2  0.543172896      a -0.455468738
+18:    A18 wave_4 0.95599261   wk_1  0.021427194      e -0.366523933
+19:    A19 wave_2 0.02220682   wk_3  0.162565793      c  0.648286568
+20:    A20 wave_2 0.84171063   wk_3  1.241754254      e  2.070270861
+      ID_2   wave          u   week            x      y            z</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the following also works</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>(re_2 <span class="ot">&lt;-</span> dt_1[dt_2, <span class="at">on =</span> <span class="fu">c</span>(<span class="st">'ID_1'</span> <span class="ot">=</span> <span class="st">'ID_2'</span>)][])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      ID_1   week            x      y            z   wave          u
+    &lt;char&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;      &lt;num&gt;
+ 1:    A05   wk_1  0.375635612      c -1.157808548 wave_2 0.58427152
+ 2:    A06   wk_1  0.310262167      a  0.656588464 wave_2 0.70883941
+ 3:    A07   wk_2  0.005006950      b  2.548991071 wave_1 0.42697577
+ 4:    A08   wk_2 -0.037630263      e -0.034760390 wave_3 0.34357270
+ 5:    A09   wk_3  0.723976061      a -0.669633580 wave_3 0.75911999
+ 6:    A10   wk_2 -0.496738863      c -0.007604756 wave_1 0.42403021
+ 7:    A11   wk_2  0.011395161      c  1.777084448 wave_2 0.56088725
+ 8:    A12   wk_2  0.009859946      b -1.138607737 wave_2 0.11613577
+ 9:    A13   wk_3  0.678271423      e  1.367827179 wave_4 0.30302180
+10:    A14   wk_2  1.029563029      b  1.329564791 wave_1 0.47880269
+11:    A15   wk_2 -1.729528504      d  0.336472797 wave_1 0.34483055
+12:    A16   wk_2 -2.204348095      d  0.006892838 wave_1 0.60071414
+13:    A17   wk_2  0.543172896      a -0.455468738 wave_1 0.07608332
+14:    A18   wk_1  0.021427194      e -0.366523933 wave_4 0.95599261
+15:    A19   wk_3  0.162565793      c  0.648286568 wave_2 0.02220682
+16:    A20   wk_3  1.241754254      e  2.070270861 wave_2 0.84171063
+17:    A21   &lt;NA&gt;           NA   &lt;NA&gt;           NA wave_4 0.63244245
+18:    A22   &lt;NA&gt;           NA   &lt;NA&gt;           NA wave_2 0.31009417
+19:    A23   &lt;NA&gt;           NA   &lt;NA&gt;           NA wave_3 0.74256937
+20:    A24   &lt;NA&gt;           NA   &lt;NA&gt;           NA wave_2 0.63891131
+21:    A25   &lt;NA&gt;           NA   &lt;NA&gt;           NA wave_2 0.99251599
+      ID_1   week            x      y            z   wave          u</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setnames</span>(re_2, <span class="at">old =</span> <span class="st">'ID_1'</span>, <span class="at">new =</span> <span class="st">'ID_2'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="use-merge-1" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="use-merge-1"><span class="header-section-number">5.2.1</span> Use <code>merge()</code></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">merge</span>(dt_2, dt_1, <span class="at">by.x =</span> <span class="st">'ID_2'</span>, <span class="at">by.y =</span> <span class="st">'ID_1'</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Key: &lt;ID_2&gt;
+      ID_2   wave          u   week            x      y            z
+    &lt;char&gt; &lt;char&gt;      &lt;num&gt; &lt;char&gt;        &lt;num&gt; &lt;char&gt;        &lt;num&gt;
+ 1:    A05 wave_2 0.58427152   wk_1  0.375635612      c -1.157808548
+ 2:    A06 wave_2 0.70883941   wk_1  0.310262167      a  0.656588464
+ 3:    A07 wave_1 0.42697577   wk_2  0.005006950      b  2.548991071
+ 4:    A08 wave_3 0.34357270   wk_2 -0.037630263      e -0.034760390
+ 5:    A09 wave_3 0.75911999   wk_3  0.723976061      a -0.669633580
+ 6:    A10 wave_1 0.42403021   wk_2 -0.496738863      c -0.007604756
+ 7:    A11 wave_2 0.56088725   wk_2  0.011395161      c  1.777084448
+ 8:    A12 wave_2 0.11613577   wk_2  0.009859946      b -1.138607737
+ 9:    A13 wave_4 0.30302180   wk_3  0.678271423      e  1.367827179
+10:    A14 wave_1 0.47880269   wk_2  1.029563029      b  1.329564791
+11:    A15 wave_1 0.34483055   wk_2 -1.729528504      d  0.336472797
+12:    A16 wave_1 0.60071414   wk_2 -2.204348095      d  0.006892838
+13:    A17 wave_1 0.07608332   wk_2  0.543172896      a -0.455468738
+14:    A18 wave_4 0.95599261   wk_1  0.021427194      e -0.366523933
+15:    A19 wave_2 0.02220682   wk_3  0.162565793      c  0.648286568
+16:    A20 wave_2 0.84171063   wk_3  1.241754254      e  2.070270861
+17:    A21 wave_4 0.63244245   &lt;NA&gt;           NA   &lt;NA&gt;           NA
+18:    A22 wave_2 0.31009417   &lt;NA&gt;           NA   &lt;NA&gt;           NA
+19:    A23 wave_3 0.74256937   &lt;NA&gt;           NA   &lt;NA&gt;           NA
+20:    A24 wave_2 0.63891131   &lt;NA&gt;           NA   &lt;NA&gt;           NA
+21:    A25 wave_2 0.99251599   &lt;NA&gt;           NA   &lt;NA&gt;           NA
+      ID_2   wave          u   week            x      y            z</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="anti-join" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="anti-join"><span class="header-section-number">5.3</span> Anti-join</h2>
+<blockquote class="blockquote">
+<p>This method keeps only the rows that don’t match with any row of a second table.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dt_1[<span class="sc">!</span>dt_2, on <span class="ot">=</span> .(<span class="at">ID_1 =</span> ID_2)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     ID_1   week           x      y          z
+   &lt;char&gt; &lt;char&gt;       &lt;num&gt; &lt;char&gt;      &lt;num&gt;
+1:    A01   wk_2  0.01831663      c  0.5630558
+2:    A02   wk_2  0.70524346      b  1.6478175
+3:    A03   wk_1 -0.64701901      c -0.7733534
+4:    A04   wk_3  0.86818087      a  1.6059096</code></pre>
+</div>
+</div>
+</section>
+<section id="a-table" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="a-table"><span class="header-section-number">5.4</span> A table</h2>
+<p>Source: https://cran.r-project.org/web/packages/dplyr/vignettes/base.html</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="table_for_joins.png" class="img-fluid figure-img"></p>
+<figcaption>table on joins</figcaption>
+</figure>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
