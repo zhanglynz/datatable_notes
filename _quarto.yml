@@ -13,6 +13,7 @@ book:
     - keys_and_search.qmd
     - secondary_indices.qmd
     - joins.qmd
+    - fast_read_write.qmd
     - examples.qmd
 
 format:

@@ -1,0 +1,39 @@
+# Fast Read and Fast Write
+
+## `fread()`
+
+**Reading from URLs**
+
+>
+`fread()` can read data directly from web URLs by passing the URL as a character string to its file argument.
+>
+
+```{r}
+#| eval: false
+
+dt <- fread("https://people.sc.fsu.edu/~jburkardt/data/csv/airtravel.csv")
+```
+
+**Automatic separator and skip detection**
+
+>
+fread automates delimiter and header detection, eliminating the need for manual specification in most cases. You simply provide the filename—fread intelligently detects the structure
+>
+
+**High-Quality Automatic Column Type Detection**
+
+>
+Many real-world datasets contain columns that are initially blank, zero-filled, or appear numeric but later contain characters. To handle such inconsistencies, `fread()` employs a robust column type detection strategy.
+>
+
+**Drop or Select Columns by Name or Position**
+
+>
+To save memory and improve performance, use fread()’s select or drop arguments to read only the columns you need.
+>
+
+## `fwrite()`
+
+>
+`fwrite()` is the fast file writer companion to `fread()`. It's designed for speed, sensible defaults, and ease of use, mirroring many of the conveniences found in fread.
+>

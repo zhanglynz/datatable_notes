@@ -298,5 +298,45 @@
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Joins in data.table</span>"
     ]
+  },
+  {
+    "objectID": "fast_read_write.html",
+    "href": "fast_read_write.html",
+    "title": "6  Fast Read and Fast Write",
+    "section": "",
+    "text": "6.1 fread()\nReading from URLs\ndt &lt;- fread(\"https://people.sc.fsu.edu/~jburkardt/data/csv/airtravel.csv\")\nAutomatic separator and skip detection\nHigh-Quality Automatic Column Type Detection\nDrop or Select Columns by Name or Position",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Fast Read and Fast Write</span>"
+    ]
+  },
+  {
+    "objectID": "fast_read_write.html#reading-from-urls",
+    "href": "fast_read_write.html#reading-from-urls",
+    "title": "6  Fast Read and Fast Write",
+    "section": "",
+    "text": "fread() can read data directly from web URLs by passing the URL as a character string to its file argument.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Fast Read and Fast Write</span>"
+    ]
+  },
+  {
+    "objectID": "fast_read_write.html#fread",
+    "href": "fast_read_write.html#fread",
+    "title": "6  Fast Read and Fast Write",
+    "section": "",
+    "text": "fread() can read data directly from web URLs by passing the URL as a character string to its file argument.\n\n\n\n\nfread automates delimiter and header detection, eliminating the need for manual specification in most cases. You simply provide the filename—fread intelligently detects the structure\n\n\n\nMany real-world datasets contain columns that are initially blank, zero-filled, or appear numeric but later contain characters. To handle such inconsistencies, fread() employs a robust column type detection strategy.\n\n\n\nTo save memory and improve performance, use fread()’s select or drop arguments to read only the columns you need.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Fast Read and Fast Write</span>"
+    ]
+  },
+  {
+    "objectID": "fast_read_write.html#fwrite",
+    "href": "fast_read_write.html#fwrite",
+    "title": "6  Fast Read and Fast Write",
+    "section": "6.2 fwrite()",
+    "text": "6.2 fwrite()\n\nfwrite() is the fast file writer companion to fread(). It’s designed for speed, sensible defaults, and ease of use, mirroring many of the conveniences found in fread.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Fast Read and Fast Write</span>"
+    ]
   }
 ]
