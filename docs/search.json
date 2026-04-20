@@ -142,11 +142,11 @@
   {
     "objectID": "examples.html",
     "href": "examples.html",
-    "title": "7  Some Examples",
+    "title": "8  Some Examples",
     "section": "",
-    "text": "7.1 Converting multiple columns to proportions\nlibrary(data.table)\n\ndt &lt;- data.table(\n  ID = 1:3,\n  var1 = c(2, 4, 1),\n  var2 = c(3, 1, 2),\n  var3 = c(5, 0, 3),\n  var4 = c(0, 2, 1),\n  var5 = c(0, 1, 3)\n)\n\ndt[, total := rowSums(.SD), .SDcols = var1:var5]\n\n# this works\n(new_dt &lt;- dt[, lapply(.SD, function(x) x / total),\n   .SDcols = var1:var5, by = c('ID', 'total')][, c(1, 3:7 ,2), with = FALSE])\n\n      ID  var1  var2  var3  var4  var5 total\n   &lt;int&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;\n1:     1   0.2 0.300   0.5  0.00 0.000    10\n2:     2   0.5 0.125   0.0  0.25 0.125     8\n3:     3   0.1 0.200   0.3  0.10 0.300    10\n\n# this works\nvars &lt;- paste0(\"var\", 1:5)\ndt[, (vars) := lapply(.SD, function(x) x / total),\n    .SDcols = var1:var5][]\n\n      ID  var1  var2  var3  var4  var5 total\n   &lt;int&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;\n1:     1   0.2 0.300   0.5  0.00 0.000    10\n2:     2   0.5 0.125   0.0  0.25 0.125     8\n3:     3   0.1 0.200   0.3  0.10 0.300    10\n\n# the following does not work\n# dt[, (var1:var5) := lapply(.SD, function(x) x / total),\n#    .SDcols = var1:var5]",
+    "text": "8.1 Converting multiple columns to proportions\nlibrary(data.table)\n\ndt &lt;- data.table(\n  ID = 1:3,\n  var1 = c(2, 4, 1),\n  var2 = c(3, 1, 2),\n  var3 = c(5, 0, 3),\n  var4 = c(0, 2, 1),\n  var5 = c(0, 1, 3)\n)\n\ndt[, total := rowSums(.SD), .SDcols = var1:var5]\n\n# this works\n(new_dt &lt;- dt[, lapply(.SD, function(x) x / total),\n   .SDcols = var1:var5, by = c('ID', 'total')][, c(1, 3:7 ,2), with = FALSE])\n\n      ID  var1  var2  var3  var4  var5 total\n   &lt;int&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;\n1:     1   0.2 0.300   0.5  0.00 0.000    10\n2:     2   0.5 0.125   0.0  0.25 0.125     8\n3:     3   0.1 0.200   0.3  0.10 0.300    10\n\n# this works\nvars &lt;- paste0(\"var\", 1:5)\ndt[, (vars) := lapply(.SD, function(x) x / total),\n    .SDcols = var1:var5][]\n\n      ID  var1  var2  var3  var4  var5 total\n   &lt;int&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;\n1:     1   0.2 0.300   0.5  0.00 0.000    10\n2:     2   0.5 0.125   0.0  0.25 0.125     8\n3:     3   0.1 0.200   0.3  0.10 0.300    10\n\n# the following does not work\n# dt[, (var1:var5) := lapply(.SD, function(x) x / total),\n#    .SDcols = var1:var5]",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Some Examples</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Some Examples</span>"
     ]
   },
   {
@@ -162,61 +162,61 @@
   {
     "objectID": "examples.html#find-number-of-unique-x-y-coordiates-in-each-group",
     "href": "examples.html#find-number-of-unique-x-y-coordiates-in-each-group",
-    "title": "7  Some Examples",
-    "section": "7.2 Find number of unique x-y coordiates in each group",
-    "text": "7.2 Find number of unique x-y coordiates in each group\n\nset.seed(1234)\ndt &lt;- data.table(mb = sample(letters[1:3], size = 100, replace = TRUE),\n                 x = sample(1:9, size = 100, replace = TRUE),\n                 y = sample(1:9, size = 100, replace = TRUE))\ndt[, x_y := paste0(x, '_', y)][, uniqueN(x_y), by = mb][order(mb)][]\n\n       mb    V1\n   &lt;char&gt; &lt;int&gt;\n1:      a    23\n2:      b    31\n3:      c    23\n\ndt[, new_x_y := paste0('(', x, ', ',  y, ')')][, uniqueN(new_x_y), by = mb][order(mb)][]\n\n       mb    V1\n   &lt;char&gt; &lt;int&gt;\n1:      a    23\n2:      b    31\n3:      c    23\n\ndt[, .(n = uniqueN(paste0(x, '_', y))), by = mb][order(mb)][]\n\n       mb     n\n   &lt;char&gt; &lt;int&gt;\n1:      a    23\n2:      b    31\n3:      c    23",
+    "title": "8  Some Examples",
+    "section": "8.2 Find number of unique x-y coordiates in each group",
+    "text": "8.2 Find number of unique x-y coordiates in each group\n\nset.seed(1234)\ndt &lt;- data.table(mb = sample(letters[1:3], size = 100, replace = TRUE),\n                 x = sample(1:9, size = 100, replace = TRUE),\n                 y = sample(1:9, size = 100, replace = TRUE))\ndt[, x_y := paste0(x, '_', y)][, uniqueN(x_y), by = mb][order(mb)][]\n\n       mb    V1\n   &lt;char&gt; &lt;int&gt;\n1:      a    23\n2:      b    31\n3:      c    23\n\ndt[, new_x_y := paste0('(', x, ', ',  y, ')')][, uniqueN(new_x_y), by = mb][order(mb)][]\n\n       mb    V1\n   &lt;char&gt; &lt;int&gt;\n1:      a    23\n2:      b    31\n3:      c    23\n\ndt[, .(n = uniqueN(paste0(x, '_', y))), by = mb][order(mb)][]\n\n       mb     n\n   &lt;char&gt; &lt;int&gt;\n1:      a    23\n2:      b    31\n3:      c    23",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Some Examples</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Some Examples</span>"
     ]
   },
   {
     "objectID": "examples.html#stratified-random-sampling",
     "href": "examples.html#stratified-random-sampling",
-    "title": "7  Some Examples",
-    "section": "7.4 Stratified random sampling",
-    "text": "7.4 Stratified random sampling\n\nlibrary(data.table)\n\nset.seed(123)\nf_dt &lt;- data.table(ID = sample(letters[1:3], 100, replace = TRUE))\n\nsample_sizes &lt;- c(a = 5, b = 10, c = 18)\nf_dt[, sample_indi := sampling::srswor(n = sample_sizes[[ID[1]]], N = .N), by = ID]\n\n# check\nf_dt[sample_indi == 1, .N, by = ID][order(ID)][]\n\n       ID     N\n   &lt;char&gt; &lt;int&gt;\n1:      a     5\n2:      b    10\n3:      c    18",
+    "title": "8  Some Examples",
+    "section": "8.4 Stratified random sampling",
+    "text": "8.4 Stratified random sampling\n\nlibrary(data.table)\n\nset.seed(123)\nf_dt &lt;- data.table(ID = sample(letters[1:3], 100, replace = TRUE))\n\nsample_sizes &lt;- c(a = 5, b = 10, c = 18)\nf_dt[, sample_indi := sampling::srswor(n = sample_sizes[[ID[1]]], N = .N), by = ID]\n\n# check\nf_dt[sample_indi == 1, .N, by = ID][order(ID)][]\n\n       ID     N\n   &lt;char&gt; &lt;int&gt;\n1:      a     5\n2:      b    10\n3:      c    18",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Some Examples</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Some Examples</span>"
     ]
   },
   {
     "objectID": "examples.html#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets",
     "href": "examples.html#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets",
-    "title": "7  Some Examples",
-    "section": "7.5 Two pairs of square brackets vs. one pair of square brackets",
-    "text": "7.5 Two pairs of square brackets vs. one pair of square brackets\nNotice the difference between dt_1 and dt_2\n\nlibrary(data.table)\n\nset.seed(123456)\n(dt &lt;- data.table(x = sample(letters[1:3], 10, replace = TRUE)))\n\n         x\n    &lt;char&gt;\n 1:      b\n 2:      b\n 3:      a\n 4:      b\n 5:      c\n 6:      a\n 7:      b\n 8:      b\n 9:      b\n10:      c\n\nprint(dt_1 &lt;- dt[x == 'a'][, y := 1])\n\n        x     y\n   &lt;char&gt; &lt;num&gt;\n1:      a     1\n2:      a     1\n\nprint(dt_2 &lt;- copy(dt)[x == 'a', y := 1])\n\nIndex: &lt;x&gt;\n         x     y\n    &lt;char&gt; &lt;num&gt;\n 1:      b    NA\n 2:      b    NA\n 3:      a     1\n 4:      b    NA\n 5:      c    NA\n 6:      a     1\n 7:      b    NA\n 8:      b    NA\n 9:      b    NA\n10:      c    NA\n\n\n\ndt &lt;- data.table(x = c(5, 3, 8, 1, 2))\n(new_dt &lt;- dt[order(x)][, p := (.I - 1) %% 2 + 1][])\n\n       x     p\n   &lt;num&gt; &lt;num&gt;\n1:     1     1\n2:     2     2\n3:     3     1\n4:     5     2\n5:     8     1\n\na_dt &lt;- copy(dt)\na_dt[order(x), p := (.I - 1) %% 2 + 1][]\n\n       x     p\n   &lt;num&gt; &lt;num&gt;\n1:     5     2\n2:     3     1\n3:     8     1\n4:     1     1\n5:     2     2",
+    "title": "8  Some Examples",
+    "section": "8.5 Two pairs of square brackets vs. one pair of square brackets",
+    "text": "8.5 Two pairs of square brackets vs. one pair of square brackets\nNotice the difference between dt_1 and dt_2\n\nlibrary(data.table)\n\nset.seed(123456)\n(dt &lt;- data.table(x = sample(letters[1:3], 10, replace = TRUE)))\n\n         x\n    &lt;char&gt;\n 1:      b\n 2:      b\n 3:      a\n 4:      b\n 5:      c\n 6:      a\n 7:      b\n 8:      b\n 9:      b\n10:      c\n\nprint(dt_1 &lt;- dt[x == 'a'][, y := 1])\n\n        x     y\n   &lt;char&gt; &lt;num&gt;\n1:      a     1\n2:      a     1\n\nprint(dt_2 &lt;- copy(dt)[x == 'a', y := 1])\n\nIndex: &lt;x&gt;\n         x     y\n    &lt;char&gt; &lt;num&gt;\n 1:      b    NA\n 2:      b    NA\n 3:      a     1\n 4:      b    NA\n 5:      c    NA\n 6:      a     1\n 7:      b    NA\n 8:      b    NA\n 9:      b    NA\n10:      c    NA\n\n\n\ndt &lt;- data.table(x = c(5, 3, 8, 1, 2))\n(new_dt &lt;- dt[order(x)][, p := (.I - 1) %% 2 + 1][])\n\n       x     p\n   &lt;num&gt; &lt;num&gt;\n1:     1     1\n2:     2     2\n3:     3     1\n4:     5     2\n5:     8     1\n\na_dt &lt;- copy(dt)\na_dt[order(x), p := (.I - 1) %% 2 + 1][]\n\n       x     p\n   &lt;num&gt; &lt;num&gt;\n1:     5     2\n2:     3     1\n3:     8     1\n4:     1     1\n5:     2     2",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Some Examples</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Some Examples</span>"
     ]
   },
   {
     "objectID": "examples.html#take-a-sample-of-rows",
     "href": "examples.html#take-a-sample-of-rows",
-    "title": "7  Some Examples",
-    "section": "7.3 Take a sample of rows",
-    "text": "7.3 Take a sample of rows\n\nlibrary(data.table)\n\nn &lt;- 3\ndt &lt;- data.table(x = 1:10, y = rnorm(10))\ndt[sample(.N, size = n)][]\n\n       x          y\n   &lt;int&gt;      &lt;num&gt;\n1:     3  0.7170935\n2:     6 -1.3789504\n3:     7  0.2427773",
+    "title": "8  Some Examples",
+    "section": "8.3 Take a sample of rows",
+    "text": "8.3 Take a sample of rows\n\nlibrary(data.table)\n\nn &lt;- 3\ndt &lt;- data.table(x = 1:10, y = rnorm(10))\ndt[sample(.N, size = n)][]\n\n       x          y\n   &lt;int&gt;      &lt;num&gt;\n1:     3  0.7170935\n2:     6 -1.3789504\n3:     7  0.2427773",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Some Examples</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Some Examples</span>"
     ]
   },
   {
     "objectID": "examples.html#multiple-column-operation",
     "href": "examples.html#multiple-column-operation",
-    "title": "7  Some Examples",
-    "section": "7.6 Multiple-column operation",
-    "text": "7.6 Multiple-column operation\n\nlibrary(data.table)\n\nfk_dt &lt;- data.table(id = letters[1:5],\n                    total = 100:104,\n                    x = 100,\n                    y = 101,\n                    z = 102)\n\nfk_dt_a &lt;- copy(fk_dt)\ncols_to_scale &lt;- setdiff(names(fk_dt), c(\"id\", \"total\"))\nfk_dt_a[, (cols_to_scale) := lapply(.SD, function(v) v / total),\n        .SDcols = cols_to_scale][]\n\n       id total         x         y         z\n   &lt;char&gt; &lt;int&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;\n1:      a   100 1.0000000 1.0100000 1.0200000\n2:      b   101 0.9900990 1.0000000 1.0099010\n3:      c   102 0.9803922 0.9901961 1.0000000\n4:      d   103 0.9708738 0.9805825 0.9902913\n5:      e   104 0.9615385 0.9711538 0.9807692",
+    "title": "8  Some Examples",
+    "section": "8.6 Multiple-column operation",
+    "text": "8.6 Multiple-column operation\n\nlibrary(data.table)\n\nfk_dt &lt;- data.table(id = letters[1:5],\n                    total = 100:104,\n                    x = 100,\n                    y = 101,\n                    z = 102)\n\nfk_dt_a &lt;- copy(fk_dt)\ncols_to_scale &lt;- setdiff(names(fk_dt), c(\"id\", \"total\"))\nfk_dt_a[, (cols_to_scale) := lapply(.SD, function(v) v / total),\n        .SDcols = cols_to_scale][]\n\n       id total         x         y         z\n   &lt;char&gt; &lt;int&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;\n1:      a   100 1.0000000 1.0100000 1.0200000\n2:      b   101 0.9900990 1.0000000 1.0099010\n3:      c   102 0.9803922 0.9901961 1.0000000\n4:      d   103 0.9708738 0.9805825 0.9902913\n5:      e   104 0.9615385 0.9711538 0.9807692",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Some Examples</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Some Examples</span>"
     ]
   },
   {
     "objectID": "examples.html#data.table-programming",
     "href": "examples.html#data.table-programming",
-    "title": "7  Some Examples",
-    "section": "7.7 data.table programming",
-    "text": "7.7 data.table programming\nNotice using get function and setNames(list(.N), output_var_name) in the following code.\n\nlibrary(data.table)\n\nmy_aggregate &lt;- function(a_dt, condi_var_nm = NULL, \n                         condi = c('1', '2'), output_var_name = NULL)\n{if(is.null(condi_var_nm)) {\n  return(a_dt[, .(total = .N), by = partition_code][order(partition_code)]) }\n  a_dt[get(condi_var_nm) %in% condi, setNames(list(.N), output_var_name), \n       by = partition_code][order(partition_code)]   \n}\n\nset.seed(123)\nfk_dt &lt;- data.table(id = 1:60,\n                    maori = sample(c('0', '1', '2'), 60, replace = TRUE),\n                    asian = sample(c('0', '1', '2'), 60, replace = TRUE),\n                    pacific = sample(c('0', '1', '2'), 60, replace = TRUE),\n                    rand_nbr = runif(60))\nfk_dt[order(rand_nbr), partition_code := (.I - 1) %% 3 + 1]\n\ntotal_dt &lt;- my_aggregate(fk_dt)\nmaori_dt &lt;- my_aggregate(fk_dt, condi_var_nm = \"maori\", output_var_name = \"maori\")\nasian &lt;- my_aggregate(fk_dt, condi_var_nm = \"asian\", \n                      condi = '1', output_var_name = \"asian\")\npacific &lt;- my_aggregate(fk_dt, condi_var_nm = \"pacific\", output_var_name = \"pacific\")\n\nj &lt;- \n  merge(total_dt, maori_dt, by = 'partition_code', all.x = TRUE) |&gt;\n  merge(asian, by = 'partition_code', all.x = TRUE) |&gt;\n  merge(pacific, by = 'partition_code', all.x = TRUE)\n\nj[]\n\nKey: &lt;partition_code&gt;\n   partition_code total maori asian pacific\n            &lt;num&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt;\n1:              1    20    12    14      14\n2:              2    20    16     7      15\n3:              3    20    10     6      15",
+    "title": "8  Some Examples",
+    "section": "8.7 data.table programming",
+    "text": "8.7 data.table programming\nNotice using get function and setNames(list(.N), output_var_name) in the following code.\n\nlibrary(data.table)\n\nmy_aggregate &lt;- function(a_dt, condi_var_nm = NULL, \n                         condi = c('1', '2'), output_var_name = NULL)\n{if(is.null(condi_var_nm)) {\n  return(a_dt[, .(total = .N), by = partition_code][order(partition_code)]) }\n  a_dt[get(condi_var_nm) %in% condi, setNames(list(.N), output_var_name), \n       by = partition_code][order(partition_code)]   \n}\n\nset.seed(123)\nfk_dt &lt;- data.table(id = 1:60,\n                    maori = sample(c('0', '1', '2'), 60, replace = TRUE),\n                    asian = sample(c('0', '1', '2'), 60, replace = TRUE),\n                    pacific = sample(c('0', '1', '2'), 60, replace = TRUE),\n                    rand_nbr = runif(60))\nfk_dt[order(rand_nbr), partition_code := (.I - 1) %% 3 + 1]\n\ntotal_dt &lt;- my_aggregate(fk_dt)\nmaori_dt &lt;- my_aggregate(fk_dt, condi_var_nm = \"maori\", output_var_name = \"maori\")\nasian &lt;- my_aggregate(fk_dt, condi_var_nm = \"asian\", \n                      condi = '1', output_var_name = \"asian\")\npacific &lt;- my_aggregate(fk_dt, condi_var_nm = \"pacific\", output_var_name = \"pacific\")\n\nj &lt;- \n  merge(total_dt, maori_dt, by = 'partition_code', all.x = TRUE) |&gt;\n  merge(asian, by = 'partition_code', all.x = TRUE) |&gt;\n  merge(pacific, by = 'partition_code', all.x = TRUE)\n\nj[]\n\nKey: &lt;partition_code&gt;\n   partition_code total maori asian pacific\n            &lt;num&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt;\n1:              1    20    12    14      14\n2:              2    20    16     7      15\n3:              3    20    10     6      15",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Some Examples</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Some Examples</span>"
     ]
   },
   {
@@ -337,6 +337,26 @@
     "text": "6.2 fwrite()\n\nfwrite() is the fast file writer companion to fread(). It’s designed for speed, sensible defaults, and ease of use, mirroring many of the conveniences found in fread.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Fast Read and Fast Write</span>"
+    ]
+  },
+  {
+    "objectID": "use_sd.html",
+    "href": "use_sd.html",
+    "title": "7  Using .SD for Data Analysis",
+    "section": "",
+    "text": "7.1 Column Subsetting: .SDcols\nBasic use\nlibrary(data.table)\n\ndt &lt;- data.table(ID = paste0('w', 1:5),\n                 x = rnorm(5),\n                 y = runif(5),\n                 z = rexp(5))\n(sub_dt &lt;- dt[, .SD, .SDcols = c('ID', 'x', 'z')])\n\n       ID           x        z\n   &lt;char&gt;       &lt;num&gt;    &lt;num&gt;\n1:     w1 -1.42110176 1.444350\n2:     w2  0.48213460 1.807731\n3:     w3  0.10711948 1.341875\n4:     w4 -0.34061382 1.624440\n5:     w5 -0.06580862 1.121430\n\nsub_dt_2 &lt;- dt[, .(ID, x, z)]\n(identical(sub_dt, sub_dt_2))\n\n[1] TRUE\nUse is.numeric or is.character\ndt[, names(.SD) := lapply(.SD, function(x) x ^2), .SDcols = is.numeric][]\n\n       ID           x            y        z\n   &lt;char&gt;       &lt;num&gt;        &lt;num&gt;    &lt;num&gt;\n1:     w1 2.019530205 8.143654e-05 2.086146\n2:     w2 0.232453776 3.861748e-01 3.267893\n3:     w3 0.011474583 5.194679e-02 1.800629\n4:     w4 0.116017776 4.029656e-01 2.638805\n5:     w5 0.004330775 4.667231e-01 1.257606\nUse patterns()\ndt[, .SD, .SDcols = patterns('x')]\n\n             x\n         &lt;num&gt;\n1: 2.019530205\n2: 0.232453776\n3: 0.011474583\n4: 0.116017776\n5: 0.004330775",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Using `.SD` for Data Analysis</span>"
+    ]
+  },
+  {
+    "objectID": "use_sd.html#grouped-.sd-operations",
+    "href": "use_sd.html#grouped-.sd-operations",
+    "title": "7  Using .SD for Data Analysis",
+    "section": "7.2 Grouped .SD operations",
+    "text": "7.2 Grouped .SD operations\n\nset.seed(123)\ndt &lt;- data.table(month = sample(month.name, 100, replace = TRUE),\n                 x = rexp(100),\n                 y = runif(100))\n\n## first row\n(dt[, .SD[1], by = month][order(match(month, month.name))][])\n\n        month          x           y\n       &lt;char&gt;      &lt;num&gt;       &lt;num&gt;\n 1:   January 0.41658064 0.703992061\n 2:  February 4.49867340 0.798831611\n 3:     March 0.64361092 0.982140374\n 4:     April 1.73115398 0.729390652\n 5:       May 1.43945263 0.779065883\n 6:      June 1.85709055 0.784575267\n 7:      July 0.23603575 0.353986103\n 8:    August 1.85692229 0.835708837\n 9: September 1.46330056 0.480910830\n10:   October 0.21605550 0.099041829\n11:  November 0.68545864 0.009429905\n12:  December 0.06737589 0.713279001\n\n## last row\n(dt[, .SD[.N], by = month][order(match(month, month.name))][])\n\n        month           x         y\n       &lt;char&gt;       &lt;num&gt;     &lt;num&gt;\n 1:   January 1.288906479 0.1933787\n 2:  February 2.690986859 0.7856878\n 3:     March 1.424160374 0.2963022\n 4:     April 1.294872966 0.4551081\n 5:       May 1.426468174 0.2104871\n 6:      June 0.517186339 0.1852964\n 7:      July 0.051559416 0.9139954\n 8:    August 2.118294341 0.9770990\n 9: September 0.004367371 0.7608236\n10:   October 2.229907097 0.1054177\n11:  November 1.609392144 0.3233450\n12:  December 0.522804460 0.2395946\n\n## a random row\n(dt[, .SD[sample(.N, 1)], by = month][order(match(month, month.name))][])\n\n        month          x         y\n       &lt;char&gt;      &lt;num&gt;     &lt;num&gt;\n 1:   January 1.28890648 0.1933787\n 2:  February 0.64190265 0.9833502\n 3:     March 0.29997032 0.4922933\n 4:     April 1.73115398 0.7293907\n 5:       May 1.08148515 0.5150718\n 6:      June 0.57058334 0.4218450\n 7:      July 0.05155942 0.9139954\n 8:    August 1.10070173 0.4864118\n 9: September 1.57045434 0.3547831\n10:   October 1.53739398 0.1566369\n11:  November 1.80312932 0.3142708\n12:  December 0.19003782 0.0348748\n\n\nComparing with\n\ndt[, lapply(.SD, max), by = month][order(match(month, month.name))][]\n\n        month        x         y\n       &lt;char&gt;    &lt;num&gt;     &lt;num&gt;\n 1:   January 1.288906 0.7039921\n 2:  February 4.498673 0.9833502\n 3:     March 1.730781 0.9821404\n 4:     April 1.968252 0.7293907\n 5:       May 1.751456 0.9994045\n 6:      June 1.857091 0.9674695\n 7:      July 1.759882 0.9150638\n 8:    August 3.747291 0.9770990\n 9: September 3.463595 0.9638433\n10:   October 2.229907 0.8568854\n11:  November 1.803129 0.9778534\n12:  December 2.953401 0.9859542\n\n\nand with\n\ndt[, .SD[which.max(x)], by = month][order(match(month, month.name))]\n\n        month        x         y\n       &lt;char&gt;    &lt;num&gt;     &lt;num&gt;\n 1:   January 1.288906 0.1933787\n 2:  February 4.498673 0.7988316\n 3:     March 1.730781 0.3428088\n 4:     April 1.968252 0.6687715\n 5:       May 1.751456 0.6439229\n 6:      June 1.857091 0.7845753\n 7:      July 1.759882 0.8967387\n 8:    August 3.747291 0.9713425\n 9: September 3.463595 0.1365402\n10:   October 2.229907 0.1054177\n11:  November 1.803129 0.3142708\n12:  December 2.953401 0.9859542",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Using `.SD` for Data Analysis</span>"
     ]
   }
 ]

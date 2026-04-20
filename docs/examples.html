@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; Some Examples – Learning `data.table` Notes</title>
+<title>8&nbsp; Some Examples – Learning `data.table` Notes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./fast_read_write.html" rel="prev">
+<link href="./use_sd.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./examples.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Some Examples</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./examples.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Some Examples</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -183,8 +183,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./use_sd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using <code>.SD</code> for Data Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./examples.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Some Examples</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Some Examples</span></span></a>
   </div>
 </li>
     </ul>
@@ -197,13 +203,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#converting-multiple-columns-to-proportions" id="toc-converting-multiple-columns-to-proportions" class="nav-link active" data-scroll-target="#converting-multiple-columns-to-proportions"><span class="header-section-number">7.1</span> Converting multiple columns to proportions</a></li>
-  <li><a href="#find-number-of-unique-x-y-coordiates-in-each-group" id="toc-find-number-of-unique-x-y-coordiates-in-each-group" class="nav-link" data-scroll-target="#find-number-of-unique-x-y-coordiates-in-each-group"><span class="header-section-number">7.2</span> Find number of unique x-y coordiates in each group</a></li>
-  <li><a href="#take-a-sample-of-rows" id="toc-take-a-sample-of-rows" class="nav-link" data-scroll-target="#take-a-sample-of-rows"><span class="header-section-number">7.3</span> Take a sample of rows</a></li>
-  <li><a href="#stratified-random-sampling" id="toc-stratified-random-sampling" class="nav-link" data-scroll-target="#stratified-random-sampling"><span class="header-section-number">7.4</span> Stratified random sampling</a></li>
-  <li><a href="#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" id="toc-two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" class="nav-link" data-scroll-target="#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets"><span class="header-section-number">7.5</span> Two pairs of square brackets vs.&nbsp;one pair of square brackets</a></li>
-  <li><a href="#multiple-column-operation" id="toc-multiple-column-operation" class="nav-link" data-scroll-target="#multiple-column-operation"><span class="header-section-number">7.6</span> Multiple-column operation</a></li>
-  <li><a href="#data.table-programming" id="toc-data.table-programming" class="nav-link" data-scroll-target="#data.table-programming"><span class="header-section-number">7.7</span> <code>data.table</code> programming</a></li>
+  <li><a href="#converting-multiple-columns-to-proportions" id="toc-converting-multiple-columns-to-proportions" class="nav-link active" data-scroll-target="#converting-multiple-columns-to-proportions"><span class="header-section-number">8.1</span> Converting multiple columns to proportions</a></li>
+  <li><a href="#find-number-of-unique-x-y-coordiates-in-each-group" id="toc-find-number-of-unique-x-y-coordiates-in-each-group" class="nav-link" data-scroll-target="#find-number-of-unique-x-y-coordiates-in-each-group"><span class="header-section-number">8.2</span> Find number of unique x-y coordiates in each group</a></li>
+  <li><a href="#take-a-sample-of-rows" id="toc-take-a-sample-of-rows" class="nav-link" data-scroll-target="#take-a-sample-of-rows"><span class="header-section-number">8.3</span> Take a sample of rows</a></li>
+  <li><a href="#stratified-random-sampling" id="toc-stratified-random-sampling" class="nav-link" data-scroll-target="#stratified-random-sampling"><span class="header-section-number">8.4</span> Stratified random sampling</a></li>
+  <li><a href="#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" id="toc-two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" class="nav-link" data-scroll-target="#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets"><span class="header-section-number">8.5</span> Two pairs of square brackets vs.&nbsp;one pair of square brackets</a></li>
+  <li><a href="#multiple-column-operation" id="toc-multiple-column-operation" class="nav-link" data-scroll-target="#multiple-column-operation"><span class="header-section-number">8.6</span> Multiple-column operation</a></li>
+  <li><a href="#data.table-programming" id="toc-data.table-programming" class="nav-link" data-scroll-target="#data.table-programming"><span class="header-section-number">8.7</span> <code>data.table</code> programming</a></li>
   </ul>
 </nav>
     </div>
@@ -212,7 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Some Examples</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Some Examples</span></h1>
 </div>
 
 
@@ -229,8 +235,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="converting-multiple-columns-to-proportions" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="converting-multiple-columns-to-proportions"><span class="header-section-number">7.1</span> Converting multiple columns to proportions</h2>
+<section id="converting-multiple-columns-to-proportions" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="converting-multiple-columns-to-proportions"><span class="header-section-number">8.1</span> Converting multiple columns to proportions</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -271,8 +277,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#    .SDcols = var1:var5]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="find-number-of-unique-x-y-coordiates-in-each-group" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="find-number-of-unique-x-y-coordiates-in-each-group"><span class="header-section-number">7.2</span> Find number of unique x-y coordiates in each group</h2>
+<section id="find-number-of-unique-x-y-coordiates-in-each-group" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="find-number-of-unique-x-y-coordiates-in-each-group"><span class="header-section-number">8.2</span> Find number of unique x-y coordiates in each group</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">mb =</span> <span class="fu">sample</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">size =</span> <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
@@ -304,8 +310,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="take-a-sample-of-rows" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="take-a-sample-of-rows"><span class="header-section-number">7.3</span> Take a sample of rows</h2>
+<section id="take-a-sample-of-rows" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="take-a-sample-of-rows"><span class="header-section-number">8.3</span> Take a sample of rows</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -321,8 +327,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="stratified-random-sampling" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="stratified-random-sampling"><span class="header-section-number">7.4</span> Stratified random sampling</h2>
+<section id="stratified-random-sampling" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="stratified-random-sampling"><span class="header-section-number">8.4</span> Stratified random sampling</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -343,8 +349,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets"><span class="header-section-number">7.5</span> Two pairs of square brackets vs.&nbsp;one pair of square brackets</h2>
+<section id="two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets"><span class="header-section-number">8.5</span> Two pairs of square brackets vs.&nbsp;one pair of square brackets</h2>
 <p><strong>Notice the difference between <code>dt_1</code> and <code>dt_2</code></strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
@@ -414,8 +420,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="multiple-column-operation" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="multiple-column-operation"><span class="header-section-number">7.6</span> Multiple-column operation</h2>
+<section id="multiple-column-operation" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="multiple-column-operation"><span class="header-section-number">8.6</span> Multiple-column operation</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -440,8 +446,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="data.table-programming" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="data.table-programming"><span class="header-section-number">7.7</span> <code>data.table</code> programming</h2>
+<section id="data.table-programming" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="data.table-programming"><span class="header-section-number">8.7</span> <code>data.table</code> programming</h2>
 <p>Notice using <code>get</code> function and <code>setNames(list(.N), output_var_name)</code> in the following code.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
@@ -910,8 +916,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./fast_read_write.html" class="pagination-link" aria-label="Fast Read and Fast Write">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fast Read and Fast Write</span></span>
+      <a href="./use_sd.html" class="pagination-link" aria-label="Using `.SD` for Data Analysis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using <code>.SD</code> for Data Analysis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

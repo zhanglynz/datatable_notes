@@ -1,5 +1,7 @@
 # Fast Read and Fast Write
 
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-fread-and-fwrite.html
+
 ## `fread()`
 
 **Reading from URLs**

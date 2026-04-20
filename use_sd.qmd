@@ -1,0 +1,62 @@
+# Using `.SD` for Data Analysis
+
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-sd-usage.html
+
+
+## Column Subsetting: `.SDcols`
+
+**Basic use**
+
+```{r}
+library(data.table)
+
+dt <- data.table(ID = paste0('w', 1:5),
+                 x = rnorm(5),
+                 y = runif(5),
+                 z = rexp(5))
+(sub_dt <- dt[, .SD, .SDcols = c('ID', 'x', 'z')])
+
+sub_dt_2 <- dt[, .(ID, x, z)]
+(identical(sub_dt, sub_dt_2))
+```
+
+**Use `is.numeric` or `is.character`**
+
+```{r}
+dt[, names(.SD) := lapply(.SD, function(x) x ^2), .SDcols = is.numeric][]
+```
+
+**Use `patterns()`**
+
+```{r}
+dt[, .SD, .SDcols = patterns('x')]
+```
+
+## Grouped `.SD` operations
+
+```{r}
+set.seed(123)
+dt <- data.table(month = sample(month.name, 100, replace = TRUE),
+                 x = rexp(100),
+                 y = runif(100))
+
+## first row
+(dt[, .SD[1], by = month][order(match(month, month.name))][])
+
+## last row
+(dt[, .SD[.N], by = month][order(match(month, month.name))][])
+
+## a random row
+(dt[, .SD[sample(.N, 1)], by = month][order(match(month, month.name))][])
+```
+
+Comparing with
+```{r}
+dt[, lapply(.SD, max), by = month][order(match(month, month.name))][]
+```
+and with
+```{r}
+dt[, .SD[which.max(x)], by = month][order(match(month, month.name))]
+```
+
+

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; Fast Read and Fast Write – Learning `data.table` Notes</title>
+<title>7&nbsp; Using .SD for Data Analysis – Learning `data.table` Notes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./use_sd.html" rel="next">
-<link href="./joins.html" rel="prev">
+<link href="./examples.html" rel="next">
+<link href="./fast_read_write.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./fast_read_write.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fast Read and Fast Write</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./use_sd.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using <code>.SD</code> for Data Analysis</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -178,13 +178,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./fast_read_write.html" class="sidebar-item-text sidebar-link active">
+  <a href="./fast_read_write.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fast Read and Fast Write</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./use_sd.html" class="sidebar-item-text sidebar-link">
+  <a href="./use_sd.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using <code>.SD</code> for Data Analysis</span></span></a>
   </div>
 </li>
@@ -204,8 +204,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#fread" id="toc-fread" class="nav-link active" data-scroll-target="#fread"><span class="header-section-number">6.1</span> <code>fread()</code></a></li>
-  <li><a href="#fwrite" id="toc-fwrite" class="nav-link" data-scroll-target="#fwrite"><span class="header-section-number">6.2</span> <code>fwrite()</code></a></li>
+  <li><a href="#column-subsetting-.sdcols" id="toc-column-subsetting-.sdcols" class="nav-link active" data-scroll-target="#column-subsetting-.sdcols"><span class="header-section-number">7.1</span> Column Subsetting: <code>.SDcols</code></a></li>
+  <li><a href="#grouped-.sd-operations" id="toc-grouped-.sd-operations" class="nav-link" data-scroll-target="#grouped-.sd-operations"><span class="header-section-number">7.2</span> Grouped <code>.SD</code> operations</a></li>
   </ul>
 </nav>
     </div>
@@ -214,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fast Read and Fast Write</span></h1>
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using <code>.SD</code> for Data Analysis</span></h1>
 </div>
 
 
@@ -231,34 +231,163 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>https://cran.r-project.org/web/packages/data.table/vignettes/datatable-fread-and-fwrite.html</p>
-<section id="fread" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="fread"><span class="header-section-number">6.1</span> <code>fread()</code></h2>
-<p><strong>Reading from URLs</strong></p>
-<blockquote class="blockquote">
-<p><code>fread()</code> can read data directly from web URLs by passing the URL as a character string to its file argument.</p>
-</blockquote>
+<p>https://cran.r-project.org/web/packages/data.table/vignettes/datatable-sd-usage.html</p>
+<section id="column-subsetting-.sdcols" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="column-subsetting-.sdcols"><span class="header-section-number">7.1</span> Column Subsetting: <code>.SDcols</code></h2>
+<p><strong>Basic use</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"https://people.sc.fsu.edu/~jburkardt/data/csv/airtravel.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">ID =</span> <span class="fu">paste0</span>(<span class="st">'w'</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="fu">runif</span>(<span class="dv">5</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">z =</span> <span class="fu">rexp</span>(<span class="dv">5</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>(sub_dt <span class="ot">&lt;-</span> dt[, .SD, <span class="at">.SDcols =</span> <span class="fu">c</span>(<span class="st">'ID'</span>, <span class="st">'x'</span>, <span class="st">'z'</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       ID           x        z
+   &lt;char&gt;       &lt;num&gt;    &lt;num&gt;
+1:     w1 -1.42110176 1.444350
+2:     w2  0.48213460 1.807731
+3:     w3  0.10711948 1.341875
+4:     w4 -0.34061382 1.624440
+5:     w5 -0.06580862 1.121430</code></pre>
 </div>
-<p><strong>Automatic separator and skip detection</strong></p>
-<blockquote class="blockquote">
-<p>fread automates delimiter and header detection, eliminating the need for manual specification in most cases. You simply provide the filename—fread intelligently detects the structure</p>
-</blockquote>
-<p><strong>High-Quality Automatic Column Type Detection</strong></p>
-<blockquote class="blockquote">
-<p>Many real-world datasets contain columns that are initially blank, zero-filled, or appear numeric but later contain characters. To handle such inconsistencies, <code>fread()</code> employs a robust column type detection strategy.</p>
-</blockquote>
-<p><strong>Drop or Select Columns by Name or Position</strong></p>
-<blockquote class="blockquote">
-<p>To save memory and improve performance, use fread()’s select or drop arguments to read only the columns you need.</p>
-</blockquote>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sub_dt_2 <span class="ot">&lt;-</span> dt[, .(ID, x, z)]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">identical</span>(sub_dt, sub_dt_2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p><strong>Use <code>is.numeric</code> or <code>is.character</code></strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dt[, <span class="fu">names</span>(.SD) <span class="sc">:</span><span class="er">=</span> <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) x <span class="sc">^</span><span class="dv">2</span>), .SDcols <span class="ot">=</span> is.numeric][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       ID           x            y        z
+   &lt;char&gt;       &lt;num&gt;        &lt;num&gt;    &lt;num&gt;
+1:     w1 2.019530205 8.143654e-05 2.086146
+2:     w2 0.232453776 3.861748e-01 3.267893
+3:     w3 0.011474583 5.194679e-02 1.800629
+4:     w4 0.116017776 4.029656e-01 2.638805
+5:     w5 0.004330775 4.667231e-01 1.257606</code></pre>
+</div>
+</div>
+<p><strong>Use <code>patterns()</code></strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dt[, .SD, .SDcols <span class="ot">=</span> <span class="fu">patterns</span>(<span class="st">'x'</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             x
+         &lt;num&gt;
+1: 2.019530205
+2: 0.232453776
+3: 0.011474583
+4: 0.116017776
+5: 0.004330775</code></pre>
+</div>
+</div>
 </section>
-<section id="fwrite" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="fwrite"><span class="header-section-number">6.2</span> <code>fwrite()</code></h2>
-<blockquote class="blockquote">
-<p><code>fwrite()</code> is the fast file writer companion to <code>fread()</code>. It’s designed for speed, sensible defaults, and ease of use, mirroring many of the conveniences found in fread.</p>
-</blockquote>
+<section id="grouped-.sd-operations" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="grouped-.sd-operations"><span class="header-section-number">7.2</span> Grouped <code>.SD</code> operations</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">month =</span> <span class="fu">sample</span>(month.name, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> <span class="fu">rexp</span>(<span class="dv">100</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="fu">runif</span>(<span class="dv">100</span>))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="do">## first row</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>(dt[, .SD[<span class="dv">1</span>], <span class="at">by =</span> month][<span class="fu">order</span>(<span class="fu">match</span>(month, month.name))][])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        month          x           y
+       &lt;char&gt;      &lt;num&gt;       &lt;num&gt;
+ 1:   January 0.41658064 0.703992061
+ 2:  February 4.49867340 0.798831611
+ 3:     March 0.64361092 0.982140374
+ 4:     April 1.73115398 0.729390652
+ 5:       May 1.43945263 0.779065883
+ 6:      June 1.85709055 0.784575267
+ 7:      July 0.23603575 0.353986103
+ 8:    August 1.85692229 0.835708837
+ 9: September 1.46330056 0.480910830
+10:   October 0.21605550 0.099041829
+11:  November 0.68545864 0.009429905
+12:  December 0.06737589 0.713279001</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## last row</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(dt[, .SD[.N], <span class="at">by =</span> month][<span class="fu">order</span>(<span class="fu">match</span>(month, month.name))][])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        month           x         y
+       &lt;char&gt;       &lt;num&gt;     &lt;num&gt;
+ 1:   January 1.288906479 0.1933787
+ 2:  February 2.690986859 0.7856878
+ 3:     March 1.424160374 0.2963022
+ 4:     April 1.294872966 0.4551081
+ 5:       May 1.426468174 0.2104871
+ 6:      June 0.517186339 0.1852964
+ 7:      July 0.051559416 0.9139954
+ 8:    August 2.118294341 0.9770990
+ 9: September 0.004367371 0.7608236
+10:   October 2.229907097 0.1054177
+11:  November 1.609392144 0.3233450
+12:  December 0.522804460 0.2395946</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## a random row</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>(dt[, .SD[<span class="fu">sample</span>(.N, <span class="dv">1</span>)], <span class="at">by =</span> month][<span class="fu">order</span>(<span class="fu">match</span>(month, month.name))][])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        month          x         y
+       &lt;char&gt;      &lt;num&gt;     &lt;num&gt;
+ 1:   January 1.28890648 0.1933787
+ 2:  February 0.64190265 0.9833502
+ 3:     March 0.29997032 0.4922933
+ 4:     April 1.73115398 0.7293907
+ 5:       May 1.08148515 0.5150718
+ 6:      June 0.57058334 0.4218450
+ 7:      July 0.05155942 0.9139954
+ 8:    August 1.10070173 0.4864118
+ 9: September 1.57045434 0.3547831
+10:   October 1.53739398 0.1566369
+11:  November 1.80312932 0.3142708
+12:  December 0.19003782 0.0348748</code></pre>
+</div>
+</div>
+<p>Comparing with</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>dt[, <span class="fu">lapply</span>(.SD, max), by <span class="ot">=</span> month][<span class="fu">order</span>(<span class="fu">match</span>(month, month.name))][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        month        x         y
+       &lt;char&gt;    &lt;num&gt;     &lt;num&gt;
+ 1:   January 1.288906 0.7039921
+ 2:  February 4.498673 0.9833502
+ 3:     March 1.730781 0.9821404
+ 4:     April 1.968252 0.7293907
+ 5:       May 1.751456 0.9994045
+ 6:      June 1.857091 0.9674695
+ 7:      July 1.759882 0.9150638
+ 8:    August 3.747291 0.9770990
+ 9: September 3.463595 0.9638433
+10:   October 2.229907 0.8568854
+11:  November 1.803129 0.9778534
+12:  December 2.953401 0.9859542</code></pre>
+</div>
+</div>
+<p>and with</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>dt[, .SD[<span class="fu">which.max</span>(x)], by <span class="ot">=</span> month][<span class="fu">order</span>(<span class="fu">match</span>(month, month.name))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        month        x         y
+       &lt;char&gt;    &lt;num&gt;     &lt;num&gt;
+ 1:   January 1.288906 0.1933787
+ 2:  February 4.498673 0.7988316
+ 3:     March 1.730781 0.3428088
+ 4:     April 1.968252 0.6687715
+ 5:       May 1.751456 0.6439229
+ 6:      June 1.857091 0.7845753
+ 7:      July 1.759882 0.8967387
+ 8:    August 3.747291 0.9713425
+ 9: September 3.463595 0.1365402
+10:   October 2.229907 0.1054177
+11:  November 1.803129 0.3142708
+12:  December 2.953401 0.9859542</code></pre>
+</div>
+</div>
 
 
 </section>
@@ -686,13 +815,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./joins.html" class="pagination-link" aria-label="Joins in data.table">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joins in data.table</span></span>
+      <a href="./fast_read_write.html" class="pagination-link" aria-label="Fast Read and Fast Write">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fast Read and Fast Write</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./use_sd.html" class="pagination-link" aria-label="Using `.SD` for Data Analysis">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Using <code>.SD</code> for Data Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./examples.html" class="pagination-link" aria-label="Some Examples">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Some Examples</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
