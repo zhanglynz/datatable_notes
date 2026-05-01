@@ -244,13 +244,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">z =</span> <span class="fu">rexp</span>(<span class="dv">5</span>))</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>(sub_dt <span class="ot">&lt;-</span> dt[, .SD, <span class="at">.SDcols =</span> <span class="fu">c</span>(<span class="st">'ID'</span>, <span class="st">'x'</span>, <span class="st">'z'</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       ID           x        z
-   &lt;char&gt;       &lt;num&gt;    &lt;num&gt;
-1:     w1 -1.42110176 1.444350
-2:     w2  0.48213460 1.807731
-3:     w3  0.10711948 1.341875
-4:     w4 -0.34061382 1.624440
-5:     w5 -0.06580862 1.121430</code></pre>
+<pre><code>       ID          x        z
+   &lt;char&gt;      &lt;num&gt;    &lt;num&gt;
+1:     w1 -0.3495472 0.592468
+2:     w2  1.4435132 2.152924
+3:     w3 -0.6314465 1.297915
+4:     w4 -1.0179214 1.735500
+5:     w5  1.4397930 1.193347</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sub_dt_2 <span class="ot">&lt;-</span> dt[, .(ID, x, z)]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">identical</span>(sub_dt, sub_dt_2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -262,26 +262,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dt[, <span class="fu">names</span>(.SD) <span class="sc">:</span><span class="er">=</span> <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) x <span class="sc">^</span><span class="dv">2</span>), .SDcols <span class="ot">=</span> is.numeric][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       ID           x            y        z
-   &lt;char&gt;       &lt;num&gt;        &lt;num&gt;    &lt;num&gt;
-1:     w1 2.019530205 8.143654e-05 2.086146
-2:     w2 0.232453776 3.861748e-01 3.267893
-3:     w3 0.011474583 5.194679e-02 1.800629
-4:     w4 0.116017776 4.029656e-01 2.638805
-5:     w5 0.004330775 4.667231e-01 1.257606</code></pre>
+<pre><code>       ID         x          y         z
+   &lt;char&gt;     &lt;num&gt;      &lt;num&gt;     &lt;num&gt;
+1:     w1 0.1221833 0.22679871 0.3510184
+2:     w2 2.0837304 0.15221331 4.6350798
+3:     w3 0.3987247 0.06752676 1.6845824
+4:     w4 1.0361639 0.59949936 3.0119607
+5:     w5 2.0730037 0.54609133 1.4240769</code></pre>
 </div>
 </div>
 <p><strong>Use <code>patterns()</code></strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dt[, .SD, .SDcols <span class="ot">=</span> <span class="fu">patterns</span>(<span class="st">'x'</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>             x
-         &lt;num&gt;
-1: 2.019530205
-2: 0.232453776
-3: 0.011474583
-4: 0.116017776
-5: 0.004330775</code></pre>
+<pre><code>           x
+       &lt;num&gt;
+1: 0.1221833
+2: 2.0837304
+3: 0.3987247
+4: 1.0361639
+5: 2.0730037</code></pre>
 </div>
 </div>
 </section>

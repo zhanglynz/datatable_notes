@@ -151,3 +151,25 @@ j <-
 j[]
 ```
 
+## Add 'total' as the last row
+
+```{r}
+library(data.table)
+
+dt <- data.table(
+  ID = c("A", "B", "C"),
+  x  = c(1, 2, 3),
+  y  = c(4, 5, 6),
+  z  = c(7, 8, 9)
+)
+
+# add total row
+dt <- rbind(
+  dt,
+  dt[, c(list(ID = "total"), lapply(.SD, sum)), .SDcols = -"ID"],
+  use.names = TRUE
+)
+
+dt
+```
+
