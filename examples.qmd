@@ -45,7 +45,7 @@ dt[, .(n = uniqueN(paste0(x, '_', y))), by = mb][order(mb)][]
 ```
 
 
-## Take a sample of rows
+## Take a sample of rows (SRS)
 
 ```{r, warning=FALSE, message=FALSE}
 library(data.table)
@@ -70,6 +70,31 @@ f_dt[, sample_indi := sampling::srswor(n = sample_sizes[[ID[1]]], N = .N), by = 
 # check
 f_dt[sample_indi == 1, .N, by = ID][order(ID)][]
 ```
+
+## Systematic sampling
+
+```{r}
+library(data.table)
+library(sampling)
+
+## 5 psus; the sizes of psus are 5, 6, 7, 8, 9, respectively
+## population size is 35; sample size is 20
+the_frame <- 
+  data.table(dw_id = sprintf("unit_%02d", 1:35),
+             psu_id = paste0("psu_", rep(1:5, times = 5:9)))
+
+set.seed(123)
+n <- 20
+
+the_frame[, `:=`(temp_rand = runif(.N), sel_prob = n / .N)]
+syst_sample <- the_frame[order(psu_id, temp_rand)]
+syst_sample[, sample_indi := sampling::UPsystematic(pik = sel_prob)]
+
+### checking
+syst_sample[, .(n = sum(sample_indi)), by = psu_id][order(psu_id)][]
+
+```
+
 
 ## Two pairs of square brackets vs. one pair of square brackets
 

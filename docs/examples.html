@@ -205,12 +205,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#converting-multiple-columns-to-proportions" id="toc-converting-multiple-columns-to-proportions" class="nav-link active" data-scroll-target="#converting-multiple-columns-to-proportions"><span class="header-section-number">8.1</span> Converting multiple columns to proportions</a></li>
   <li><a href="#find-number-of-unique-x-y-coordiates-in-each-group" id="toc-find-number-of-unique-x-y-coordiates-in-each-group" class="nav-link" data-scroll-target="#find-number-of-unique-x-y-coordiates-in-each-group"><span class="header-section-number">8.2</span> Find number of unique x-y coordiates in each group</a></li>
-  <li><a href="#take-a-sample-of-rows" id="toc-take-a-sample-of-rows" class="nav-link" data-scroll-target="#take-a-sample-of-rows"><span class="header-section-number">8.3</span> Take a sample of rows</a></li>
+  <li><a href="#take-a-sample-of-rows-srs" id="toc-take-a-sample-of-rows-srs" class="nav-link" data-scroll-target="#take-a-sample-of-rows-srs"><span class="header-section-number">8.3</span> Take a sample of rows (SRS)</a></li>
   <li><a href="#stratified-random-sampling" id="toc-stratified-random-sampling" class="nav-link" data-scroll-target="#stratified-random-sampling"><span class="header-section-number">8.4</span> Stratified random sampling</a></li>
-  <li><a href="#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" id="toc-two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" class="nav-link" data-scroll-target="#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets"><span class="header-section-number">8.5</span> Two pairs of square brackets vs.&nbsp;one pair of square brackets</a></li>
-  <li><a href="#multiple-column-operation" id="toc-multiple-column-operation" class="nav-link" data-scroll-target="#multiple-column-operation"><span class="header-section-number">8.6</span> Multiple-column operation</a></li>
-  <li><a href="#data.table-programming" id="toc-data.table-programming" class="nav-link" data-scroll-target="#data.table-programming"><span class="header-section-number">8.7</span> <code>data.table</code> programming</a></li>
-  <li><a href="#add-total-as-the-last-row" id="toc-add-total-as-the-last-row" class="nav-link" data-scroll-target="#add-total-as-the-last-row"><span class="header-section-number">8.8</span> Add ‘total’ as the last row</a></li>
+  <li><a href="#systematic-sampling" id="toc-systematic-sampling" class="nav-link" data-scroll-target="#systematic-sampling"><span class="header-section-number">8.5</span> Systematic sampling</a></li>
+  <li><a href="#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" id="toc-two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" class="nav-link" data-scroll-target="#two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets"><span class="header-section-number">8.6</span> Two pairs of square brackets vs.&nbsp;one pair of square brackets</a></li>
+  <li><a href="#multiple-column-operation" id="toc-multiple-column-operation" class="nav-link" data-scroll-target="#multiple-column-operation"><span class="header-section-number">8.7</span> Multiple-column operation</a></li>
+  <li><a href="#data.table-programming" id="toc-data.table-programming" class="nav-link" data-scroll-target="#data.table-programming"><span class="header-section-number">8.8</span> <code>data.table</code> programming</a></li>
+  <li><a href="#add-total-as-the-last-row" id="toc-add-total-as-the-last-row" class="nav-link" data-scroll-target="#add-total-as-the-last-row"><span class="header-section-number">8.9</span> Add ‘total’ as the last row</a></li>
   </ul>
 </nav>
     </div>
@@ -311,8 +312,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="take-a-sample-of-rows" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="take-a-sample-of-rows"><span class="header-section-number">8.3</span> Take a sample of rows</h2>
+<section id="take-a-sample-of-rows-srs" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="take-a-sample-of-rows-srs"><span class="header-section-number">8.3</span> Take a sample of rows (SRS)</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -350,14 +351,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" class="level2" data-number="8.5">
-<h2 data-number="8.5" class="anchored" data-anchor-id="two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets"><span class="header-section-number">8.5</span> Two pairs of square brackets vs.&nbsp;one pair of square brackets</h2>
-<p><strong>Notice the difference between <code>dt_1</code> and <code>dt_2</code></strong></p>
+<section id="systematic-sampling" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="systematic-sampling"><span class="header-section-number">8.5</span> Systematic sampling</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123456</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>(dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">x =</span> <span class="fu">sample</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sampling)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 psus; the sizes of psus are 5, 6, 7, 8, 9, respectively</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">## population size is 35; sample size is 20</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>the_frame <span class="ot">&lt;-</span> </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.table</span>(<span class="at">dw_id =</span> <span class="fu">sprintf</span>(<span class="st">"unit_%02d"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">35</span>),</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">psu_id =</span> <span class="fu">paste0</span>(<span class="st">"psu_"</span>, <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">times =</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">9</span>)))</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>the_frame[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(<span class="at">temp_rand =</span> <span class="fu">runif</span>(.N), <span class="at">sel_prob =</span> n <span class="sc">/</span> .N)]</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>syst_sample <span class="ot">&lt;-</span> the_frame[<span class="fu">order</span>(psu_id, temp_rand)]</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>syst_sample[, sample_indi <span class="sc">:</span><span class="er">=</span> sampling<span class="sc">::</span><span class="fu">UPsystematic</span>(<span class="at">pik =</span> sel_prob)]</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="do">### checking</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>syst_sample[, .(<span class="at">n =</span> <span class="fu">sum</span>(sample_indi)), by <span class="ot">=</span> psu_id][<span class="fu">order</span>(psu_id)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   psu_id     n
+   &lt;char&gt; &lt;num&gt;
+1:  psu_1     3
+2:  psu_2     3
+3:  psu_3     4
+4:  psu_4     5
+5:  psu_5     5</code></pre>
+</div>
+</div>
+</section>
+<section id="two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="two-pairs-of-square-brackets-vs.-one-pair-of-square-brackets"><span class="header-section-number">8.6</span> Two pairs of square brackets vs.&nbsp;one pair of square brackets</h2>
+<p><strong>Notice the difference between <code>dt_1</code> and <code>dt_2</code></strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123456</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>(dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">x =</span> <span class="fu">sample</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         x
     &lt;char&gt;
@@ -372,14 +405,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  9:      b
 10:      c</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dt_1 <span class="ot">&lt;-</span> dt[x <span class="sc">==</span> <span class="st">'a'</span>][, <span class="at">y :=</span> <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dt_1 <span class="ot">&lt;-</span> dt[x <span class="sc">==</span> <span class="st">'a'</span>][, <span class="at">y :=</span> <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        x     y
    &lt;char&gt; &lt;num&gt;
 1:      a     1
 2:      a     1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dt_2 <span class="ot">&lt;-</span> <span class="fu">copy</span>(dt)[x <span class="sc">==</span> <span class="st">'a'</span>, <span class="at">y :=</span> <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dt_2 <span class="ot">&lt;-</span> <span class="fu">copy</span>(dt)[x <span class="sc">==</span> <span class="st">'a'</span>, <span class="at">y :=</span> <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Index: &lt;x&gt;
          x     y
@@ -397,8 +430,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">8</span>, <span class="dv">1</span>, <span class="dv">2</span>))</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>(new_dt <span class="ot">&lt;-</span> dt[<span class="fu">order</span>(x)][, <span class="at">p :=</span> (.I <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>][])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">8</span>, <span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>(new_dt <span class="ot">&lt;-</span> dt[<span class="fu">order</span>(x)][, <span class="at">p :=</span> (.I <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>][])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       x     p
    &lt;num&gt; &lt;num&gt;
@@ -408,8 +441,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 4:     5     2
 5:     8     1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>a_dt <span class="ot">&lt;-</span> <span class="fu">copy</span>(dt)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>a_dt[<span class="fu">order</span>(x), p <span class="sc">:</span><span class="er">=</span> (.I <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>a_dt <span class="ot">&lt;-</span> <span class="fu">copy</span>(dt)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>a_dt[<span class="fu">order</span>(x), p <span class="sc">:</span><span class="er">=</span> (.I <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       x     p
    &lt;num&gt; &lt;num&gt;
@@ -421,21 +454,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="multiple-column-operation" class="level2" data-number="8.6">
-<h2 data-number="8.6" class="anchored" data-anchor-id="multiple-column-operation"><span class="header-section-number">8.6</span> Multiple-column operation</h2>
+<section id="multiple-column-operation" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="multiple-column-operation"><span class="header-section-number">8.7</span> Multiple-column operation</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>fk_dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">id =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>],</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">total =</span> <span class="dv">100</span><span class="sc">:</span><span class="dv">104</span>,</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">x =</span> <span class="dv">100</span>,</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> <span class="dv">101</span>,</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">z =</span> <span class="dv">102</span>)</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>fk_dt_a <span class="ot">&lt;-</span> <span class="fu">copy</span>(fk_dt)</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>cols_to_scale <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">names</span>(fk_dt), <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"total"</span>))</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>fk_dt_a[, (cols_to_scale) <span class="sc">:</span><span class="er">=</span> <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(v) v <span class="sc">/</span> total),</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        .SDcols <span class="ot">=</span> cols_to_scale][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>fk_dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">id =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>],</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">total =</span> <span class="dv">100</span><span class="sc">:</span><span class="dv">104</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">x =</span> <span class="dv">100</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> <span class="dv">101</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">z =</span> <span class="dv">102</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>fk_dt_a <span class="ot">&lt;-</span> <span class="fu">copy</span>(fk_dt)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>cols_to_scale <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">names</span>(fk_dt), <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"total"</span>))</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>fk_dt_a[, (cols_to_scale) <span class="sc">:</span><span class="er">=</span> <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(v) v <span class="sc">/</span> total),</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>        .SDcols <span class="ot">=</span> cols_to_scale][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       id total         x         y         z
    &lt;char&gt; &lt;int&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;
@@ -447,40 +480,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="data.table-programming" class="level2" data-number="8.7">
-<h2 data-number="8.7" class="anchored" data-anchor-id="data.table-programming"><span class="header-section-number">8.7</span> <code>data.table</code> programming</h2>
+<section id="data.table-programming" class="level2" data-number="8.8">
+<h2 data-number="8.8" class="anchored" data-anchor-id="data.table-programming"><span class="header-section-number">8.8</span> <code>data.table</code> programming</h2>
 <p>Notice using <code>get</code> function and <code>setNames(list(.N), output_var_name)</code> in the following code.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>my_aggregate <span class="ot">&lt;-</span> <span class="cf">function</span>(a_dt, <span class="at">condi_var_nm =</span> <span class="cn">NULL</span>, </span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">condi =</span> <span class="fu">c</span>(<span class="st">'1'</span>, <span class="st">'2'</span>), <span class="at">output_var_name =</span> <span class="cn">NULL</span>)</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>{<span class="cf">if</span>(<span class="fu">is.null</span>(condi_var_nm)) {</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(a_dt[, .(<span class="at">total =</span> .N), <span class="at">by =</span> partition_code][<span class="fu">order</span>(partition_code)]) }</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  a_dt[<span class="fu">get</span>(condi_var_nm) <span class="sc">%in%</span> condi, <span class="fu">setNames</span>(<span class="fu">list</span>(.N), output_var_name), </span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>       by <span class="ot">=</span> partition_code][<span class="fu">order</span>(partition_code)]   </span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>fk_dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">60</span>,</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maori =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">'0'</span>, <span class="st">'1'</span>, <span class="st">'2'</span>), <span class="dv">60</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>                    <span class="at">asian =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">'0'</span>, <span class="st">'1'</span>, <span class="st">'2'</span>), <span class="dv">60</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>                    <span class="at">pacific =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">'0'</span>, <span class="st">'1'</span>, <span class="st">'2'</span>), <span class="dv">60</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>                    <span class="at">rand_nbr =</span> <span class="fu">runif</span>(<span class="dv">60</span>))</span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>fk_dt[<span class="fu">order</span>(rand_nbr), partition_code <span class="sc">:</span><span class="er">=</span> (.I <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>total_dt <span class="ot">&lt;-</span> <span class="fu">my_aggregate</span>(fk_dt)</span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>maori_dt <span class="ot">&lt;-</span> <span class="fu">my_aggregate</span>(fk_dt, <span class="at">condi_var_nm =</span> <span class="st">"maori"</span>, <span class="at">output_var_name =</span> <span class="st">"maori"</span>)</span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>asian <span class="ot">&lt;-</span> <span class="fu">my_aggregate</span>(fk_dt, <span class="at">condi_var_nm =</span> <span class="st">"asian"</span>, </span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>                      <span class="at">condi =</span> <span class="st">'1'</span>, <span class="at">output_var_name =</span> <span class="st">"asian"</span>)</span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>pacific <span class="ot">&lt;-</span> <span class="fu">my_aggregate</span>(fk_dt, <span class="at">condi_var_nm =</span> <span class="st">"pacific"</span>, <span class="at">output_var_name =</span> <span class="st">"pacific"</span>)</span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>j <span class="ot">&lt;-</span> </span>
-<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(total_dt, maori_dt, <span class="at">by =</span> <span class="st">'partition_code'</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(asian, <span class="at">by =</span> <span class="st">'partition_code'</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(pacific, <span class="at">by =</span> <span class="st">'partition_code'</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>j[]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>my_aggregate <span class="ot">&lt;-</span> <span class="cf">function</span>(a_dt, <span class="at">condi_var_nm =</span> <span class="cn">NULL</span>, </span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">condi =</span> <span class="fu">c</span>(<span class="st">'1'</span>, <span class="st">'2'</span>), <span class="at">output_var_name =</span> <span class="cn">NULL</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>{<span class="cf">if</span>(<span class="fu">is.null</span>(condi_var_nm)) {</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(a_dt[, .(<span class="at">total =</span> .N), <span class="at">by =</span> partition_code][<span class="fu">order</span>(partition_code)]) }</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  a_dt[<span class="fu">get</span>(condi_var_nm) <span class="sc">%in%</span> condi, <span class="fu">setNames</span>(<span class="fu">list</span>(.N), output_var_name), </span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>       by <span class="ot">=</span> partition_code][<span class="fu">order</span>(partition_code)]   </span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>fk_dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">60</span>,</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>                    <span class="at">maori =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">'0'</span>, <span class="st">'1'</span>, <span class="st">'2'</span>), <span class="dv">60</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>                    <span class="at">asian =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">'0'</span>, <span class="st">'1'</span>, <span class="st">'2'</span>), <span class="dv">60</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>                    <span class="at">pacific =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">'0'</span>, <span class="st">'1'</span>, <span class="st">'2'</span>), <span class="dv">60</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>                    <span class="at">rand_nbr =</span> <span class="fu">runif</span>(<span class="dv">60</span>))</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>fk_dt[<span class="fu">order</span>(rand_nbr), partition_code <span class="sc">:</span><span class="er">=</span> (.I <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>total_dt <span class="ot">&lt;-</span> <span class="fu">my_aggregate</span>(fk_dt)</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>maori_dt <span class="ot">&lt;-</span> <span class="fu">my_aggregate</span>(fk_dt, <span class="at">condi_var_nm =</span> <span class="st">"maori"</span>, <span class="at">output_var_name =</span> <span class="st">"maori"</span>)</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>asian <span class="ot">&lt;-</span> <span class="fu">my_aggregate</span>(fk_dt, <span class="at">condi_var_nm =</span> <span class="st">"asian"</span>, </span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>                      <span class="at">condi =</span> <span class="st">'1'</span>, <span class="at">output_var_name =</span> <span class="st">"asian"</span>)</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>pacific <span class="ot">&lt;-</span> <span class="fu">my_aggregate</span>(fk_dt, <span class="at">condi_var_nm =</span> <span class="st">"pacific"</span>, <span class="at">output_var_name =</span> <span class="st">"pacific"</span>)</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>j <span class="ot">&lt;-</span> </span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(total_dt, maori_dt, <span class="at">by =</span> <span class="st">'partition_code'</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(asian, <span class="at">by =</span> <span class="st">'partition_code'</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(pacific, <span class="at">by =</span> <span class="st">'partition_code'</span>, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>j[]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Key: &lt;partition_code&gt;
    partition_code total maori asian pacific
@@ -491,26 +524,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="add-total-as-the-last-row" class="level2" data-number="8.8">
-<h2 data-number="8.8" class="anchored" data-anchor-id="add-total-as-the-last-row"><span class="header-section-number">8.8</span> Add ‘total’ as the last row</h2>
+<section id="add-total-as-the-last-row" class="level2" data-number="8.9">
+<h2 data-number="8.9" class="anchored" data-anchor-id="add-total-as-the-last-row"><span class="header-section-number">8.9</span> Add ‘total’ as the last row</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>),</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x  =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y  =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>),</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">z  =</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>)</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># add total row</span></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  dt,</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  dt[, <span class="fu">c</span>(<span class="fu">list</span>(<span class="at">ID =</span> <span class="st">"total"</span>), <span class="fu">lapply</span>(.SD, sum)), <span class="at">.SDcols =</span> <span class="sc">-</span><span class="st">"ID"</span>],</span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">use.names =</span> <span class="cn">TRUE</span></span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>dt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>),</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x  =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y  =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>),</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">z  =</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># add total row</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  dt,</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  dt[, <span class="fu">c</span>(<span class="fu">list</span>(<span class="at">ID =</span> <span class="st">"total"</span>), <span class="fu">lapply</span>(.SD, sum)), <span class="at">.SDcols =</span> <span class="sc">-</span><span class="st">"ID"</span>],</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">use.names =</span> <span class="cn">TRUE</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>dt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       ID     x     y     z
    &lt;char&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;

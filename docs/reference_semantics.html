@@ -275,65 +275,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">x =</span> <span class="fu">rnorm</span>(<span class="dv">15</span>))</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>(dt_0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        ID      u         v         w            x
-    &lt;char&gt; &lt;char&gt;    &lt;char&gt;     &lt;num&gt;        &lt;num&gt;
- 1:     01      a   January 0.7926117 -0.948210638
- 2:     02      b  February 0.6823397 -0.274710439
- 3:     03      c     March 0.7303428 -0.986037226
- 4:     04      d     April 0.9880451  0.007729962
- 5:     05      e       May 0.3266394 -0.681681138
- 6:     06      f      June 0.3024055  0.346027529
- 7:     07      g      July 0.6921254  0.956167085
- 8:     08      h    August 0.5444533  0.751507954
- 9:     09      i September 0.7644946  2.134324955
-10:     10      j   October 0.1785520  0.450421606
-11:     11      k  November 0.6464467  1.280460254
-12:     12      l  December 0.6707787 -0.300873481
-13:     13      m   January 0.3675711  0.284278476
-14:     14      n  February 0.8648775  0.571482817
-15:     15      o     March 0.3063607 -0.429061100</code></pre>
+<pre><code>        ID      u         v          w          x
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;      &lt;num&gt;      &lt;num&gt;
+ 1:     01      a   January 0.18401389  0.6207407
+ 2:     02      b  February 0.91863027 -1.1648991
+ 3:     03      c     March 0.83907430 -1.0497893
+ 4:     04      d     April 0.32282308 -0.8073720
+ 5:     05      e       May 0.63147990  0.2520031
+ 6:     06      f      June 0.66033477 -0.3968350
+ 7:     07      g      July 0.32478476 -2.5880080
+ 8:     08      h    August 0.35665106  0.3236046
+ 9:     09      i September 0.76025991  2.5357843
+10:     10      j   October 0.30694760  1.6927625
+11:     11      k  November 0.40487910 -0.3030586
+12:     12      l  December 0.04039085 -0.2869326
+13:     13      m   January 0.44767478  0.2201743
+14:     14      n  February 0.90541144 -0.8679568
+15:     15      o     March 0.55110532 -1.4064070</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dt_0[, x_1 <span class="sc">:</span><span class="er">=</span> (x <span class="sc">-</span> <span class="fu">mean</span>(x)) <span class="sc">/</span> <span class="fu">sd</span>(x)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        ID      u         v         w            x         x_1
-    &lt;char&gt; &lt;char&gt;    &lt;char&gt;     &lt;num&gt;        &lt;num&gt;       &lt;num&gt;
- 1:     01      a   January 0.7926117 -0.948210638 -1.34318651
- 2:     02      b  February 0.6823397 -0.274710439 -0.56265407
- 3:     03      c     March 0.7303428 -0.986037226 -1.38702448
- 4:     04      d     April 0.9880451  0.007729962 -0.23532841
- 5:     05      e       May 0.3266394 -0.681681138 -1.03430031
- 6:     06      f      June 0.3024055  0.346027529  0.15673120
- 7:     07      g      July 0.6921254  0.956167085  0.86383377
- 8:     08      h    August 0.5444533  0.751507954  0.62665033
- 9:     09      i September 0.7644946  2.134324955  2.22922377
-10:     10      j   October 0.1785520  0.450421606  0.27771552
-11:     11      k  November 0.6464467  1.280460254  1.23966341
-12:     12      l  December 0.6707787 -0.300873481 -0.59297493
-13:     13      m   January 0.3675711  0.284278476  0.08516903
-14:     14      n  February 0.8648775  0.571482817  0.41801571
-15:     15      o     March 0.3063607 -0.429061100 -0.74153404</code></pre>
+<pre><code>        ID      u         v          w          x         x_1
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;      &lt;num&gt;      &lt;num&gt;       &lt;num&gt;
+ 1:     01      a   January 0.18401389  0.6207407  0.66561334
+ 2:     02      b  February 0.91863027 -1.1648991 -0.75639823
+ 3:     03      c     March 0.83907430 -1.0497893 -0.66472940
+ 4:     04      d     April 0.32282308 -0.8073720 -0.47167808
+ 5:     05      e       May 0.63147990  0.2520031  0.37196556
+ 6:     06      f      June 0.66033477 -0.3968350 -0.14474291
+ 7:     07      g      July 0.32478476 -2.5880080 -1.88970477
+ 8:     08      h    August 0.35665106  0.3236046  0.42898607
+ 9:     09      i September 0.76025991  2.5357843  2.19067686
+10:     10      j   October 0.30694760  1.6927625  1.51932826
+11:     11      k  November 0.40487910 -0.3030586 -0.07006317
+12:     12      l  December 0.04039085 -0.2869326 -0.05722111
+13:     13      m   January 0.44767478  0.2201743  0.34661835
+14:     14      n  February 0.90541144 -0.8679568 -0.51992536
+15:     15      o     March 0.55110532 -1.4064070 -0.94872541</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dt_0[, w_1 <span class="sc">:</span><span class="er">=</span> <span class="fu">ifelse</span>(w <span class="sc">&gt;</span> <span class="fl">0.5</span>, w <span class="sc">+</span> <span class="dv">1</span>, w)][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        ID      u         v         w            x         x_1       w_1
-    &lt;char&gt; &lt;char&gt;    &lt;char&gt;     &lt;num&gt;        &lt;num&gt;       &lt;num&gt;     &lt;num&gt;
- 1:     01      a   January 0.7926117 -0.948210638 -1.34318651 1.7926117
- 2:     02      b  February 0.6823397 -0.274710439 -0.56265407 1.6823397
- 3:     03      c     March 0.7303428 -0.986037226 -1.38702448 1.7303428
- 4:     04      d     April 0.9880451  0.007729962 -0.23532841 1.9880451
- 5:     05      e       May 0.3266394 -0.681681138 -1.03430031 0.3266394
- 6:     06      f      June 0.3024055  0.346027529  0.15673120 0.3024055
- 7:     07      g      July 0.6921254  0.956167085  0.86383377 1.6921254
- 8:     08      h    August 0.5444533  0.751507954  0.62665033 1.5444533
- 9:     09      i September 0.7644946  2.134324955  2.22922377 1.7644946
-10:     10      j   October 0.1785520  0.450421606  0.27771552 0.1785520
-11:     11      k  November 0.6464467  1.280460254  1.23966341 1.6464467
-12:     12      l  December 0.6707787 -0.300873481 -0.59297493 1.6707787
-13:     13      m   January 0.3675711  0.284278476  0.08516903 0.3675711
-14:     14      n  February 0.8648775  0.571482817  0.41801571 1.8648775
-15:     15      o     March 0.3063607 -0.429061100 -0.74153404 0.3063607</code></pre>
+<pre><code>        ID      u         v          w          x         x_1        w_1
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;      &lt;num&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;
+ 1:     01      a   January 0.18401389  0.6207407  0.66561334 0.18401389
+ 2:     02      b  February 0.91863027 -1.1648991 -0.75639823 1.91863027
+ 3:     03      c     March 0.83907430 -1.0497893 -0.66472940 1.83907430
+ 4:     04      d     April 0.32282308 -0.8073720 -0.47167808 0.32282308
+ 5:     05      e       May 0.63147990  0.2520031  0.37196556 1.63147990
+ 6:     06      f      June 0.66033477 -0.3968350 -0.14474291 1.66033477
+ 7:     07      g      July 0.32478476 -2.5880080 -1.88970477 0.32478476
+ 8:     08      h    August 0.35665106  0.3236046  0.42898607 0.35665106
+ 9:     09      i September 0.76025991  2.5357843  2.19067686 1.76025991
+10:     10      j   October 0.30694760  1.6927625  1.51932826 0.30694760
+11:     11      k  November 0.40487910 -0.3030586 -0.07006317 0.40487910
+12:     12      l  December 0.04039085 -0.2869326 -0.05722111 0.04039085
+13:     13      m   January 0.44767478  0.2201743  0.34661835 0.44767478
+14:     14      n  February 0.90541144 -0.8679568 -0.51992536 1.90541144
+15:     15      o     March 0.55110532 -1.4064070 -0.94872541 1.55110532</code></pre>
 </div>
 </div>
 <ul>
@@ -342,23 +342,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dt_0[, w <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        ID      u         v            x         x_1       w_1
-    &lt;char&gt; &lt;char&gt;    &lt;char&gt;        &lt;num&gt;       &lt;num&gt;     &lt;num&gt;
- 1:     01      a   January -0.948210638 -1.34318651 1.7926117
- 2:     02      b  February -0.274710439 -0.56265407 1.6823397
- 3:     03      c     March -0.986037226 -1.38702448 1.7303428
- 4:     04      d     April  0.007729962 -0.23532841 1.9880451
- 5:     05      e       May -0.681681138 -1.03430031 0.3266394
- 6:     06      f      June  0.346027529  0.15673120 0.3024055
- 7:     07      g      July  0.956167085  0.86383377 1.6921254
- 8:     08      h    August  0.751507954  0.62665033 1.5444533
- 9:     09      i September  2.134324955  2.22922377 1.7644946
-10:     10      j   October  0.450421606  0.27771552 0.1785520
-11:     11      k  November  1.280460254  1.23966341 1.6464467
-12:     12      l  December -0.300873481 -0.59297493 1.6707787
-13:     13      m   January  0.284278476  0.08516903 0.3675711
-14:     14      n  February  0.571482817  0.41801571 1.8648775
-15:     15      o     March -0.429061100 -0.74153404 0.3063607</code></pre>
+<pre><code>        ID      u         v          x         x_1        w_1
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt;
+ 1:     01      a   January  0.6207407  0.66561334 0.18401389
+ 2:     02      b  February -1.1648991 -0.75639823 1.91863027
+ 3:     03      c     March -1.0497893 -0.66472940 1.83907430
+ 4:     04      d     April -0.8073720 -0.47167808 0.32282308
+ 5:     05      e       May  0.2520031  0.37196556 1.63147990
+ 6:     06      f      June -0.3968350 -0.14474291 1.66033477
+ 7:     07      g      July -2.5880080 -1.88970477 0.32478476
+ 8:     08      h    August  0.3236046  0.42898607 0.35665106
+ 9:     09      i September  2.5357843  2.19067686 1.76025991
+10:     10      j   October  1.6927625  1.51932826 0.30694760
+11:     11      k  November -0.3030586 -0.07006317 0.40487910
+12:     12      l  December -0.2869326 -0.05722111 0.04039085
+13:     13      m   January  0.2201743  0.34661835 0.44767478
+14:     14      n  February -0.8679568 -0.51992536 1.90541144
+15:     15      o     March -1.4064070 -0.94872541 1.55110532</code></pre>
 </div>
 </div>
 <ul>
@@ -370,23 +370,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>dt_1[, count <span class="sc">:</span><span class="er">=</span> .N, by <span class="ot">=</span> v][] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        ID      u         v            x         x_1       w_1 count
-    &lt;char&gt; &lt;char&gt;    &lt;char&gt;        &lt;num&gt;       &lt;num&gt;     &lt;num&gt; &lt;int&gt;
- 1:     01      a   January -0.948210638 -1.34318651 1.7926117     2
- 2:     02      b  February -0.274710439 -0.56265407 1.6823397     2
- 3:     03      c     March -0.986037226 -1.38702448 1.7303428     2
- 4:     04      d     April  0.007729962 -0.23532841 1.9880451     1
- 5:     05      e       May -0.681681138 -1.03430031 0.3266394     1
- 6:     06      f      June  0.346027529  0.15673120 0.3024055     1
- 7:     07      g      July  0.956167085  0.86383377 1.6921254     1
- 8:     08      h    August  0.751507954  0.62665033 1.5444533     1
- 9:     09      i September  2.134324955  2.22922377 1.7644946     1
-10:     10      j   October  0.450421606  0.27771552 0.1785520     1
-11:     11      k  November  1.280460254  1.23966341 1.6464467     1
-12:     12      l  December -0.300873481 -0.59297493 1.6707787     1
-13:     13      m   January  0.284278476  0.08516903 0.3675711     2
-14:     14      n  February  0.571482817  0.41801571 1.8648775     2
-15:     15      o     March -0.429061100 -0.74153404 0.3063607     2</code></pre>
+<pre><code>        ID      u         v          x         x_1        w_1 count
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt; &lt;int&gt;
+ 1:     01      a   January  0.6207407  0.66561334 0.18401389     2
+ 2:     02      b  February -1.1648991 -0.75639823 1.91863027     2
+ 3:     03      c     March -1.0497893 -0.66472940 1.83907430     2
+ 4:     04      d     April -0.8073720 -0.47167808 0.32282308     1
+ 5:     05      e       May  0.2520031  0.37196556 1.63147990     1
+ 6:     06      f      June -0.3968350 -0.14474291 1.66033477     1
+ 7:     07      g      July -2.5880080 -1.88970477 0.32478476     1
+ 8:     08      h    August  0.3236046  0.42898607 0.35665106     1
+ 9:     09      i September  2.5357843  2.19067686 1.76025991     1
+10:     10      j   October  1.6927625  1.51932826 0.30694760     1
+11:     11      k  November -0.3030586 -0.07006317 0.40487910     1
+12:     12      l  December -0.2869326 -0.05722111 0.04039085     1
+13:     13      m   January  0.2201743  0.34661835 0.44767478     2
+14:     14      n  February -0.8679568 -0.51992536 1.90541144     2
+15:     15      o     March -1.4064070 -0.94872541 1.55110532     2</code></pre>
 </div>
 </div>
 <ul>
@@ -400,23 +400,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      , <span class="fu">c</span>(out_cols) <span class="sc">:</span><span class="er">=</span> <span class="fu">lapply</span>(.SD, max), by <span class="ot">=</span> new_grp, .SDcols <span class="ot">=</span> in_cols</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>      ][] <span class="co"># notice "c(out_cols)" instead of "out_cols"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>               x       w_1 new_grp       max_x  max_w_1
-           &lt;num&gt;     &lt;num&gt;  &lt;char&gt;       &lt;num&gt;    &lt;num&gt;
- 1: -0.948210638 1.7926117       A 0.007729962 1.988045
- 2: -0.274710439 1.6823397       A 0.007729962 1.988045
- 3: -0.986037226 1.7303428       A 0.007729962 1.988045
- 4:  0.007729962 1.9880451       A 0.007729962 1.988045
- 5: -0.681681138 0.3266394       A 0.007729962 1.988045
- 6:  0.346027529 0.3024055       B 2.134324955 1.764495
- 7:  0.956167085 1.6921254       B 2.134324955 1.764495
- 8:  0.751507954 1.5444533       B 2.134324955 1.764495
- 9:  2.134324955 1.7644946       B 2.134324955 1.764495
-10:  0.450421606 0.1785520       B 2.134324955 1.764495
-11:  1.280460254 1.6464467       C 1.280460254 1.864878
-12: -0.300873481 1.6707787       C 1.280460254 1.864878
-13:  0.284278476 0.3675711       C 1.280460254 1.864878
-14:  0.571482817 1.8648775       C 1.280460254 1.864878
-15: -0.429061100 0.3063607       C 1.280460254 1.864878</code></pre>
+<pre><code>             x        w_1 new_grp     max_x  max_w_1
+         &lt;num&gt;      &lt;num&gt;  &lt;char&gt;     &lt;num&gt;    &lt;num&gt;
+ 1:  0.6207407 0.18401389       A 0.6207407 1.918630
+ 2: -1.1648991 1.91863027       A 0.6207407 1.918630
+ 3: -1.0497893 1.83907430       A 0.6207407 1.918630
+ 4: -0.8073720 0.32282308       A 0.6207407 1.918630
+ 5:  0.2520031 1.63147990       A 0.6207407 1.918630
+ 6: -0.3968350 1.66033477       B 2.5357843 1.760260
+ 7: -2.5880080 0.32478476       B 2.5357843 1.760260
+ 8:  0.3236046 0.35665106       B 2.5357843 1.760260
+ 9:  2.5357843 1.76025991       B 2.5357843 1.760260
+10:  1.6927625 0.30694760       B 2.5357843 1.760260
+11: -0.3030586 0.40487910       C 0.2201743 1.905411
+12: -0.2869326 0.04039085       C 0.2201743 1.905411
+13:  0.2201743 0.44767478       C 0.2201743 1.905411
+14: -0.8679568 1.90541144       C 0.2201743 1.905411
+15: -1.4064070 1.55110532       C 0.2201743 1.905411</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare with dt_3</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>dt_3 <span class="ot">&lt;-</span> </span>
@@ -424,11 +424,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>      ][, <span class="fu">lapply</span>(.SD, max), by <span class="ot">=</span> new_grp, .SDcols <span class="ot">=</span> in_cols]</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>(<span class="fu">setnames</span>(dt_3, in_cols, out_cols))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   new_grp       max_x  max_w_1
-    &lt;char&gt;       &lt;num&gt;    &lt;num&gt;
-1:       A 0.007729962 1.988045
-2:       B 2.134324955 1.764495
-3:       C 1.280460254 1.864878</code></pre>
+<pre><code>   new_grp     max_x  max_w_1
+    &lt;char&gt;     &lt;num&gt;    &lt;num&gt;
+1:       A 0.6207407 1.918630
+2:       B 2.5357843 1.760260
+3:       C 0.2201743 1.905411</code></pre>
 </div>
 </div>
 <ul>
@@ -437,28 +437,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>dt_3[, <span class="fu">names</span>(.SD) <span class="sc">:</span><span class="er">=</span> <span class="fu">lapply</span>(.SD, as.character), .SDcols <span class="ot">=</span> is.numeric][]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   new_grp              max_x          max_w_1
-    &lt;char&gt;             &lt;char&gt;           &lt;char&gt;
-1:       A 0.0077299619197885 1.98804505774751
-2:       B   2.13432495482798 1.76449462538585
-3:       C   1.28046025440087 1.86487751593813</code></pre>
+<pre><code>   new_grp             max_x          max_w_1
+    &lt;char&gt;            &lt;char&gt;           &lt;char&gt;
+1:       A 0.620740733274942  1.9186302672606
+2:       B   2.5357843299913  1.7602599055972
+3:       C 0.220174259701146 1.90541143668815</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(dt_3[, <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"_2026"</span>)), </span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">.SDcols =</span> is.character])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   new_grp                   max_x               max_w_1
-    &lt;char&gt;                  &lt;char&gt;                &lt;char&gt;
-1:  A_2026 0.0077299619197885_2026 1.98804505774751_2026
-2:  B_2026   2.13432495482798_2026 1.76449462538585_2026
-3:  C_2026   1.28046025440087_2026 1.86487751593813_2026</code></pre>
+<pre><code>   new_grp                  max_x               max_w_1
+    &lt;char&gt;                 &lt;char&gt;                &lt;char&gt;
+1:  A_2026 0.620740733274942_2026  1.9186302672606_2026
+2:  B_2026   2.5357843299913_2026  1.7602599055972_2026
+3:  C_2026 0.220174259701146_2026 1.90541143668815_2026</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>(dt_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   new_grp              max_x          max_w_1
-    &lt;char&gt;             &lt;char&gt;           &lt;char&gt;
-1:       A 0.0077299619197885 1.98804505774751
-2:       B   2.13432495482798 1.76449462538585
-3:       C   1.28046025440087 1.86487751593813</code></pre>
+<pre><code>   new_grp             max_x          max_w_1
+    &lt;char&gt;            &lt;char&gt;           &lt;char&gt;
+1:       A 0.620740733274942  1.9186302672606
+2:       B   2.5357843299913  1.7602599055972
+3:       C 0.220174259701146 1.90541143668815</code></pre>
 </div>
 </div>
 </section>
@@ -471,23 +471,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(dt_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        ID      u         v            x         x_1       w_1 count new_grp
-    &lt;char&gt; &lt;char&gt;    &lt;char&gt;        &lt;num&gt;       &lt;num&gt;     &lt;num&gt; &lt;int&gt;  &lt;char&gt;
- 1:     01      a   January -0.948210638 -1.34318651 1.7926117     2       A
- 2:     02      b  February -0.274710439 -0.56265407 1.6823397     2       A
- 3:     03      c     March -0.986037226 -1.38702448 1.7303428     2       A
- 4:     04      d     April  0.007729962 -0.23532841 1.9880451     1       A
- 5:     05      e       May -0.681681138 -1.03430031 0.3266394     1       A
- 6:     06      f      June  0.346027529  0.15673120 0.3024055     1       B
- 7:     07      g      July  0.956167085  0.86383377 1.6921254     1       B
- 8:     08      h    August  0.751507954  0.62665033 1.5444533     1       B
- 9:     09      i September  2.134324955  2.22922377 1.7644946     1       B
-10:     10      j   October  0.450421606  0.27771552 0.1785520     1       B
-11:     11      k  November  1.280460254  1.23966341 1.6464467     1       C
-12:     12      l  December -0.300873481 -0.59297493 1.6707787     1       C
-13:     13      m   January  0.284278476  0.08516903 0.3675711     2       C
-14:     14      n  February  0.571482817  0.41801571 1.8648775     2       C
-15:     15      o     March -0.429061100 -0.74153404 0.3063607     2       C</code></pre>
+<pre><code>        ID      u         v          x         x_1        w_1 count new_grp
+    &lt;char&gt; &lt;char&gt;    &lt;char&gt;      &lt;num&gt;       &lt;num&gt;      &lt;num&gt; &lt;int&gt;  &lt;char&gt;
+ 1:     01      a   January  0.6207407  0.66561334 0.18401389     2       A
+ 2:     02      b  February -1.1648991 -0.75639823 1.91863027     2       A
+ 3:     03      c     March -1.0497893 -0.66472940 1.83907430     2       A
+ 4:     04      d     April -0.8073720 -0.47167808 0.32282308     1       A
+ 5:     05      e       May  0.2520031  0.37196556 1.63147990     1       A
+ 6:     06      f      June -0.3968350 -0.14474291 1.66033477     1       B
+ 7:     07      g      July -2.5880080 -1.88970477 0.32478476     1       B
+ 8:     08      h    August  0.3236046  0.42898607 0.35665106     1       B
+ 9:     09      i September  2.5357843  2.19067686 1.76025991     1       B
+10:     10      j   October  1.6927625  1.51932826 0.30694760     1       B
+11:     11      k  November -0.3030586 -0.07006317 0.40487910     1       C
+12:     12      l  December -0.2869326 -0.05722111 0.04039085     1       C
+13:     13      m   January  0.2201743  0.34661835 0.44767478     2       C
+14:     14      n  February -0.8679568 -0.51992536 1.90541144     2       C
+15:     15      o     March -1.4064070 -0.94872541 1.55110532     2       C</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>my_fun_1 <span class="ot">&lt;-</span> <span class="cf">function</span>(a_dt)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>{a_dt[, the_sum <span class="sc">:</span><span class="er">=</span> x_1 <span class="sc">+</span> w_1][</span>
@@ -498,9 +498,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>   new_grp  the_max
     &lt;char&gt;    &lt;num&gt;
-1:       A 1.752717
-2:       B 3.993718
-3:       C 2.886110</code></pre>
+1:       A 2.003445
+2:       B 3.950937
+3:       C 1.385486</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">names</span>(dt_1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -525,9 +525,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>   new_grp  the_max
     &lt;char&gt;    &lt;num&gt;
-1:       A 1.752717
-2:       B 3.993718
-3:       C 2.886110</code></pre>
+1:       A 2.003445
+2:       B 3.950937
+3:       C 1.385486</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">names</span>(dt_1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
